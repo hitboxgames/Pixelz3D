@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
     res.render('index')
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log("server is running...")
 })
 

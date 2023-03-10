@@ -1,0 +1,283 @@
+svg {
+    color: #7BC393;
+}
+
+@media only screen and (max-width: 800px),
+screen and (max-height: 550px) {
+    #computerSize {
+        visibility: none;
+        height: 0vh;
+    }
+
+    #mobileSize {
+        visibility: visible;
+        height: 100vh;
+        text-align: center;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+    }
+
+    #ProjectNameMobile {
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 40px;
+        line-height: 35px;
+
+        background: linear-gradient(180deg, #31B7C2 45.55%, #7BC393 81.15%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+}
+
+@media only screen and (min-width: 800px) and (min-height: 550px) {
+    #computerSize {
+        visibility: visible;
+        height: 100vh;
+    }
+
+    #mobileSize {
+        visibility: hidden;
+        height: 0vh;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #121212;
+        height: 100%;
+        color:white;
+    }
+
+    .paddaway {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    #ProjectNameComputer {
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 35px;
+
+        background: linear-gradient(180deg, #31B7C2 45.55%, #7BC393 81.15%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    #gradientBorderSignUp {
+        max-width: 250px;
+        padding: 0.25rem;
+        background: linear-gradient(to right, #31B7C2, #7BC393);
+        display: flex;
+        border-radius: 90px;
+    }
+
+    #SignUpBtn {
+        background: white;
+        width: 10rem;
+        height: 2.5rem;
+        border-radius: 90px;
+        padding-top: 0.5rem;
+    }
+
+    #ScenePlayerMenu {
+        display: flex;
+        justify-content: space-between;
+        background-color: #121212;
+        height: 60%;
+    }
+
+    .border-gradient {
+        border-bottom: solid 3px;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(to left, #31B7C2, #7BC393);
+    }
+
+    .scenePlayerItem {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: center;
+        height: 100%;
+        float: right;
+    }
+
+    .playerButtons {
+        background-color: transparent;
+        border-width: 0;
+        color: white;
+    }
+
+
+    /* Top Bar CSS */
+
+    #TopBar {
+        height: 10%;
+        width: 100%;
+    }
+
+    #ToolsMenu {
+        height: 40%;
+        border-top: 1px solid #181818;
+        display: flex;
+        justify-content: space-between;
+        background-color: #181818;
+    }
+
+    #leftSVG svg {
+        width: 80%;
+        overflow: visible;
+        display: block;
+    }
+
+    /* Scene Viewer CSS */
+
+    #SceneViewer {
+        width: 80%;
+        height: 90%;
+        float: left;
+        pointer-events: all;
+    }
+
+    #Inspector {
+        background-color: #181818;
+        height: auto;
+        width: 25vw;
+        position: absolute;
+        right: 22%;
+        top: 11%;
+        border-radius: 8px;
+        box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.25);
+        padding-left: 1vw;
+        padding-right: 1vw;
+        padding-top: 1vw;
+        display: none;
+    }
+
+    #Inspector button {
+        background-color: transparent;
+        border-width: 0;
+        color: black;
+    }
+
+    #Scene {
+        width: 100%;
+        height: 100%;
+    }
+
+    #Controls {
+        position: absolute;
+        top: 35%;
+        left: 1em;
+    }
+
+    #Controls button {
+        margin-bottom: 2vh;
+    }
+
+    .controlButton {
+        background-color: transparent;
+        border-width: 0;
+        color: white;
+    }
+
+    #Inspector input {
+        width: 5vw;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.25);
+        border: 1px;
+        text-align: center;
+    }
+
+    .list-group-item {
+        padding: 1.2vw;
+        background-color: white;
+        border-radius: 50%;
+        box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.25);
+        border: 1px;
+
+        /* BOOTSTRAP DEFAULTS */
+        margin: 0.5vw;
+        margin-bottom: 2vh;
+    }
+
+    #InspectorScaling,
+    #InspectorPosition,
+    #InspectorVisibility,
+    #InspectorColors {
+        padding-top: 1vh;
+        padding-bottom: 1vh;
+        height: 15%;
+        width: 100%;
+    }
+
+    /* Object Selector CSS */
+
+    #ObjectSelectorWindow {
+        width: 20%;
+        height: 90%;
+        float: right;
+        text-align: center;
+        background-color: #181818;
+        margin: 0;
+        border-left: 1px solid #7BC393;
+    }
+
+    #objectSelection button {
+        margin-top: 2vh;
+    }
+
+    #objectSelection {
+        height: 100%;
+        /* change back to 88% when "basic shapes" is added back*/
+        font-size: smaller;
+    }
+
+    #shapesSelector {
+        height: 12%;
+        border-bottom: 1px solid black;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .objectButton {
+        width: 100px;
+        height: 100px;
+        background-color: #282828;
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.25);
+        border: 1px;
+        margin: 0.5rem;
+    }
+
+    #ShapeSelectorBtn {
+        width: 65%;
+        height: 75%;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.25);
+        border: 1px;
+        margin: 0.5rem;
+    }
+
+    #SearchBtn {
+        width: 20%;
+        height: 75%;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.25);
+        border: 1px;
+        margin: 0.5rem;
+    }
+}

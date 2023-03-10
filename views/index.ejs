@@ -1,15 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fabric</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles/index.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  </style>
+
+  <title>Fabric Demo</title>
 </head>
+
 <body>
-    <h1>test</h1>
-    <script src="socket.js"></script>
-    <script src="three.js"></script>
-    <script src="client.js"></script>
+  <div id="mobileSize">
+    <br>
+    <img src="" width="100vw" height="auto" />
+    <div id="ProjectNameMobile">Fabric</div><br>
+    Please use a device with a larger screen such as a desktop or laptop.
+  </div>
+  <div id="computerSize">
+    <div id="TopBar" class="border-gradient">
+      <div id="ScenePlayerMenu" class="">
+        <div class="scenePlayerItem" style="margin-left: 1rem;" id="">
+          <img src="" style="padding-right: 1rem;" width="auto" height="25vh" />
+          <div id="ProjectNameComputer"> Fabric</div>
+        </div>
+        <div class="scenePlayerItem" style="justify-content: center;">
+          <button type="button" class="playerButtons" id="StopBtn" title="Stop Engine"> <svg
+              xmlns="http://www.w3.org/2000/svg" width="auto" height="6vh" fill="currentColor" class="bi bi-stop-btn"
+              viewBox="0 0 16 16">
+              <path
+                d="M6.5 5A1.5 1.5 0 0 0 5 6.5v3A1.5 1.5 0 0 0 6.5 11h3A1.5 1.5 0 0 0 11 9.5v-3A1.5 1.5 0 0 0 9.5 5h-3z" />
+              <path
+                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+            </svg></button>
+          <button type="button" class="playerButtons" id="PlayBtn" title="Run Engine"><svg
+              xmlns="http://www.w3.org/2000/svg" width="auto" height="6vh" fill="currentColor" class="bi bi-play-btn"
+              viewBox="0 0 16 16">
+              <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
+              <path
+                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+            </svg></button>
+          <!--<button type="button" class="playerButtons" id="PauseBtn"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="auto" fill="currentColor" class="bi bi-pause-btn" viewBox="0 0 16 16"><path d="M6.25 5C5.56 5 5 5.56 5 6.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C7.5 5.56 6.94 5 6.25 5zm3.5 0c-.69 0-1.25.56-1.25 1.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C11 5.56 10.44 5 9.75 5z"/><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg></button>-->
+        </div>
+        <div class="scenePlayerItem" style="justify-content: flex-end; margin-right: 1rem;" id="">
+          <!--
+          <div style="margin-right: 2rem; text-decoration: underline;" id="LoginBtn">
+            Login
+          </div>
+          <div id="gradientBorderSignUp">
+            <div id="SignUpBtn">Sign Up</div>
+          </div>
+          -->
+        </div>
+      </div>
+      <div id="ToolsMenu">
+        <div id="leftSVG" style="display: flex; width: 23vw;">
+          <button type="button" class="playerButtons" title="Copy Shape"
+            style="padding-left: 0.75rem; padding-right: 0.75rem; height: auto;" id="CopyBtn"> <svg
+              xmlns="http://www.w3.org/2000/svg" width="3vh" height="auto" fill="currentColor" class="bi bi-clipboard"
+              viewBox="0 0 16 16">
+              <path
+                d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+              <path
+                d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+            </svg> </button>
+          <button type="button" class="playerButtons" title="Paste Shape"
+            style="padding-left: 0.75rem; padding-right: 0.75rem; height: auto;" id="PasteBtn"> <svg
+              xmlns="http://www.w3.org/2000/svg" width="3vh" height="auto" fill="currentColor"
+              class="bi bi-clipboard-check" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+              <path
+                d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+              <path
+                d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+            </svg> </button>
+          <button type="button" class="playerButtons" title="Duplicate Shape"
+            style="padding-left: 0.75rem; padding-right: 0.75rem; height: auto;" id="DuplicateBtn"> <svg
+              xmlns="http://www.w3.org/2000/svg" width="3vh" height="auto" fill="currentColor" class="bi bi-plus-square"
+              viewBox="0 0 16 16">
+              <path
+                d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+              <path
+                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+            </svg> </button>
+          <button type="button" class="playerButtons" title="Delete Shape"
+            style="padding-left: 0.75rem; padding-right: 0.75rem; height: auto;" id="TrashBtn"> <svg
+              xmlns="http://www.w3.org/2000/svg" width="3vh" height="auto" fill="currentColor" class="bi bi-trash3"
+              viewBox="0 0 16 16">
+              <path
+                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+            </svg> </button>
+
+          <div style="display: flex; border-left: solid 1px; border-right: solid 1px; display:none;">
+            <button type="button" class="playerButtons" title="Undo Action"
+              style="padding-left: 0.5rem; padding-right: 0.5rem;" id="UndoBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="2vw" height="auto" fill="currentColor"
+                class="bi bi-arrow-90deg-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4z" />
+              </svg> </button>
+            <button type="button" class="playerButtons" title="Redo Action"
+              style="padding-left: 0.5rem; padding-right: 0.5rem;" id="RedoBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="2vw" height="auto" fill="currentColor"
+                class="bi bi-arrow-90deg-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M14.854 4.854a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 4H3.5A2.5 2.5 0 0 0 1 6.5v8a.5.5 0 0 0 1 0v-8A1.5 1.5 0 0 1 3.5 5h9.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4z" />
+              </svg> </button>
+          </div>
+        </div>
+        <div style="display: flex; width: 35vw;">
+          <button type="button" class="playerButtons" title="Import"
+            style="border-left: solid 1px; padding-left: 1rem; padding-right: 1rem; width: 23vw; font-size: 1vw; height: auto;"
+            id="ImportBtn"> <svg xmlns="http://www.w3.org/2000/svg" width="3vh" height="auto" fill="currentColor"
+              class="bi bi-arrow-down-right-square" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm5.854 3.146a.5.5 0 1 0-.708.708L9.243 9.95H6.475a.5.5 0 1 0 0 1h3.975a.5.5 0 0 0 .5-.5V6.475a.5.5 0 1 0-1 0v2.768L5.854 5.146z" />
+            </svg> Import </button>
+            <input type="file" style="display:none;" id="uploader"></input>
+          <button type="button" class="playerButtons" title="Export"
+            style="border-left: solid 1px; padding-left: 1rem; padding-right: 1rem; width: 23vw; font-size: 1vw; height: auto;"
+            id="ExportBtn"> <svg xmlns="http://www.w3.org/2000/svg" width="3vh" height="auto" fill="currentColor"
+              class="bi bi-arrow-up-right-square" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm5.854 8.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z" />
+            </svg> Export </button>
+          <button type="button" class="playerButtons" title="Share"
+            style="border-left: solid 1px; padding-left: 1rem; padding-right: 1rem; width: 23vw; font-size: 1vw; height: auto;"
+            id="ShareBtn"> <svg xmlns="http://www.w3.org/2000/svg" width="3vh" height="auto" fill="currentColor"
+              class="bi bi-arrow-up-square" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 9.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+            </svg> Share </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- This is where you can see the objects being placed and the control buttons related to zooming and focus-->
+    <div id="SceneViewer">
+      <div id="Controls">
+        <button type="button" class="controlButton" id="FocusSpecBtn" title="Zoom in x10">
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#7BC393"
+            class="bi bi-arrow-down-right-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.854 5.146a.5.5 0 1 0-.708.708L9.243 9.95H6.475a.5.5 0 1 0 0 1h3.975a.5.5 0 0 0 .5-.5V6.475a.5.5 0 1 0-1 0v2.768L5.854 5.146z" />
+          </svg>
+        </button><br>
+        <button type="button" class="controlButton" id="ZoomInBtn" title="Zoom in x5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#7BC393" class="bi bi-plus-circle"
+            viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path
+              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+          </svg></button><br>
+        <button type="button" class="controlButton" id="ZoomOutBtn" title="Zoom out x5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#7BC393" class="bi bi-dash-circle"
+            viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
+          </svg>
+        </button><br>
+        <button type="button" class="controlButton" id="FocusAllBtn" title="Zoom out x10">
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#7BC393"
+            class="bi bi-arrow-up-right-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.854 10.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z" />
+          </svg>
+        </button><br>
+      </div>
+      <div id="Inspector" style="">
+        <div style="display: flex; justify-content: space-between;">
+          <div style="">
+            <strong>Shape</strong>
+          </div>
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="2vw" height="auto" fill="currentColor" class="bi bi-unlock"
+              viewBox="0 0 16 16">
+              <path
+                d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2zM3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H3z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="2vw" height="auto" fill="currentColor" class="bi bi-x-square"
+              viewBox="0 0 16 16">
+              <path
+                d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+              <path
+                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div id="InspectorColors" class="list-group list-group-horizontal text-nowrap overflow-auto">
+            <button type="button" class="list-group-item" style="display: none;"></button>
+            <button type="button" class="list-group-item" style="background-color: blue;" id="blue"></button>
+            <button type="button" class="list-group-item" style="background-color: red;" id="red"></button>
+            <button type="button" class="list-group-item" style="background-color: yellow;" id="yellow"></button>
+            <button type="button" class="list-group-item" style="background-color: green;" id="green"></button>
+            <button type="button" class="list-group-item" style="background-color: orange;" id="orange"></button>
+            <button type="button" class="list-group-item" style="background-color: pink;" id="pink"></button>
+            <button type="button" class="list-group-item" style="background-color: black;" id="black"></button>
+            <button type="button" class="list-group-item" style="background-color: gray;" id="gray"></button>
+            <button type="button" class="list-group-item" style="background-color: white;" id="white"></button>
+            <button type="button" class="list-group-item" style="background-color: #FFE5B4;" id="peach"></button>
+            <button type="button" class="list-group-item" style="background-color: brown;" id="brown"></button>
+            <button type="button" class="list-group-item" style="background-color: purple;" id="purple"></button>
+            <button type="button" class="list-group-item" style="background-color: teal;" id="teal"></button>
+            <button type="button" class="list-group-item" style="display: none;"></button>
+          </div>
+        </div>
+        <div id="InspectorPosition" style="display: flex; justify-content: space-between;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor" class="bi bi-box-fill"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M15.528 2.973a.75.75 0 0 1 .472.696v8.662a.75.75 0 0 1-.472.696l-7.25 2.9a.75.75 0 0 1-.557 0l-7.25-2.9A.75.75 0 0 1 0 12.331V3.669a.75.75 0 0 1 .471-.696L7.443.184l.004-.001.274-.11a.75.75 0 0 1 .558 0l.274.11.004.001 6.971 2.789Zm-1.374.527L8 5.962 1.846 3.5 1 3.839v.4l6.5 2.6v7.922l.5.2.5-.2V6.84l6.5-2.6v-.4l-.846-.339Z" />
+          </svg>
+          <input type="number" id="InpectorPositionX" name="fname" value="0">
+          <input type="number" id="InpectorPositionY" name="fname" value="0">
+          <input type="number" id="InpectorPositionZ" name="fname" value="0">
+        </div>
+        <div id="InspectorRotation" style="display: flex; justify-content: space-between;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
+            class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+            <path
+              d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+            <path fill-rule="evenodd"
+              d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+          </svg>
+          <input type="number" id="InspectorRotationX" name="fname" value="0">
+          <input type="number" id="InspectorRotationY" name="fname" value="0">
+          <input type="number" id="InspectorRotationZ" name="fname" value="0">
+        </div>
+        <div id="InspectorScaling" style="display: flex; justify-content: space-between;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
+            class="bi bi-bounding-box" viewBox="0 0 16 16">
+            <path
+              d="M5 2V0H0v5h2v6H0v5h5v-2h6v2h5v-5h-2V5h2V0h-5v2H5zm6 1v2h2v6h-2v2H5v-2H3V5h2V3h6zm1-2h3v3h-3V1zm3 11v3h-3v-3h3zM4 15H1v-3h3v3zM1 4V1h3v3H1z" />
+          </svg>
+          <input type="number" id="InspectorScaleX" name="fname" value="0">
+          <input type="number" id="InspectorScaleY" name="fname" value="0">
+          <input type="number" id="InspectorScaleZ" name="fname" value="0">
+        </div>
+        <div id="InspectorVisibility" style="text-align: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor" class="bi bi-eye" style="display: none;"
+            viewBox="0 0 16 16">
+            <path
+              d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+          </svg>
+          <button type="button" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
+              class="bi bi-toggle-on" viewBox="0 0 16 16">
+              <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" />
+            </svg>
+          </button>
+          <button type="button" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
+              class="bi bi-toggle-off" viewBox="0 0 16 16">
+              <path
+                d="M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div id="Scene"></div>
+    </div>
+
+    <!-- This is the Object Selection Window -->
+    <div id="ObjectSelectorWindow">
+      <!--
+      <div id="shapesSelector" class="border-gradient">
+        <button type="button" id="ShapeSelectorBtn">
+          <h4 style="margin-top: 5%;">Basic Shapes &nbsp<svg xmlns="http://www.w3.org/2000/svg" width="32" height="auto"
+              fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z" />
+              <path
+                d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z" />
+            </svg></h4>
+        </button>
+        <button type="button" id="SearchBtn"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="auto"
+            fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+          </svg></button>
+      </div>
+    -->
+      <div id="objectSelection" class="overflow-auto">
+        <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
+        <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
+        <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
+        <button type="button" class="objectButton" id="SpawnCastle" title="Add Castle">Castle</button>
+        <button type="button" class="objectButton" id="SpawnCircle" title="Add Circle">Circle</button>
+        <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
+        <button type="button" class="objectButton" id="SpawnDodecahedron" title="Add Dodecahedron">Dodecahedron</button>
+        <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
+        <button type="button" class="objectButton" id="SpawnIcosahedron" title="Add Icosahedron">Icosahedron</button>
+        <button type="button" class="objectButton" id="SpawnOctahedron" title="Add Octahedron">Octahedron</button>
+        <!--<button type="button" class="objectButton" id="SpawnParametric">Parametric</button>-->
+        <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
+        <button type="button" class="objectButton" id="SpawnPolyhedron" title="Add Polyhedron">Polyhedron</button>
+        <button type="button" class="objectButton" id="SpawnRing" title="Add Ring">Ring</button>
+        <button type="button" class="objectButton" id="Spawn2DHeart" title="Add 2D Heart">2D Heart</button>
+        <button type="button" class="objectButton" id="SpawnTetrahedron" title="Add Tetrahedron">Tetrahedron</button>
+        <!--<button type="button" class="objectButton" id="SpawnText">Text</button>-->
+        <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
+        <button type="button" class="objectButton" id="SpawnTorusKnot" title="Add Torus Knot">Torus Knot</button>
+        <!--<button type="button" class="objectButton" id="SpawnTube">Tube</button>-->
+
+      </div>
+    </div>
+  </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <script src="socket.js"></script>
+  <script type="module" src="client.js"></script>
 </html>
