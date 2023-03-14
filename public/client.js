@@ -1,31 +1,86 @@
 import { OrbitControls } from './modules/Controllers/OrbitControls.js'
 import { FirstPersonControls } from './modules/Controllers/FirstPersonControls.js'
 import { DragControls } from './modules/Controllers/DragControls.js'
-import { ObjectBuilder } from './modules/Shapes/ObjectBuilder.js'
+import { ObjectSelector } from './modules/Shapes/ObjectSelector.js'
 import { Disabled } from './modules/Features/Disabled.js'
 import { ColorPicker } from './modules/Features/Inspector/ColorPicker.js';
 import { GLTFLoader } from './modules/loaders/GLTFLoader.js'; //https://github.com/mrdoob/three.js/tree/dev/examples/jsm/loaders
 import { GLTFExporter } from './modules/exporters/GLTFExporter.js'; //https://github.com/mrdoob/three.js/tree/dev/examples/jsm/exporters
 import * as THREE from './three.module.js'
-import { GridHelper, Object3D} from './three.module.js';
+import { GridHelper, Object3D } from './three.module.js';
+import { createShape } from "./modules/Shapes/ObjectBuilder.js"
+import { loadJSON } from './modules/Loaders/LocalLoader.js'
 
 console.log("client loaded...")
-//Socket IO Code
-const socket = io.connect('http://localhost:3001')
-//socket.on('connection')
+//socket.emit("loadObjectCache", objects.toJSON())
 
-//remove when done debugging
-//const THREE = require('three')
+//Socket IO Code
+const socket = io('http://localhost:3001')
+socket.on("connect", () => {
+	console.log("Welcome to the session!")
+})
+
+socket.on("loadObjectCache", (_objects) => {
+	objects.add(loadJSON(_objects))
+})
+
+const myRoomValues = window.location.search
+socket.emit("joinRoom", myRoomValues)
+
+socket.on("newRoomConnection", () => {
+	console.log("A new user has connected to your session!")
+})
+
+export function spawnObject(shape){
+	socket.emit("spawnObject", shape, myRoomValues)
+}
+
+socket.on("spawnObject", (shape, uuid) => {
+	let temp = createShape(shape)
+	temp.name = uuid
+	objects.add(temp)
+})
+
+socket.on("modifiedObject", (mods, uuid) => {
+	let temp = scene.getObjectByName(uuid)
+	if(temp.userData.draggable == true){
+		temp.position.set(mods.xPos, mods.yPos, mods.zPos)
+		temp.rotation.set(mods.xRot, mods.yRot, mods.zRot)
+		temp.scale.set(mods.xScale, mods.yScale, mods.zScale)
+		temp.material = new THREE.MeshPhongMaterial({ color: mods.color })
+	}
+})
+
+socket.on("disableObject", (uuid) => {
+	let temp = objects.getObjectByName(uuid)
+	temp.userData.draggable = false
+	scene.removeFromParent(temp)
+	let outlineMaterial = new THREE.MeshBasicMaterial({ color: 0x7BC393, side: THREE.BackSide })
+	let outlineMesh = temp.clone()
+	outlineMesh.name = "outline"
+	outlineMesh.material = outlineMaterial
+	outlineMesh.position.set(temp.position.x, temp.position.y, temp.position.z)
+	outlineMesh.scale.multiplyScalar(1.15)
+	scene.add(outlineMesh)
+})
+
+socket.on("enableObject", (uuid) => {
+	let temp = scene.getObjectByName(uuid)
+	let outlineMesh = scene.getObjectByName("outline")
+	scene.remove(outlineMesh)
+	temp.userData.draggable = true
+	objects.add(temp)
+})
 
 //Renderer
-const renderer = new THREE.WebGLRenderer({antialias: true})
+const renderer = new THREE.WebGLRenderer({ antialias: true })
 
 //Set SceneDiv
 var sceneDiv;
-if(document.getElementById('Scene') == null){
+if (document.getElementById('Scene') == null) {
 	sceneDiv = window
 	document.body.appendChild(renderer.domElement)
-}else{
+} else {
 	sceneDiv = document.getElementById('Scene')
 	sceneDiv.appendChild(renderer.domElement)
 }
@@ -41,9 +96,9 @@ camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // WINDOW RESIZE HANDLING
 function onWindowResize() {
-  camera.aspect = sceneDiv.offsetWidth / sceneDiv.offsetHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(sceneDiv.offsetWidth, sceneDiv.offsetHeight);
+	camera.aspect = sceneDiv.offsetWidth / sceneDiv.offsetHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize(sceneDiv.offsetWidth, sceneDiv.offsetHeight);
 }
 window.addEventListener('resize', onWindowResize);
 
@@ -66,7 +121,7 @@ OrbitalControls.enabled = true;
 let FPControls = new FirstPersonControls(camera, renderer.domElement);
 FPControls.enabled = false;
 //Dragging Controls
-const objects = new THREE.Group();
+let objects = new THREE.Group();
 scene.add(objects);
 const dControls = new DragControls(objects.children, camera, renderer.domElement);
 dControls.enabled = true;
@@ -81,40 +136,70 @@ dControls.addEventListener("hoveroff", event => {
 
 let colorPicker = new ColorPicker(null);
 dControls.addEventListener("dragstart", event => {
-  console.log("drag start")
-  updateInspectorVals();
-  lastSelectedObject = event.object;
-  colorPicker.disableObject();
-  colorPicker = new ColorPicker(event.object)
-  event.object.material.transparent = true;
-  event.object.material.opacity = 0.7;
-  OrbitalControls.enabled = false;
+	updateInspectorVals();
+	disableDragForOthers(event.object.name)
+	lastSelectedObject = event.object;
+	colorPicker.disableObject();
+	colorPicker = new ColorPicker(event.object)
+	event.object.material.transparent = true;
+	event.object.material.opacity = 0.7;
+	OrbitalControls.enabled = false;
 })
+
+dControls.addEventListener("drag", event => {
+	
+})
+
+function disableDragForOthers(uuid){
+	socket.emit("disableObject", uuid)
+}
+
+function enableDragForOthers(uuid){
+	socket.emit("enableObject", uuid)
+}
 
 
 dControls.addEventListener("dragend", event => {
-  console.log("drag end")
-  updateInspectorVals();
-  event.object.material.transparent = true;
-  event.object.material.opacity = 1;
-  OrbitalControls.enabled = true;
+	enableDragForOthers(event.object.name)
+	updateInspectorVals();
+	updateRoomsObjectVals(event.object)
+	event.object.material.transparent = true;
+	event.object.material.opacity = 1;
+	OrbitalControls.enabled = true;
 })
 
-function updateInspectorVals(){
+//Update all objects in scene to all clients on server
+export function updateRoomsObjectVals(_object) {
+	socket.emit("modifiedObject", {
+		xPos: _object.position.x,
+		yPos: _object.position.y,
+		zPos: _object.position.z,
+		xRot: _object.rotation.x,
+		yRot: _object.rotation.y,
+		zRot: _object.rotation.z,
+		xScale: _object.scale.x,
+		yScale: _object.scale.y,
+		zScale: _object.scale.z,
+		color: _object.material.color
+	}, _object.name, myRoomValues)
+}
+
+//Update all objects based on modifications on inspector
+function updateInspectorVals() {
 	const xPos = (document.getElementById("InpectorPositionX"));
 	xPos.value = "" + lastSelectedObject.position.x;
 	const yPos = (document.getElementById("InpectorPositionY"));
 	yPos.value = "" + lastSelectedObject.position.y;
 	const zPos = (document.getElementById("InpectorPositionZ"));
 	zPos.value = "" + lastSelectedObject.position.z;
-  
+
 	const xRot = (document.getElementById("InspectorRotationX"));
-	xRot.value = "" + (lastSelectedObject.rotation.x / (Math.PI /180));
+	xRot.value = "" + (lastSelectedObject.rotation.x / (Math.PI / 180));
 	const yRot = (document.getElementById("InspectorRotationY"));
-	yRot.value = "" + (lastSelectedObject.rotation.y / (Math.PI /180));
+	yRot.value = "" + (lastSelectedObject.rotation.y / (Math.PI / 180));
 	const zRot = (document.getElementById("InspectorRotationZ"));
-	zRot.value = "" + (lastSelectedObject.rotation.z / (Math.PI /180));
-  
+	zRot.value = "" + (lastSelectedObject.rotation.z / (Math.PI / 180));
+
 	const xScale = (document.getElementById("InspectorScaleX"));
 	xScale.value = "" + lastSelectedObject.scale.x;
 	const yScale = (document.getElementById("InspectorScaleY"));
@@ -136,14 +221,17 @@ const insPosZ = document.getElementById("InpectorPositionZ");
 insPosX?.addEventListener("input", (event) => {
 	const xPos = (document.getElementById("InpectorPositionX")).value;
 	lastSelectedObject.position.x = Number(xPos);
+	updateRoomsObjectVals(lastSelectedObject)
 });
 insPosY?.addEventListener("input", (event) => {
 	const yPos = (document.getElementById("InpectorPositionY")).value;
 	lastSelectedObject.position.y = Number(yPos);
+	updateRoomsObjectVals(lastSelectedObject)
 });
 insPosZ?.addEventListener("input", (event) => {
 	const zPos = (document.getElementById("InpectorPositionZ")).value;
 	lastSelectedObject.position.z = Number(zPos);
+	updateRoomsObjectVals(lastSelectedObject)
 });
 
 //Rotation
@@ -153,15 +241,18 @@ const insRotZ = document.getElementById("InspectorRotationZ");
 
 insRotX?.addEventListener("input", (event) => {
 	const xRot = (document.getElementById("InspectorRotationX")).value;
-	lastSelectedObject.rotation.x = Number(xRot) * (Math.PI /180);
+	lastSelectedObject.rotation.x = Number(xRot) * (Math.PI / 180);
+	updateRoomsObjectVals(lastSelectedObject)
 });
 insRotY?.addEventListener("input", (event) => {
 	const yRot = (document.getElementById("InspectorRotationY")).value;
-	lastSelectedObject.rotation.y = Number(yRot) * (Math.PI /180);
+	lastSelectedObject.rotation.y = Number(yRot) * (Math.PI / 180);
+	updateRoomsObjectVals(lastSelectedObject)
 });
 insRotZ?.addEventListener("input", (event) => {
 	const zRot = (document.getElementById("InspectorRotationZ")).value;
-	lastSelectedObject.rotation.z = Number(zRot) * (Math.PI /180);
+	lastSelectedObject.rotation.z = Number(zRot) * (Math.PI / 180);
+	updateRoomsObjectVals(lastSelectedObject)
 });
 
 //Scale
@@ -172,151 +263,64 @@ const insScaleZ = document.getElementById("InspectorScaleZ");
 insScaleX?.addEventListener("input", (event) => {
 	const xScale = (document.getElementById("InspectorScaleX")).value;
 	lastSelectedObject.scale.x = Number(xScale);
+	updateRoomsObjectVals(lastSelectedObject)
 });
 insScaleY?.addEventListener("input", (event) => {
 	const yScale = (document.getElementById("InspectorScaleY")).value;
 	lastSelectedObject.scale.y = Number(yScale);
+	updateRoomsObjectVals(lastSelectedObject)
 });
 insScaleZ?.addEventListener("input", (event) => {
 	const zScale = (document.getElementById("InspectorScaleZ")).value;
 	lastSelectedObject.scale.z = Number(zScale);
+	updateRoomsObjectVals(lastSelectedObject)
 });
 
 //Delete an Object
 const deleteBtn = document.getElementById("TrashBtn");
 deleteBtn?.addEventListener("click", (event) => {
-  console.log(lastSelectedObject);
-  let parent = lastSelectedObject.parent;
-  if(parent != null) parent.remove(lastSelectedObject);
+	console.log(lastSelectedObject);
+	let parent = lastSelectedObject.parent;
+	if (parent != null) parent.remove(lastSelectedObject);
 });
 
 var copySelectedObject = new THREE.Mesh();
 //Copy Object
 const copyBtn = document.getElementById("CopyBtn");
 copyBtn?.addEventListener("click", (event) => {
-  copySelectedObject = lastSelectedObject;
-  console.log("copied");
+	copySelectedObject = lastSelectedObject;
+	console.log("copied");
 });
 
 //Paste Object
 const pasteBtn = document.getElementById("PasteBtn");
 pasteBtn?.addEventListener("click", (event) => {
-  let paste = new THREE.Mesh();
-  paste.copy(copySelectedObject);
-  paste.position.set(0,paste.position.y,0);
-  paste.material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF});
-  objects.add(paste);
+	let paste = new THREE.Mesh();
+	paste.copy(copySelectedObject);
+	paste.position.set(0, paste.position.y, 0);
+	paste.material = new THREE.MeshPhongMaterial({ color: paste.material.color });
+	objects.add(paste);
 });
 
 //Duplicate Object
 const duplicateBtn = document.getElementById("DuplicateBtn");
 duplicateBtn?.addEventListener("click", (event) => {
-  copySelectedObject = lastSelectedObject;
-  let paste = new THREE.Mesh();
-  paste.copy(copySelectedObject);
-  paste.material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF});
-  objects.add(paste);
+	copySelectedObject = lastSelectedObject;
+	let paste = new THREE.Mesh();
+	paste.copy(copySelectedObject);
+	paste.material = new THREE.MeshPhongMaterial({ color: copySelectedObject.material.color });
+	objects.add(paste);
 });
-
-//Import
-const importBtn = document.getElementById("ImportBtn");
-const uploader = document.getElementById("uploader");
-
-importBtn?.addEventListener("click" , (event) => {
-  uploader?.click();
-})
-
-uploader?.addEventListener("change", (event) => {
-	const loader = new GLTFLoader();
-	
-	const files = (uploader).files;
-	let file;
-	if(files != null ) {
-	  file = files[0];
-	  console.log(file);
-	  
-  
-	  const reader = new FileReader();
-  
-	  reader.addEventListener("load", () => {
-		//console.log(reader.result);
-		localStorage.setItem("recent-file", "" + reader.result);
-		//console.log(localStorage.getItem("recent-file"));
-		importContent();
-	  });
-  
-	  reader.readAsDataURL(file);
-	
-	}
-  
-	function importContent(){
-	  // Load a glTF resource
-	  loader.load(
-		  // resource URL
-		  "" + localStorage.getItem("recent-file"),
-		  // called when the resource is loaded
-		  function ( gltf ) {
-		  objects.add(gltf.scene);
-		  },
-		  // called while loading is progressing
-		  function ( xhr ) {
-			  console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-		  },
-		  // called when loading has errors
-		  function ( error ) {
-			  console.log( 'An error happened' );
-		  }
-	  );
-	}	
-})
-
-//Export GLB
-const exportBtn = document.getElementById("ExportBtn");
-exportBtn?.addEventListener("click", (event) => {
-  download()
-});
-
-function download() {
-  scene.remove(gridHelper)
-  scene.remove(sceneFloor)
-
-  const exporter = new GLTFExporter();
-  exporter.parse(
-    scene,
-    function (result) {
-      saveArrayBuffer(result, 'scene.gltf');
-    },
-    { binary: true }
-  );
-
-  scene.add(gridHelper)
-  createFloor()
-}
-
-function saveArrayBuffer(buffer, filename) {
-  save(new Blob([buffer], { type: 'application/octet-stream' }), filename);
-}
-
-const link = document.createElement('a');
-link.style.display = 'none';
-document.body.appendChild(link);
-
-function save(blob, filename) {
-  link.href = URL.createObjectURL(blob);
-  link.download = filename;
-  link.click();
-}
 
 // ---------------------------- OBJECT BUILDER ----------------------------
 //This is what will setup all the buttons to make shapes
-
-let objectBuilder = new ObjectBuilder(objects)
+new ObjectSelector(objects)
 
 //Animation Loop
 function animate() {
-  renderer.render(scene, camera);
-  if (FPControls.enabled) FPControls.update(1);
-  requestAnimationFrame(animate);
+	renderer.render(scene, camera);
+	if (FPControls.enabled) FPControls.update(1);
+	requestAnimationFrame(animate);
 }
 
 // ambient light
@@ -336,25 +340,25 @@ dirLight.shadow.camera.top = 70;
 dirLight.shadow.camera.bottom = -70;
 
 function createFloor() {
-  let pos = { x: 0, y: 0, z: 0 };
-  let scale = { x: 1, y: 1, z: 1 };
+	let pos = { x: 0, y: 0, z: 0 };
+	let scale = { x: 1, y: 1, z: 1 };
 
-  const floorMaterial = new THREE.MeshPhongMaterial({
-    color: 0x58D9F0,
-    flatShading: true,
-    transparent: true,
-    opacity: 0.25,
-  });
+	const floorMaterial = new THREE.MeshPhongMaterial({
+		color: 0x58D9F0,
+		flatShading: true,
+		transparent: true,
+		opacity: 0.25,
+	});
 
-  let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(100, 0.1, 100), floorMaterial);
+	let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(100, 0.1, 100), floorMaterial);
 
-  blockPlane.position.set(pos.x, pos.y, pos.z);
-  blockPlane.scale.set(scale.x, scale.y, scale.z);
-  blockPlane.castShadow = true;
-  blockPlane.receiveShadow = true;
-  scene.add(blockPlane);
-  sceneFloor = blockPlane;
-  blockPlane.userData.ground = true
+	blockPlane.position.set(pos.x, pos.y, pos.z);
+	blockPlane.scale.set(scale.x, scale.y, scale.z);
+	blockPlane.castShadow = true;
+	blockPlane.receiveShadow = true;
+	scene.add(blockPlane);
+	sceneFloor = blockPlane;
+	blockPlane.userData.ground = true
 }
 
 animate()
@@ -381,20 +385,20 @@ function playScene() {
 	FPControls.enabled = true;
 	camera.position.set(0, 1, 3);
 	FPControls.lookSpeed = 0.001;
-  
+
 	let Inspector = document.getElementById('Inspector')
 	if (Inspector != null) Inspector.style.display = "none";
 	let Controls = document.getElementById('Controls')
 	if (Controls != null) Controls.style.display = "none";
-  }
-  
-  function stopScene() {
+}
+
+function stopScene() {
 	FPControls.enabled = false;
 	dControls.enabled = true;
 	OrbitalControls.enabled = true;
 	camera.position.set(-35, 70, 100);
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
-  
+
 	let Controls = document.getElementById('Controls')
 	if (Controls != null) Controls.style.display = "block";
-  }
+}
