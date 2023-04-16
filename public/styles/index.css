@@ -1,5 +1,9 @@
+.hide{
+    display: none;
+}
+
 svg {
-    color: #7BC393;
+    color: #fafafa;
 }
 
 @media only screen and (max-width: 800px),
@@ -24,7 +28,7 @@ screen and (max-height: 550px) {
         font-size: 40px;
         line-height: 35px;
 
-        background: linear-gradient(180deg, #31B7C2 45.55%, #7BC393 81.15%);
+        background: linear-gradient(180deg, #fafafa 45.55%, #fafafa 81.15%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -47,7 +51,7 @@ screen and (max-height: 550px) {
     body {
         margin: 0;
         padding: 0;
-        background-color: #121212;
+        background-color: #fafafa;
         height: 100%;
         color:white;
     }
@@ -64,7 +68,7 @@ screen and (max-height: 550px) {
         font-size: 20px;
         line-height: 35px;
 
-        background: linear-gradient(180deg, #31B7C2 45.55%, #7BC393 81.15%);
+        background: linear-gradient(180deg, #fafafa 45.55%, #fafafa 81.15%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -73,7 +77,7 @@ screen and (max-height: 550px) {
     #gradientBorderSignUp {
         max-width: 250px;
         padding: 0.25rem;
-        background: linear-gradient(to right, #31B7C2, #7BC393);
+        background: linear-gradient(to right, #fafafa, #fafafa);
         display: flex;
         border-radius: 90px;
     }
@@ -96,7 +100,7 @@ screen and (max-height: 550px) {
     .border-gradient {
         border-bottom: solid 3px;
         border-image-slice: 1;
-        border-image-source: linear-gradient(to left, #31B7C2, #7BC393);
+        border-image-source: linear-gradient(to left, #fafafa, #fafafa);
     }
 
     .scenePlayerItem {
@@ -229,7 +233,7 @@ screen and (max-height: 550px) {
         text-align: center;
         background-color: #181818;
         margin: 0;
-        border-left: 1px solid #7BC393;
+        border-left: 1px solid #fafafa;
     }
 
     #objectSelection button {

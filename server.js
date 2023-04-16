@@ -14,6 +14,11 @@ app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
 
+
+app.get('/welcome', (req, res) => {
+    res.render('welcome')
+})
+
 //* is used to represent all routes
 app.get('/*', (req, res) => {
     res.render('index')

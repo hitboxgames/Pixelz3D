@@ -15,14 +15,14 @@
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
   </style>
 
-  <title>Fabric Demo</title>
+  <title>Exude Demo</title>
 </head>
 
 <body>
   <div id="mobileSize">
     <br>
     <img src="" width="100vw" height="auto" />
-    <div id="ProjectNameMobile">Fabric</div><br>
+    <div id="ProjectNameMobile">Exude</div><br>
     Please use a device with a larger screen such as a desktop or laptop.
   </div>
   <div id="computerSize">
@@ -30,7 +30,7 @@
       <div id="ScenePlayerMenu" class="">
         <div class="scenePlayerItem" style="margin-left: 1rem;" id="">
           <img src="" style="padding-right: 1rem;" width="auto" height="25vh" />
-          <div id="ProjectNameComputer"> Fabric</div>
+          <div id="ProjectNameComputer"> Exude</div>
         </div>
         <div class="scenePlayerItem" style="justify-content: center;">
           <button type="button" class="playerButtons" id="StopBtn" title="Stop Engine"> <svg
@@ -117,6 +117,13 @@
               </svg> </button>
           </div>
         </div>
+
+        <div class="search-wrapper" style="display: flex;">
+          <label for="search">Search Furniture</label>
+          <input type="search" id="objectSearchInput">
+        </div>
+
+        <!--
         <div style="display: flex; width: 35vw;">
           <button type="button" class="playerButtons" title="Import"
             style="border-left: solid 1px; padding-left: 1rem; padding-right: 1rem; width: 23vw; font-size: 1vw; height: auto;"
@@ -141,6 +148,7 @@
                 d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 9.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
             </svg> Share </button>
         </div>
+        -->
       </div>
     </div>
 
@@ -148,28 +156,28 @@
     <div id="SceneViewer">
       <div id="Controls">
         <button type="button" class="controlButton" id="FocusSpecBtn" title="Zoom in x10">
-          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#7BC393"
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#181818"
             class="bi bi-arrow-down-right-circle" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
               d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.854 5.146a.5.5 0 1 0-.708.708L9.243 9.95H6.475a.5.5 0 1 0 0 1h3.975a.5.5 0 0 0 .5-.5V6.475a.5.5 0 1 0-1 0v2.768L5.854 5.146z" />
           </svg>
         </button><br>
         <button type="button" class="controlButton" id="ZoomInBtn" title="Zoom in x5">
-          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#7BC393" class="bi bi-plus-circle"
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#181818" class="bi bi-plus-circle"
             viewBox="0 0 16 16">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
             <path
               d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
           </svg></button><br>
         <button type="button" class="controlButton" id="ZoomOutBtn" title="Zoom out x5">
-          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#7BC393" class="bi bi-dash-circle"
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#181818" class="bi bi-dash-circle"
             viewBox="0 0 16 16">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
             <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
           </svg>
         </button><br>
         <button type="button" class="controlButton" id="FocusAllBtn" title="Zoom out x10">
-          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#7BC393"
+          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="#181818"
             class="bi bi-arrow-up-right-circle" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
               d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.854 10.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z" />
@@ -199,6 +207,7 @@
         <div>
           <div id="InspectorColors" class="list-group list-group-horizontal text-nowrap overflow-auto">
             <button type="button" class="list-group-item" style="display: none;"></button>
+            <button type="button" class="list-group-item" style="background-color: white;" id="white"></button>
             <button type="button" class="list-group-item" style="background-color: blue;" id="blue"></button>
             <button type="button" class="list-group-item" style="background-color: red;" id="red"></button>
             <button type="button" class="list-group-item" style="background-color: yellow;" id="yellow"></button>
@@ -207,7 +216,6 @@
             <button type="button" class="list-group-item" style="background-color: pink;" id="pink"></button>
             <button type="button" class="list-group-item" style="background-color: black;" id="black"></button>
             <button type="button" class="list-group-item" style="background-color: gray;" id="gray"></button>
-            <button type="button" class="list-group-item" style="background-color: white;" id="white"></button>
             <button type="button" class="list-group-item" style="background-color: #FFE5B4;" id="peach"></button>
             <button type="button" class="list-group-item" style="background-color: brown;" id="brown"></button>
             <button type="button" class="list-group-item" style="background-color: purple;" id="purple"></button>
@@ -296,24 +304,11 @@
         <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
         <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
         <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
-        <button type="button" class="objectButton" id="SpawnCastle" title="Add Castle">Castle</button>
-        <button type="button" class="objectButton" id="SpawnCircle" title="Add Circle">Circle</button>
         <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
-        <button type="button" class="objectButton" id="SpawnDodecahedron" title="Add Dodecahedron">Dodecahedron</button>
         <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
-        <button type="button" class="objectButton" id="SpawnIcosahedron" title="Add Icosahedron">Icosahedron</button>
-        <button type="button" class="objectButton" id="SpawnOctahedron" title="Add Octahedron">Octahedron</button>
-        <!--<button type="button" class="objectButton" id="SpawnParametric">Parametric</button>-->
         <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
-        <button type="button" class="objectButton" id="SpawnPolyhedron" title="Add Polyhedron">Polyhedron</button>
-        <button type="button" class="objectButton" id="SpawnRing" title="Add Ring">Ring</button>
-        <button type="button" class="objectButton" id="Spawn2DHeart" title="Add 2D Heart">2D Heart</button>
-        <button type="button" class="objectButton" id="SpawnTetrahedron" title="Add Tetrahedron">Tetrahedron</button>
-        <!--<button type="button" class="objectButton" id="SpawnText">Text</button>-->
         <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
-        <button type="button" class="objectButton" id="SpawnTorusKnot" title="Add Torus Knot">Torus Knot</button>
-        <!--<button type="button" class="objectButton" id="SpawnTube">Tube</button>-->
-
+      
       </div>
     </div>
   </div>

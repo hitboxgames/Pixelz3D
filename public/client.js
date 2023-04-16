@@ -4,12 +4,13 @@ import { DragControls } from './modules/Controllers/DragControls.js'
 import { ObjectSelector } from './modules/Shapes/ObjectSelector.js'
 import { Disabled } from './modules/Features/Disabled.js'
 import { ColorPicker } from './modules/Features/Inspector/ColorPicker.js';
-import { GLTFLoader } from './modules/loaders/GLTFLoader.js'; //https://github.com/mrdoob/three.js/tree/dev/examples/jsm/loaders
-import { GLTFExporter } from './modules/exporters/GLTFExporter.js'; //https://github.com/mrdoob/three.js/tree/dev/examples/jsm/exporters
 import * as THREE from './three.module.js'
 import { GridHelper, Object3D } from './three.module.js';
-import { createShape } from "./modules/Shapes/ObjectBuilder.js"
+import { createObject, createShape } from "./modules/Shapes/ObjectBuilder.js"
 import { loadJSON } from './modules/Loaders/LocalLoader.js'
+
+
+
 
 console.log("client loaded...")
 //socket.emit("loadObjectCache", objects.toJSON())
@@ -36,9 +37,8 @@ export function spawnObject(shape){
 }
 
 socket.on("spawnObject", (shape, uuid) => {
-	let temp = createShape(shape)
-	temp.name = uuid
-	objects.add(temp)
+	console.log(shape)
+	createShape(shape, objects, uuid)
 })
 
 socket.on("modifiedObject", (mods, uuid) => {
@@ -47,7 +47,7 @@ socket.on("modifiedObject", (mods, uuid) => {
 		temp.position.set(mods.xPos, mods.yPos, mods.zPos)
 		temp.rotation.set(mods.xRot, mods.yRot, mods.zRot)
 		temp.scale.set(mods.xScale, mods.yScale, mods.zScale)
-		temp.material = new THREE.MeshPhongMaterial({ color: mods.color })
+		temp.material.color = new THREE.Color(mods.color)
 	}
 })
 
@@ -55,7 +55,7 @@ socket.on("disableObject", (uuid) => {
 	let temp = objects.getObjectByName(uuid)
 	temp.userData.draggable = false
 	scene.removeFromParent(temp)
-	let outlineMaterial = new THREE.MeshBasicMaterial({ color: 0x7BC393, side: THREE.BackSide })
+	let outlineMaterial = new THREE.MeshBasicMaterial({ color: 0x87CEEB, side: THREE.BackSide })
 	let outlineMesh = temp.clone()
 	outlineMesh.name = "outline"
 	outlineMesh.material = outlineMaterial
@@ -104,9 +104,9 @@ window.addEventListener('resize', onWindowResize);
 
 // SCENE - GRID HELPER
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x121212);
+scene.background = new THREE.Color(0x87CEFA);
 
-const gridHelper = new THREE.GridHelper(100, 20, 0x58D9F0, 0x58D9F0)
+const gridHelper = new THREE.GridHelper(100, 20, 0x000000, 0x000000)
 scene.add(gridHelper)
 createFloor()
 var lastSelectedObject = new THREE.Mesh();
@@ -324,11 +324,11 @@ function animate() {
 }
 
 // ambient light
-let hemiLight = new THREE.AmbientLight(0xffffff, 0.20);
+let hemiLight = new THREE.AmbientLight(0xffffff, 0.7);
 scene.add(hemiLight);
 
 //Add directional light
-let dirLight = new THREE.DirectionalLight(0xffffff, 1);
+let dirLight = new THREE.DirectionalLight(0xffffff, 0.4);
 dirLight.position.set(-30, 50, -30);
 scene.add(dirLight);
 dirLight.castShadow = true;
@@ -344,10 +344,10 @@ function createFloor() {
 	let scale = { x: 1, y: 1, z: 1 };
 
 	const floorMaterial = new THREE.MeshPhongMaterial({
-		color: 0x58D9F0,
+		color: 0x7CFC00,
 		flatShading: true,
 		transparent: true,
-		opacity: 0.25,
+		opacity: 0.8,
 	});
 
 	let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(100, 0.1, 100), floorMaterial);
@@ -401,4 +401,67 @@ function stopScene() {
 
 	let Controls = document.getElementById('Controls')
 	if (Controls != null) Controls.style.display = "block";
+}
+
+
+//Add buttons for all the objects
+const objectSelectionMenu = document.getElementById("objectSelection")
+
+let objectCards = []
+let originalCards = document.getElementsByClassName('objectButton')
+for(let i = 0; i < originalCards.length; i++){
+	objectCards.push(originalCards[i])
+}
+
+const searchInput = document.getElementById("objectSearchInput")
+
+searchInput.addEventListener("input", (e) => {
+    const value = e.target.value
+})
+
+searchInput.addEventListener("input", e => {
+    const value = e.target.value.toLowerCase()
+    objectCards.forEach(temp => {
+        const isVisible = temp.innerText.toLowerCase().includes(value)
+        temp.classList.toggle("hide", !isVisible)
+    })
+})
+
+const furniture = [
+					["armchair", 20, "Arm Chair"],
+					["bathroomaccessory", 24, "Bathroom Accessory"],
+					["bathroomfurniture", 10, "Bathroom Furniture"],
+					["bathtub", 20, "Bathtub"],
+					["bed", 20, "Bed"],
+					["carpet", 24, "Carpet"],
+					["chair", 20, "Chair"],
+					["childrenbed", 20, "Children's Bed"],
+					["childrenchair", 20, "Children's Chair"],
+					["console", 20, "Console / Dressor"],
+					["door", 20, "Door"],
+					["fauset", 26, "Fauset"],
+					["floorlamp", 26, "Floor Lamp"],
+					["homeappliance", 78, "Home Appliance"],
+					["kitchen", 47, "Kitchen"],
+					["mirror", 12, "Mirror"],
+					["officechair", 20, "Office Chair"],
+					["plant", 20, "Plant"],
+					["pouffe", 20, "Pouffe"],
+					["sculpture", 10, "Sculpture"],
+					["toilet", 23, "Toilet"]
+				]
+
+for(let i = 0; i < furniture.length; i++){
+	for(let j = 1; j <= furniture[i][1]; j++){
+		var shapeBtn = document.createElement("button")
+		shapeBtn.classList.add("objectButton")
+		shapeBtn.innerText = furniture[i][2] + " " + j
+
+		let num = j.toString();
+		while(num.length < 3) num = "0" + num
+
+		shapeBtn.onclick = () => spawnObject(furniture[i][0] + num)
+		objectSelectionMenu.appendChild(shapeBtn)
+		objectCards.push(shapeBtn)
+	}
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Exude</h1>
+    <p>Please put a code to join a Exude design space</p>
+    <input id="roomInput"></input>
+    <button type="button" onclick="sendToRoom()">Join</button>
+
+    <script>
+        function sendToRoom(){
+            let roomCode = document.getElementById("roomInput").value
+            window.location.href = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + "?" + roomCode
+        }
+    </script>
+</body>
+</html>
