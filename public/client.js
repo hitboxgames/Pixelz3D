@@ -16,13 +16,19 @@ console.log("client loaded...")
 //socket.emit("loadObjectCache", objects.toJSON())
 
 //Socket IO Code
-const socket = io('http://localhost:3001')
+const socket = io()
 socket.on("connect", () => {
 	console.log("Welcome to the session!")
 })
 
 socket.on("loadObjectCache", (_objects) => {
 	objects.add(loadJSON(_objects))
+})
+
+socket.on("deleteObject", (uuid) => {
+	let item = scene.getObjectByName(uuid)
+	let parent = item.parent;
+	if (parent != null) parent.remove(item);
 })
 
 const myRoomValues = window.location.search
@@ -279,9 +285,8 @@ insScaleZ?.addEventListener("input", (event) => {
 //Delete an Object
 const deleteBtn = document.getElementById("TrashBtn");
 deleteBtn?.addEventListener("click", (event) => {
-	console.log(lastSelectedObject);
-	let parent = lastSelectedObject.parent;
-	if (parent != null) parent.remove(lastSelectedObject);
+	console.log(lastSelectedObject.name);
+	socket.emit("deleteObject", lastSelectedObject.name, myRoomValues)
 });
 
 var copySelectedObject = new THREE.Mesh();

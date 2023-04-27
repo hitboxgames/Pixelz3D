@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 const app = express()
 const server = createServer(app)
 const io = new Server(server, { cors: { origin: "*" }})
-const port = 3001
+const port = process.env.PORT || 3000
 
 app.use(express.static('public'))
 
@@ -40,6 +40,10 @@ io.on("connection", (socket) => {
 
     socket.on("spawnObject", (shape , roomVal) => {
         io.to(roomVal).emit("spawnObject", shape, uuidv4())
+    })
+
+    socket.on("deleteObject", (uuid, roomVal) => {
+        io.to(roomVal).emit("deleteObject", uuid);
     })
 
     socket.on("modifiedObject", (modifications, uuid, roomVal) => {

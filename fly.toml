@@ -1,0 +1,18 @@
+# fly.toml file generated for exude on 2023-04-16T02:13:46-04:00
+
+app = "exude"
+primary_region = "mia"
+
+[env]
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+
+[checks]
+  [checks.alive]
+    type = "tcp"
+    interval = "15s"
+    timeout = "2s"
+    grace_period = "5s"
