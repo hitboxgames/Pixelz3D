@@ -38,7 +38,7 @@ socket.on("newRoomConnection", () => {
 	console.log("A new user has connected to your session!")
 })
 
-export function spawnObject(shape){
+export function spawnObject(shape) {
 	socket.emit("spawnObject", shape, myRoomValues)
 }
 
@@ -49,7 +49,7 @@ socket.on("spawnObject", (shape, uuid) => {
 
 socket.on("modifiedObject", (mods, uuid) => {
 	let temp = scene.getObjectByName(uuid)
-	if(temp.userData.draggable == true){
+	if (temp.userData.draggable == true) {
 		temp.position.set(mods.xPos, mods.yPos, mods.zPos)
 		temp.rotation.set(mods.xRot, mods.yRot, mods.zRot)
 		temp.scale.set(mods.xScale, mods.yScale, mods.zScale)
@@ -110,11 +110,10 @@ window.addEventListener('resize', onWindowResize);
 
 // SCENE - GRID HELPER
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x87CEFA);
+scene.background = new THREE.Color(0x2D2E33);
 
 const gridHelper = new THREE.GridHelper(100, 20, 0x000000, 0x000000)
 scene.add(gridHelper)
-createFloor()
 var lastSelectedObject = new THREE.Mesh();
 var sceneFloor;
 var color = 0xffff00;
@@ -153,14 +152,14 @@ dControls.addEventListener("dragstart", event => {
 })
 
 dControls.addEventListener("drag", event => {
-	
+
 })
 
-function disableDragForOthers(uuid){
+function disableDragForOthers(uuid) {
 	socket.emit("disableObject", uuid)
 }
 
-function enableDragForOthers(uuid){
+function enableDragForOthers(uuid) {
 	socket.emit("enableObject", uuid)
 }
 
@@ -344,28 +343,6 @@ dirLight.shadow.camera.right = 70;
 dirLight.shadow.camera.top = 70;
 dirLight.shadow.camera.bottom = -70;
 
-function createFloor() {
-	let pos = { x: 0, y: 0, z: 0 };
-	let scale = { x: 1, y: 1, z: 1 };
-
-	const floorMaterial = new THREE.MeshPhongMaterial({
-		color: 0x7CFC00,
-		flatShading: true,
-		transparent: true,
-		opacity: 0.8,
-	});
-
-	let blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(100, 0.1, 100), floorMaterial);
-
-	blockPlane.position.set(pos.x, pos.y, pos.z);
-	blockPlane.scale.set(scale.x, scale.y, scale.z);
-	blockPlane.castShadow = true;
-	blockPlane.receiveShadow = true;
-	scene.add(blockPlane);
-	sceneFloor = blockPlane;
-	blockPlane.userData.ground = true
-}
-
 animate()
 
 //Activate Features
@@ -409,29 +386,34 @@ function stopScene() {
 }
 
 
+
+
 //Add buttons for all the objects
 const objectSelectionMenu = document.getElementById("objectSelection")
 
 let objectCards = []
 let originalCards = document.getElementsByClassName('objectButton')
-for(let i = 0; i < originalCards.length; i++){
+for (let i = 0; i < originalCards.length; i++) {
 	objectCards.push(originalCards[i])
 }
 
 const searchInput = document.getElementById("objectSearchInput")
 
 searchInput.addEventListener("input", (e) => {
-    const value = e.target.value
+	const value = e.target.value
 })
 
 searchInput.addEventListener("input", e => {
-    const value = e.target.value.toLowerCase()
-    objectCards.forEach(temp => {
-        const isVisible = temp.innerText.toLowerCase().includes(value)
-        temp.classList.toggle("hide", !isVisible)
-    })
+	const value = e.target.value.toLowerCase()
+	objectCards.forEach(temp => {
+		const isVisible = temp.innerText.toLowerCase().includes(value)
+		temp.classList.toggle("hide", !isVisible)
+	})
 })
 
+//createAIObject()
+
+/*
 const furniture = [
 					["armchair", 20, "Arm Chair"],
 					["bathroomaccessory", 24, "Bathroom Accessory"],
@@ -469,4 +451,32 @@ for(let i = 0; i < furniture.length; i++){
 		objectSelectionMenu.appendChild(shapeBtn)
 		objectCards.push(shapeBtn)
 	}
+}
+*/
+
+function createAIObject() {
+	console.log("starting some shit")
+	//scene.add(galactusGenerateGLB("red car"));
+	galactusGenerateGLB("red car")
+	console.log("finishing some shit")
+
+	//Once it makes the object I want to store it into a button
+}
+
+function galactusGenerateGLB(prompt) {
+	console.log("Sending fetch to Server")
+	return fetch("http://localhost:3000/3D", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			prompt: prompt,
+		})
+	}).then(
+		async (response) => {
+			let words = await response.json()
+			console.log(words)
+		}
+	)
 }
