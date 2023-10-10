@@ -6,6 +6,12 @@ svg {
     color: #fafafa;
 }
 
+
+.material-icons.md-30 { font-size: 30px; }
+.material-icons-outlined.md-30 { font-size: 30px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons-outlined.md-36 { font-size: 36px; }
+
 @media only screen and (max-width: 800px),
 screen and (max-height: 550px) {
     #computerSize {
@@ -90,11 +96,15 @@ screen and (max-height: 550px) {
         padding-top: 0.5rem;
     }
 
+    /* Scene Player Menu */
     #ScenePlayerMenu {
         display: flex;
         justify-content: space-between;
-        background-color: #121212;
-        height: 60%;
+        align-items: center;
+        background-color: #131418;
+        height: 64px;
+        border-radius: 16px;
+        padding: 8px 12px;
     }
 
     .border-gradient {
@@ -114,22 +124,59 @@ screen and (max-height: 550px) {
     }
 
     .playerButtons {
-        background-color: transparent;
-        border-width: 0;
-        color: white;
+        background: none;
+        border: none;
+        color: #8D8D8D;
+        padding: 0;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+        height: 42px;
+        width: 42px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
     }
 
-    .divider {
+    .vertical-divider {
+        background-color: #2B2C2F;
+        height: 45%;
+        width: 6px;
+        border-radius: 4px;
+        margin: 0 8px;
+    }
+
+    .thin-horizontal-divider {
         background-color: #1F2023;
         height: 2px;
         width: 100%;
+    }
+
+    .primaryPlayerButton {
+        background-color: #2B2C2F !important;
+        color: #D4D4D5 !important;
+    }
+
+    .playerSection {
+        display: flex;
+        gap: 4px;
+    }
+
+    .exportButton {
+        background: none;
+        border: none;
+        padding: 10px 16px;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+        border-radius: 8px;
     }
 
     /* Top Bar CSS */
 
     #TopBar {
         height: 10%;
-        width: 40%;
         position: absolute;
         z-index: 2;
         left: 50%;
