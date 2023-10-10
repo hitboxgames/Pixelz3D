@@ -10,6 +10,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
@@ -264,10 +265,16 @@
           </svg></button>
       </div>
     -->
-    <div class="search-wrapper" style="display: flex;">
-      <label for="search">Search Furniture</label>
-      <input type="search" id="objectSearchInput">
+    <p id="CollectionSelection">
+      Your Collection
+    </p>
+
+    <div id="ObjectSearch">
+      <span class="material-icons">search</span>
+      <input type="text" id="ObjectSearchInput" placeholder="Search">
     </div>
+
+    <div class="divider"></div>
 
       <div id="objectSelection" class="overflow-auto">
         <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>

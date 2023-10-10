@@ -397,7 +397,7 @@ for (let i = 0; i < originalCards.length; i++) {
 	objectCards.push(originalCards[i])
 }
 
-const searchInput = document.getElementById("objectSearchInput")
+const searchInput = document.getElementById("ObjectSearchInput")
 
 searchInput.addEventListener("input", (e) => {
 	const value = e.target.value

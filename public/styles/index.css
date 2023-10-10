@@ -119,6 +119,11 @@ screen and (max-height: 550px) {
         color: white;
     }
 
+    .divider {
+        background-color: #1F2023;
+        height: 2px;
+        width: 100%;
+    }
 
     /* Top Bar CSS */
 
@@ -240,10 +245,34 @@ screen and (max-height: 550px) {
         float: left;
         position: absolute;
         text-align: center;
-        background-color: #181818;
+        background-color: #131418;
         margin: 0;
-        border-left: 1px solid #fafafa;
         z-index: 2;
+        border-radius: 16px;
+    }
+
+    #ObjectSearch {
+        display: flex;
+        background-color: #1F2023;
+        border-radius: 8px;
+        padding: 6px;
+        margin: 16px;
+        color: #838485;
+    }
+
+    #ObjectSearchInput {
+        background: none;
+        border: none;
+        color: white;
+        width: 100%;
+    }
+
+    #ObjectSearchInput::placeholder {
+        color: #838485;
+    }
+
+    #ObjectSearchInput:focus {
+        outline: none;
     }
 
     #objectSelection button {
@@ -294,5 +323,12 @@ screen and (max-height: 550px) {
         box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.25);
         border: 1px;
         margin: 0.5rem;
+    }
+
+    /* Collection Selection CSS */
+
+    #CollectionSelection {
+        margin-top: 16px;
+        margin-bottom: 8px;
     }
 }
