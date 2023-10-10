@@ -96,7 +96,7 @@ renderer.setSize(sceneDiv.offsetWidth, sceneDiv.offsetHeight);
 renderer.shadowMap.enabled = true;
 
 // CAMERA
-let camera = new THREE.PerspectiveCamera(30, sceneDiv.offsetWidth / sceneDiv.offsetHeight, 1, 1500);
+let camera = new THREE.PerspectiveCamera(30, sceneDiv.offsetWidth / sceneDiv.offsetHeight, 1, 5000);
 camera.position.set(-35, 70, 100);
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -411,7 +411,9 @@ searchInput.addEventListener("input", e => {
 	})
 })
 
+
 //createAIObject()
+//horizonGenerateIMG("clear blue sky")
 
 /*
 const furniture = [
@@ -454,6 +456,8 @@ for(let i = 0; i < furniture.length; i++){
 }
 */
 
+
+
 function createAIObject() {
 	console.log("starting some shit")
 	//scene.add(galactusGenerateGLB("red car"));
@@ -477,6 +481,36 @@ function galactusGenerateGLB(prompt) {
 		async (response) => {
 			let words = await response.json()
 			console.log(words)
+		}
+	)
+}
+
+async function horizonGenerateIMG(prompt) {
+	console.log("Sending fetch to Server")
+	return fetch("http://localhost:3000/SkyBox", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			prompt: prompt,
+		})
+	}).then(
+		async (response) => {
+			let data = await response.json()
+			console.log(data.images[0])
+			var image = new Image();
+			image.src = 'data:image/png;base64,' + data.images[0];
+			const texture = new THREE.TextureLoader().load( image.src , function(texture)
+            {
+				const geometry = new THREE.SphereGeometry( 1000, 32, 16 );
+				const material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+				material.map = texture
+				material.side = THREE.BackSide
+				const sphere = new THREE.Mesh( geometry, material );
+				scene.add(sphere)
+             	//scene.background = texture;
+            })
 		}
 	)
 }
