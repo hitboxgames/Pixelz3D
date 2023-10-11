@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
@@ -62,7 +63,7 @@
           <button class="playerButtons">
             <span class="material-icons md-36">list</span>
           </button>
-          <button class="playerButtons highlightTool">
+          <button class="playerButtons highlight">
             <span class="material-icons md-36">grid_view</span>
           </button>
           <button class="playerButtons">
@@ -75,7 +76,7 @@
             <span class="material-icons-outlined md-30">near_me</span>
           </button>
           <div style="position: relative;">
-            <button class="playerButtons highlightTool">
+            <button class="playerButtons highlight">
               <span class="material-icons md-36">view_in_ar</span>
             </button>
             <div id="ObjectToolsBox" class="toolsMenuBox" style="display: none;">
@@ -342,7 +343,7 @@
     </div>
 
     <!-- This is the Object Selection Window -->
-    <div id="ObjectSelectorWindow">
+    <div id="ObjectSelectorWindow" class="leftWindow" style="display: none;">
       <!--
       <div id="shapesSelector" class="border-gradient">
         <button type="button" id="ShapeSelectorBtn">
@@ -361,26 +362,51 @@
           </svg></button>
       </div>
     -->
-    <p id="CollectionSelection">
-      Your Collection
-    </p>
+      <p id="CollectionSelection" class="leftWindowTitle">
+        Your Collection
+      </p>
 
-    <div id="ObjectSearch" class="textInputBackground">
-      <span class="material-icons">search</span>
-      <input type="text" id="ObjectSearchInput" placeholder="Search" class="textInput">
+      <div id="ObjectSearch" class="textInputBackground leftWindowSearchBar">
+        <span class="material-icons">search</span>
+        <input type="text" id="ObjectSearchInput" placeholder="Search" class="textInput">
+      </div>
+
+      <div class="thin-horizontal-divider"></div>
+
+        <div id="objectSelection" class="overflow-auto">
+          <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
+          <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
+          <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
+          <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
+          <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
+          <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
+          <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
+        
+        </div>
     </div>
 
-    <div class="thin-horizontal-divider"></div>
+    <!-- This is the Scene List View Window -->
+    <div id="SceneListViewWindow" class="leftWindow">
+      <p class="leftWindowTitle">
+        Scene List View
+      </p>
 
-      <div id="objectSelection" class="overflow-auto">
-        <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
-        <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
-        <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
-        <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
-        <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
-        <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
-        <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
-      
+      <div id="SceneSearch" class="textInputBackground leftWindowSearchBar">
+        <span class="material-icons">search</span>
+        <input type="text" id="SceneSearchInput" placeholder="Search" class="textInput">
+      </div>
+
+      <div class="thin-horizontal-divider"></div>
+
+      <div id="SceneList">
+        <button class="objectListButton highlight">
+          <span class="material-symbols-outlined">deployed_code</span>          
+          <p>Cube</p>
+        </button>
+        <button class="objectListButton">
+          <span class="material-symbols-outlined">deployed_code</span>          
+          <p>Cube</p>
+        </button>        
       </div>
     </div>
   </div>
