@@ -92,7 +92,7 @@
           </div>
         </div>
         <div class="vertical-divider"></div>
-        <button class="primaryPlayerButton exportButton">Export</button>
+        <button class="primaryPlayerButton textButton">Export</button>
         <div class="vertical-divider"></div>
         <button class="playerButtons">
           <span class="material-icons-outlined md-30">play_arrow</span>
@@ -309,18 +309,30 @@
       </div>
 
       <div id="UnselectedInspector">
-        <div style="display: flex; justify-content: space-between;">
-          <div style="">
-            <strong>Share Button</strong>
-          </div>
+        <div id="UnselectedInspectorTop">
+          <button class="primaryPlayerButton textButton">Share</button>
         </div>
-        <div>
-          <br>
-          <h6>Scene</h6>
-          <h6>Background (hex): </h6>
-          <input type="text" id="InspectorSceneColor" name="fname" value="2D2E33">
-          <h6>SkyBox (Text Prompt): </h6>
-          <input type="text" id="InspectorSkyBoxColor" name="fname" value="Clear blue skies">
+        <div class="thin-horizontal-divider"></div>
+        <div id="UnselectedInspectorBottom">
+          <p>Scene</p>
+          <div class="inspectorRow">
+            <p class="secondaryInspectorText">Background (hex): </p>
+            <div style="display: flex; align-items: center;">
+              <div id="InspectorSceneColorBox" class="inspectorBox" style="background-color: red"></div>
+              <div class="textInputBackground">
+                <span class="material-icons" style="color: #0F5994;">tag</span>
+                <input type="text" id="InspectorSceneColor" name="fname" value="2D2E33" class="textInput">                
+              </div>
+            </div>
+          </div>
+          <div class="inspectorRow">
+            <p class="secondaryInspectorText">SkyBox (Text Prompt): </p>
+            <div style="display: flex; align-items: center;">
+              <div class="textInputBackground">
+                <input type="text" id="InspectorSkyBoxColor" name="fname" value="Clear blue skies" class="textInput">            
+              </div>
+            </div>
+          </div>
           <button id="SkyBoxBtn">Generate</button>
         </div>
       </div>
@@ -353,9 +365,9 @@
       Your Collection
     </p>
 
-    <div id="ObjectSearch">
+    <div id="ObjectSearch" class="textInputBackground">
       <span class="material-icons">search</span>
-      <input type="text" id="ObjectSearchInput" placeholder="Search">
+      <input type="text" id="ObjectSearchInput" placeholder="Search" class="textInput">
     </div>
 
     <div class="thin-horizontal-divider"></div>
