@@ -47,16 +47,21 @@ socket.on("newRoomConnection", () => {
 socket.on("sendWorldUpdate", (sceneObjects, skycolor) => {
 	if (!initialized) {
 		initialized = true
-		var selectedObject = scene.getObjectByName("lights");
-		scene.remove(selectedObject);
+		var lights = scene.getObjectByName("lights")
+		scene.remove(lights)
 		objects.add(loadJSON(sceneObjects))
+		//console.log("cum")
+		//let skybox = objects.children[0].getObjectByName("Skybox")
+		//objects.remove(skybox)
+		//console.log("shit initial")
+		//console.log(objects.children[0].getObjectByName("Skybox"))
 		updateRoomsSceneColor(skycolor)
 	}
 })
 
 export function spawnObject(shape, skybox) {
 	if (!skybox) { socket.emit("spawnObject", shape, myRoomValues) }
-	//else { socket.emit("spawnSkyBox", shape, myRoomValues) }
+	else { socket.emit("spawnSkyBox", shape, myRoomValues) }
 }
 
 socket.on("spawnObject", (shape, uuid) => {
@@ -65,8 +70,8 @@ socket.on("spawnObject", (shape, uuid) => {
 })
 
 socket.on("spawnSkyBox", (shape) => {
-	convert = loadJSON(shape)
-	console.log(convert)
+	console.log("peepee")
+	let convert = loadJSON(shape)
 	var selectedObject = scene.getObjectByName("Skybox");
 	console.log(selectedObject)
 	scene.remove(selectedObject);
@@ -544,7 +549,11 @@ for(let i = 0; i < furniture.length; i++){
 }
 */
 
-
+const SkyBoxBtn = document.getElementById("SkyBoxBtn")
+SkyBoxBtn.addEventListener("click", function () {
+	let SkyBoxPrompt = document.getElementById("InspectorSkyBoxColor")
+	horizonGenerateIMG(SkyBoxPrompt)
+})
 
 function createAIObject() {
 	console.log("starting some shit")
@@ -555,7 +564,7 @@ function createAIObject() {
 	//Once it makes the object I want to store it into a button
 }
 
-function galactusGenerateGLB(prompt) {
+export function galactusGenerateGLB(prompt) {
 	console.log("Sending fetch to Server")
 	return fetch("http://localhost:3000/3D", {
 		method: "POST",
@@ -597,7 +606,8 @@ async function horizonGenerateIMG(prompt) {
 				const sphere = new THREE.Mesh(geometry, material);
 				let pos = { x: 0, y: 0, z: 0 }
 				sphere.name = "Skybox"
-				spawnObject(sphere, true)
+				sphere.userData.draggable = false
+				spawnObject(sphere.toJSON(), true)
 				//scene.add(sphere)
 				//scene.background = texture;
 			})
@@ -613,12 +623,4 @@ function getSceneObjects() {
 
 function getLastSelectedObject() {
 	return lastSelectedObject.userData.name
-}
-
-function switchToTransformControls() {
-
-}
-
-function switchToDraggingControls() {
-
 }
