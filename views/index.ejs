@@ -201,10 +201,10 @@
     </div>
 
     <div id="SceneViewer">
-      <div id="Inspector">
+      <div id="SelectedObjectInspector">
         <div style="display: flex; justify-content: space-between;">
           <div style="">
-            <strong>Shape</strong>
+            <input type="text" id="InspectorObjectName" name="fname" value="Shape" style="width: 100%">
           </div>
           <div>
             <svg xmlns="http://www.w3.org/2000/svg" width="2vw" height="auto" fill="currentColor" class="bi bi-unlock hide"
@@ -294,6 +294,25 @@
           </button>
         </div>
       </div>
+
+      <div id="UnselectedInspector">
+        <div style="display: flex; justify-content: space-between;">
+          <div style="">
+            <strong>Share Button</strong>
+          </div>
+        </div>
+        <div>
+          <br>
+          <h6>Scene</h6>
+          <h6>Background (hex): </h6>
+          <input type="text" id="InspectorSceneColor" name="fname" value="2D2E33">
+          <h6>SkyBox (Text Prompt): </h6>
+          <input type="text" id="InspectorSkyBoxColor" name="fname" value="Clear blue skies">
+          <button id="SkyBoxBtn">Generate</button>
+        </div>
+      </div>
+
+
       <div id="Scene"></div>
     </div>
 

@@ -17,6 +17,12 @@ const _worldPosition = new Vector3();
 const _inverseMatrix = new Matrix4();
 const _floorScale = 1.0; //Used for setting snap distance - can add feature later for people to change this
 
+let inspectorActive = false
+
+export function isInspectorActive() {
+	return inspectorActive
+}
+
 class DragControls extends EventDispatcher {
 
 	constructor(_objects, _camera, _domElement) {
@@ -24,7 +30,8 @@ class DragControls extends EventDispatcher {
 		super();
 
 		_domElement.style.touchAction = 'none'; // disable touch scroll
-		let inspector = document.getElementById('Inspector');
+		let SelectedObjectInspector = document.getElementById('SelectedObjectInspector');
+		let UnselectedInspector = document.getElementById('UnselectedInspector');
 
 		let _selected = null, _hovered = null;
 
@@ -73,11 +80,15 @@ class DragControls extends EventDispatcher {
 		}
 
 		function activateInspector() {
-			if (inspector != null) inspector.style.display = 'block';
+			if (SelectedObjectInspector != null) SelectedObjectInspector.style.display = 'block';
+			if (UnselectedInspector != null) UnselectedInspector.style.display = 'none';
+			inspectorActive = true
 		}
 
 		function disableInspector() {
-			if (inspector != null) inspector.style.display = 'none';
+			if (SelectedObjectInspector != null) SelectedObjectInspector.style.display = 'none';
+			if (UnselectedInspector != null) UnselectedInspector.style.display = 'block';
+			inspectorActive = false
 		}
 
 
