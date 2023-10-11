@@ -59,12 +59,24 @@ io.on("connection", (socket) => {
         io.to(roomVal).emit("spawnObject", shape, uuidv4())
     })
 
+    socket.on("spawnSkyBox", (shape, roomVal) => {
+        io.to(roomVal).emit("spawnSkyBox", shape)
+    })
+
+    socket.on("sendWorldUpdate", (scene, skycolor, roomVal) => {
+        io.to(roomVal).emit("sendWorldUpdate", scene, skycolor)
+    })
+
     socket.on("deleteObject", (uuid, roomVal) => {
         io.to(roomVal).emit("deleteObject", uuid);
     })
 
     socket.on("modifiedObject", (modifications, uuid, roomVal) => {
         io.to(roomVal).emit("modifiedObject", modifications, uuid)
+    })
+
+    socket.on("modifiedSkyColor", (modifications, roomVal) => {
+        io.to(roomVal).emit("modifiedSkyColor", modifications)
     })
 
     socket.on("disableObject", (uuid) => {
@@ -127,7 +139,7 @@ async function makeSkyBox(prompt) {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://77e0-2601-584-4101-1260-c589-1757-1892-71a6.ngrok-free.app/sdapi/v1/txt2img',
+        url: 'https://5c8d-2601-584-4101-1260-e141-370d-9cc3-180a.ngrok-free.app/sdapi/v1/txt2img',
         headers: { 
           'api-key': 'horizonc013c840-a554-4f80-8384-ba34bfa3b220', 
           'Content-Type': 'application/json'

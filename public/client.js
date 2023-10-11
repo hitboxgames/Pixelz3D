@@ -1,6 +1,6 @@
 import { OrbitControls } from './modules/Controllers/OrbitControls.js'
 import { FirstPersonControls } from './modules/Controllers/FirstPersonControls.js'
-import { DragControls } from './modules/Controllers/DragControls.js'
+import { DragControls, isInspectorActive } from './modules/Controllers/DragControls.js'
 import { ObjectSelector } from './modules/Shapes/ObjectSelector.js'
 import { Disabled } from './modules/Features/Disabled.js'
 import { ColorPicker } from './modules/Features/Inspector/ColorPicker.js';
@@ -8,6 +8,7 @@ import * as THREE from './three.module.js'
 import { GridHelper, Object3D } from './three.module.js';
 import { createObject, createShape } from "./modules/Shapes/ObjectBuilder.js"
 import { loadJSON } from './modules/Loaders/LocalLoader.js'
+import { TransformControls } from './modules/Controllers/TransformControls.js'
 
 
 
@@ -17,6 +18,7 @@ console.log("client loaded...")
 
 //Socket IO Code
 const socket = io()
+let initialized = false
 socket.on("connect", () => {
 	console.log("Welcome to the session!")
 })
@@ -36,10 +38,25 @@ socket.emit("joinRoom", myRoomValues)
 
 socket.on("newRoomConnection", () => {
 	console.log("A new user has connected to your session!")
+	initialized = true
+	var sceneJson = scene.toJSON();
+	const insSceneColor = document.getElementById("InspectorSceneColor");
+	socket.emit("sendWorldUpdate", sceneJson, insSceneColor.value, myRoomValues)
 })
 
-export function spawnObject(shape) {
-	socket.emit("spawnObject", shape, myRoomValues)
+socket.on("sendWorldUpdate", (sceneObjects, skycolor) => {
+	if (!initialized) {
+		initialized = true
+		var selectedObject = scene.getObjectByName("lights");
+		scene.remove(selectedObject);
+		objects.add(loadJSON(sceneObjects))
+		updateRoomsSceneColor(skycolor)
+	}
+})
+
+export function spawnObject(shape, skybox) {
+	if (!skybox) { socket.emit("spawnObject", shape, myRoomValues) }
+	//else { socket.emit("spawnSkyBox", shape, myRoomValues) }
 }
 
 socket.on("spawnObject", (shape, uuid) => {
@@ -47,14 +64,30 @@ socket.on("spawnObject", (shape, uuid) => {
 	createShape(shape, objects, uuid)
 })
 
+socket.on("spawnSkyBox", (shape) => {
+	convert = loadJSON(shape)
+	console.log(convert)
+	var selectedObject = scene.getObjectByName("Skybox");
+	console.log(selectedObject)
+	scene.remove(selectedObject);
+	scene.add(convert)
+	console.log(shape)
+})
+
 socket.on("modifiedObject", (mods, uuid) => {
 	let temp = scene.getObjectByName(uuid)
 	if (temp.userData.draggable == true) {
+		temp.userData.name = mods.name
 		temp.position.set(mods.xPos, mods.yPos, mods.zPos)
 		temp.rotation.set(mods.xRot, mods.yRot, mods.zRot)
 		temp.scale.set(mods.xScale, mods.yScale, mods.zScale)
 		temp.material.color = new THREE.Color(mods.color)
 	}
+})
+
+socket.on("modifiedSkyColor", (color) => {
+	scene.background = new THREE.Color(parseInt("0x" + color));
+	updateSceneColorVal("" + color)
 })
 
 socket.on("disableObject", (uuid) => {
@@ -109,7 +142,7 @@ function onWindowResize() {
 window.addEventListener('resize', onWindowResize);
 
 // SCENE - GRID HELPER
-const scene = new THREE.Scene()
+let scene = new THREE.Scene()
 scene.background = new THREE.Color(0x2D2E33);
 
 const gridHelper = new THREE.GridHelper(100, 20, 0x000000, 0x000000)
@@ -122,9 +155,23 @@ var color = 0xffff00;
 //Orbital
 let OrbitalControls = new OrbitControls(camera, renderer.domElement);
 OrbitalControls.enabled = true;
+//OrbitalControls.enableRotate = false;
 //Prep FPV
 let FPControls = new FirstPersonControls(camera, renderer.domElement);
 FPControls.enabled = false;
+//Tranform Controls
+const tControls = new TransformControls(camera, renderer.domElement)
+tControls.enabled = false
+//tControls.attach(cube)
+//scene.add(tControls)
+
+tControls.addEventListener('dragging-changed', function (event) {
+	OrbitalControls.enableRotate = !event.value;
+	dControls.enabled = !event.value;
+	updateRoomsObjectVals(lastSelectedObject)
+	updateInspectorVals()
+})
+
 //Dragging Controls
 let objects = new THREE.Group();
 scene.add(objects);
@@ -141,6 +188,7 @@ dControls.addEventListener("hoveroff", event => {
 
 let colorPicker = new ColorPicker(null);
 dControls.addEventListener("dragstart", event => {
+	tControls.attach(event.object)
 	updateInspectorVals();
 	disableDragForOthers(event.object.name)
 	lastSelectedObject = event.object;
@@ -176,6 +224,7 @@ dControls.addEventListener("dragend", event => {
 //Update all objects in scene to all clients on server
 export function updateRoomsObjectVals(_object) {
 	socket.emit("modifiedObject", {
+		name: _object.userData.name,
 		xPos: _object.position.x,
 		yPos: _object.position.y,
 		zPos: _object.position.z,
@@ -189,8 +238,15 @@ export function updateRoomsObjectVals(_object) {
 	}, _object.name, myRoomValues)
 }
 
+function updateRoomsSceneColor(color) {
+	socket.emit("modifiedSkyColor", color, myRoomValues)
+}
+
 //Update all objects based on modifications on inspector
 function updateInspectorVals() {
+	const insObjName = document.getElementById("InspectorObjectName");
+	insObjName.value = lastSelectedObject.userData.name
+
 	const xPos = (document.getElementById("InpectorPositionX"));
 	xPos.value = "" + lastSelectedObject.position.x;
 	const yPos = (document.getElementById("InpectorPositionY"));
@@ -213,9 +269,29 @@ function updateInspectorVals() {
 	zScale.value = "" + lastSelectedObject.scale.z;
 }
 
+function updateSceneColorVal(color) {
+	const insSceneColor = document.getElementById("InspectorSceneColor");
+	insSceneColor.value = color
+}
+
 // ---------------------------- END OF CONTROLS ----------------------------
 
 // ---------------------------- INSPECTOR: Add to feature folder later ----------------------------
+
+//Scene Sky Color
+const insSceneColor = document.getElementById("InspectorSceneColor");
+insSceneColor?.addEventListener("input", (event) => {
+	const sceneColor = (document.getElementById("InspectorSceneColor")).value;
+	scene.background = new THREE.Color(parseInt("0x" + sceneColor));
+	updateRoomsSceneColor(sceneColor)
+});
+
+const insObjName = document.getElementById("InspectorObjectName");
+insObjName?.addEventListener("input", (event) => {
+	lastSelectedObject.userData.name = insObjName.value
+	updateRoomsObjectVals(lastSelectedObject)
+});
+
 
 //Position
 const insPosX = document.getElementById("InpectorPositionX");
@@ -324,24 +400,36 @@ new ObjectSelector(objects)
 function animate() {
 	renderer.render(scene, camera);
 	if (FPControls.enabled) FPControls.update(1);
+	if (!isInspectorActive()) {
+		tControls.detach()
+	}
 	requestAnimationFrame(animate);
 }
 
-// ambient light
-let hemiLight = new THREE.AmbientLight(0xffffff, 0.7);
-scene.add(hemiLight);
+setupLights()
 
-//Add directional light
-let dirLight = new THREE.DirectionalLight(0xffffff, 0.4);
-dirLight.position.set(-30, 50, -30);
-scene.add(dirLight);
-dirLight.castShadow = true;
-dirLight.shadow.mapSize.width = 2048;
-dirLight.shadow.mapSize.height = 2048;
-dirLight.shadow.camera.left = -70;
-dirLight.shadow.camera.right = 70;
-dirLight.shadow.camera.top = 70;
-dirLight.shadow.camera.bottom = -70;
+function setupLights() {
+	let lights = new THREE.Group()
+	lights.name = "lights"
+
+	// ambient light
+	let hemiLight = new THREE.AmbientLight(0xffffff, 0.7);
+	lights.add(hemiLight);
+
+	//Add directional light
+	let dirLight = new THREE.DirectionalLight(0xffffff, 0.4);
+	dirLight.position.set(-30, 50, -30);
+	lights.add(dirLight);
+	dirLight.castShadow = true;
+	dirLight.shadow.mapSize.width = 2048;
+	dirLight.shadow.mapSize.height = 2048;
+	dirLight.shadow.camera.left = -70;
+	dirLight.shadow.camera.right = 70;
+	dirLight.shadow.camera.top = 70;
+	dirLight.shadow.camera.bottom = -70;
+
+	scene.add(lights)
+}
 
 animate()
 
@@ -498,19 +586,39 @@ async function horizonGenerateIMG(prompt) {
 	}).then(
 		async (response) => {
 			let data = await response.json()
-			console.log(data.images[0])
+			//console.log(data.images[0])
 			var image = new Image();
 			image.src = 'data:image/png;base64,' + data.images[0];
-			const texture = new THREE.TextureLoader().load( image.src , function(texture)
-            {
-				const geometry = new THREE.SphereGeometry( 1000, 32, 16 );
-				const material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+			const texture = new THREE.TextureLoader().load(image.src, function (texture) {
+				const geometry = new THREE.SphereGeometry(1000, 32, 16);
+				const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
 				material.map = texture
 				material.side = THREE.BackSide
-				const sphere = new THREE.Mesh( geometry, material );
-				scene.add(sphere)
-             	//scene.background = texture;
-            })
+				const sphere = new THREE.Mesh(geometry, material);
+				let pos = { x: 0, y: 0, z: 0 }
+				sphere.name = "Skybox"
+				spawnObject(sphere, true)
+				//scene.add(sphere)
+				//scene.background = texture;
+			})
 		}
 	)
+}
+
+function getSceneObjects() {
+	scene.traverse(function (object) {
+		if (object.isMesh) console.log(object.userData.name);
+	});
+}
+
+function getLastSelectedObject() {
+	return lastSelectedObject.userData.name
+}
+
+function switchToTransformControls() {
+
+}
+
+function switchToDraggingControls() {
+
 }
