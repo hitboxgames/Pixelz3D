@@ -28,8 +28,8 @@
     Please use a device with a larger screen such as a desktop or laptop.
   </div>
   <div id="computerSize">
-    <div id="TopBar" class="border-gradient">
-      <div id="ScenePlayerMenu" class="">
+    <div id="TopBar" class="">
+      <div id="ScenePlayerMenu" class="toolsMenuBox">
         <button class="playerButtons primaryPlayerButton">
           <span class="material-icons">add</span>
         </button>
@@ -62,7 +62,7 @@
           <button class="playerButtons">
             <span class="material-icons md-36">list</span>
           </button>
-          <button class="playerButtons">
+          <button class="playerButtons highlightTool">
             <span class="material-icons md-36">grid_view</span>
           </button>
           <button class="playerButtons">
@@ -74,9 +74,22 @@
           <button class="playerButtons">
             <span class="material-icons-outlined md-30">near_me</span>
           </button>
-          <button class="playerButtons">
-            <span class="material-icons md-36">view_in_ar</span>
-          </button>
+          <div style="position: relative;">
+            <button class="playerButtons highlightTool">
+              <span class="material-icons md-36">view_in_ar</span>
+            </button>
+            <div id="ObjectToolsBox" class="toolsMenuBox" style="display: none;">
+              <button class="playerButtons">
+                <span class="material-icons md-30">open_with</span>
+              </button>
+              <button class="playerButtons">
+                <span class="material-icons md-30">view_in_ar</span>
+              </button>
+              <button class="playerButtons">
+                <span class="material-icons md-30">autorenew</span>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="vertical-divider"></div>
         <button class="primaryPlayerButton exportButton">Export</button>
@@ -114,7 +127,7 @@
           -->
         </div>
       </div>
-      <div id="ToolsMenu">
+      <div id="ToolsMenu" style="display:none;">
         <div id="leftSVG" style="display: flex; width: 23vw;">
           <button type="button" class="playerButtons hide" title="Copy Shape"
             style="padding-left: 0.75rem; padding-right: 0.75rem; height: auto;" id="CopyBtn"> <svg
