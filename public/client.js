@@ -8,6 +8,7 @@ import { GridHelper, Object3D } from './three.module.js';
 import { createObject, createShape } from "./modules/Shapes/ObjectBuilder.js"
 import { loadJSON } from './modules/Loaders/LocalLoader.js'
 import { TransformControls } from './modules/Controllers/TransformControls.js'
+import { OBJLoader } from './modules/Loaders/OBJLoader.js'
 
 
 
@@ -38,12 +39,24 @@ socket.emit("joinRoom", myRoomValues)
 socket.on("newRoomConnection", () => {
 	console.log("A new user has connected to your session!")
 	initialized = true
-	var sceneJson = scene.toJSON();
 	const insSceneColor = document.getElementById("InspectorSceneColor");
-	socket.emit("sendWorldUpdate", sceneJson, insSceneColor.value, myRoomValues)
+	let sceneCopy = scene
+	let sceneModelSrcs = []
+	console.log(scene)
+	sceneCopy.traverse(async function (object) {
+		if (object.userData.tag == "3DAI") {
+			sceneModelSrcs.push([object.userData.src, object.name])
+			console.log(object.userData.src)
+			let parentObj = object.parent
+			await parentObj.remove(object)
+		}
+	});
+	let sceneJson = sceneCopy.toJSON()
+	console.log(sceneCopy)
+	socket.emit("sendWorldUpdate", sceneJson, sceneModelSrcs, insSceneColor.value, myRoomValues)
 })
 
-socket.on("sendWorldUpdate", (sceneObjects, skycolor) => {
+socket.on("sendWorldUpdate", (sceneObjects, sceneModelSrcs, skycolor) => {
 	if (!initialized) {
 		initialized = true
 		var lights = scene.getObjectByName("lights")
@@ -51,9 +64,18 @@ socket.on("sendWorldUpdate", (sceneObjects, skycolor) => {
 		objects.add(loadJSON(sceneObjects))
 		//console.log("cum")
 		let skybox = objects.children[0].getObjectByName("Skybox")
-		console.log(skybox)
 		scene.add(skybox)
 		objects.remove(skybox)
+		let gif = sceneModelSrcs[0][0][0]
+		let model = sceneModelSrcs[0][0][1]
+		let uuid = sceneModelSrcs[0][1]
+
+		socket.emit("spawnJSON", [gif, model], myRoomValues)
+		addToCollection([gif, model])
+
+		console.log(gif)
+		console.log(model)
+		console.log(uuid)
 		//objects.remove(skybox)
 		//console.log("shit initial")
 		//console.log(objects.children[0].getObjectByName("Skybox"))
@@ -71,6 +93,10 @@ socket.on("spawnObject", (shape, uuid) => {
 	createShape(shape, objects, uuid)
 	document.getElementById("AddObjectsMenu").style.display = "none"
 	getSceneObjects()
+})
+
+socket.on("spawnJSON", (modelSrc, uuid) => {
+	generateObj(modelSrc, uuid)
 })
 
 socket.on("spawnSkyBox", (shape) => {
@@ -155,7 +181,7 @@ window.addEventListener('resize', onWindowResize);
 let scene = new THREE.Scene()
 scene.background = new THREE.Color(0x2D2E33);
 
-const gridHelper = new THREE.GridHelper(100, 20, 0x000000, 0x000000)
+const gridHelper = new THREE.GridHelper(500, 100, 0x000000, 0x000000)
 scene.add(gridHelper)
 var lastSelectedObject = new THREE.Mesh();
 var sceneFloor;
@@ -200,6 +226,8 @@ dControls.addEventListener("dragstart", event => {
 
 function draggingEvent(object) {
 	tControls.attach(object)
+	let InspectorDiv = document.getElementById('InspectorDiv')
+	if (InspectorDiv != null) InspectorDiv.style.display = "block";
 	disableDragForOthers(object.name)
 	let SelectedObjectInSceneList = document.getElementById(lastSelectedObject.name);
 	if (SelectedObjectInSceneList != undefined) SelectedObjectInSceneList.classList.remove("highlight")
@@ -210,7 +238,7 @@ function draggingEvent(object) {
 	OrbitalControls.enabled = false;
 
 	SelectedObjectInSceneList = document.getElementById(object.name);
-	SelectedObjectInSceneList.classList.add("highlight")
+	if (SelectedObjectInSceneList != undefined) SelectedObjectInSceneList.classList.add("highlight")
 }
 
 dControls.addEventListener("drag", event => {
@@ -383,6 +411,8 @@ insScaleZ?.addEventListener("input", (event) => {
 const deleteBtn = document.getElementById("TrashBtn");
 deleteBtn?.addEventListener("click", (event) => {
 	console.log(lastSelectedObject.name);
+	let InspectorDiv = document.getElementById('InspectorDiv')
+	if (InspectorDiv != null) InspectorDiv.style.display = "none";
 	socket.emit("deleteObject", lastSelectedObject.name, myRoomValues)
 });
 
@@ -622,7 +652,7 @@ function createAIObject() {
 
 export function galactusGenerateGLB(prompt) {
 	console.log("Sending fetch to Server")
-	return fetch("http://localhost:3000/3D", {
+	return fetch(window.location.protocol + "/3D", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -640,7 +670,7 @@ export function galactusGenerateGLB(prompt) {
 
 async function horizonGenerateIMG(prompt) {
 	console.log("Sending fetch to Server")
-	return fetch("http://localhost:3000/SkyBox", {
+	return fetch(window.location.protocol + "/SkyBox", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -675,7 +705,7 @@ export function getSceneObjects() {
 	const SceneViewList = document.getElementById("SceneList")
 	SceneViewList.innerHTML = ""
 	scene.traverse(function (object) {
-		if(object.userData.name == undefined) return;
+		if (object.userData.name == undefined) return;
 		if (object.isMesh) {
 			var shapeBtn = document.createElement("button")
 			shapeBtn.classList.add("objectListButton")
@@ -817,8 +847,8 @@ InspectorObjectColor?.addEventListener("input", (e) => {
 const addObjectBtn = document.getElementById("addObjectBtn")
 const addMenu = document.getElementById("AddObjectsMenu")
 addObjectBtn?.addEventListener("click", (e) => {
-	if(addMenu.style.display == "none") addMenu.style.display = "block"
-	else if(addMenu.style.display == "block") addMenu.style.display = "none"
+	if (addMenu.style.display == "none") addMenu.style.display = "block"
+	else if (addMenu.style.display == "block") addMenu.style.display = "none"
 })
 
 const initAIChat = document.getElementById("ObjectCreationMenu")
@@ -842,9 +872,144 @@ AIChatBackBtn?.addEventListener("click", (e) => {
 const AIChatSubmitBtn = document.getElementById("AIChatSubmitBtn")
 AIChatSubmitBtn?.addEventListener("click", (e) => {
 	ObjectCreationList.style.display = "block"
+	document.getElementById("generateText").innerText = "Generating Suggestions..."
+
+	const message = document.getElementById('message')
+
+	e.preventDefault()
+	const messageText = message.value
+	message.value = ''
+	fetch(window.location.protocol + '/ChatAssist', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			message: messageText
+		})
+	})
+		.then(res => res.json())
+		.then(data => {
+			chatParser(data.completion.content)
+		})
+})
+
+function chatParser(prompt) {
+	console.log("here is prompt reply by ChatGPT: \n" + prompt)
+	setupObjects(prompt)
+}
+
+function setupObjects(prompt) {
+	var listOfObjects = []
+	var objectNumberIndex = prompt.indexOf("#", 0)
+	while (-1 < objectNumberIndex) {
+		console.log("loop started")
+		var nextIndex = prompt.indexOf("#", objectNumberIndex + 1)
+		if (nextIndex < 0) nextIndex = prompt.length + 1
+		var item = prompt.substring(objectNumberIndex + 1, nextIndex - 1)
+		listOfObjects.push(item)
+		objectNumberIndex = prompt.indexOf("#", objectNumberIndex + 1)
+		console.log("loop completed")
+	}
+
+	console.log(listOfObjects)
+	setupUIforGPT(listOfObjects)
+	//showObjectsInScene(listOfObjects)
+}
+
+const generativeTextList = document.getElementById("generativeTextList")
+function setupUIforGPT(listOfObjects) {
+	document.getElementById("generateText").innerText = "Generate 3D Objects"
+	for (let i = 0; i < listOfObjects.length; i++) {
+		var item = document.createElement("div")
+		item.id = listOfObjects[i]
+		item.classList.add("objectCreationItem")
+		item.innerHTML = "<button class='playerButtons' onclick='this.parentElement.remove()'><span class='material-icons'>delete</span></button><div class='objectCreationItemBackground'><input type='text' id='InspectorSkyBoxColor' name='fname' value='" + listOfObjects[i] + "' class='textInput objectCreationItemTitle'></div>"
+		generativeTextList.appendChild(item)
+	}
+}
+
+const objectCreationAddition = document.getElementById("objectCreationAddition")
+objectCreationAddition?.addEventListener("click", (e) => {
+	var item = document.createElement("div")
+	item.id = item
+	item.classList.add("objectCreationItem")
+	item.innerHTML = "<button class='playerButtons' onclick='this.parentElement.remove()'><span class='material-icons'>delete</span></button><div class='objectCreationItemBackground'><input type='text' id='InspectorSkyBoxColor' name='fname' value='New Object' class='textInput objectCreationItemTitle'></div>"
+	generativeTextList.appendChild(item)
+})
+
+//callMake3D("spongebob")
+async function callMake3D(prompt) {
+	console.log("Sending fetch to Server")
+	return fetch(window.location.protocol + "/3D", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			prompt,
+		})
+	}).then(
+		async (response) => {
+			let words = await response.json()
+			console.log(words)
+			return words
+		}
+	)
+}
+addToCollection(["https://pbxt.replicate.delivery/allH5x4uUt4GBxF0KoMzlBeB3qOOf3Z6KqQvxHVClZwDtatRA/out_0.gif",
+"https://pbxt.replicate.delivery/afxcImfNsxqEG0OTeTV3m4EDYhfOHAgh6nli8074INOT0q1GB/mesh_0.obj"])
+function addToCollection(content) {
+	let objectCard = document.createElement("button")
+	objectCard.classList.add("objectButton")
+	objectCard.onclick = async function() {
+		socket.emit("spawnJSON", content, myRoomValues)
+		//spawnObject(shit, false);
+	}
+	//<img src=" + imgSrc + "/>
+	objectCard.innerHTML = "<img style='height: 100%; width: 100%;' unselectable='on' src='" + content[0] + "'/>"
+	objectSelectionMenu.appendChild(objectCard)
+}
+
+async function generateObj(modelSrc, uuid) {
+	const objLoader = new OBJLoader()
+    const obj = await objLoader.loadAsync(
+        //await callMake3D(prompt),
+        modelSrc[1],
+    )
+
+	const objMesh = obj.children[0]
+    //console.log(obj)
+    objMesh.name = uuid
+	objMesh.userData.name = "3D Object"
+    objMesh.position.set(0, 2, 0);
+    //obj.rotation.x = -90 * (Math.PI / 180)
+    objMesh.scale.set(objMesh.scale.x * 10, objMesh.scale.y * 10, objMesh.scale.z * 10)
+	objMesh.uuid = uuid
+	objMesh.userData.draggable = true
+	objMesh.userData.tag = "3DAI"
+	objMesh.userData.src = [modelSrc[0], modelSrc[1]]
+	objects.add(objMesh)
+}
+
+let generateAIModelsBtn = document.getElementById("generateAIModelsBtn")
+generateAIModelsBtn?.addEventListener("click", async (e) => {
 	initAIChat.style.display = "none";
 	let TopBar = document.getElementById('ScenePlayerMenu')
 	if (TopBar != null) TopBar.style.display = "flex";
 
+	let listOfObjects = document.getElementsByClassName("objectCreationItemTitle")
+	ObjectCreationList.style.display = "none"
+	//console.log(listOfObjects)
 	
+	let contentList = []
+
+	for(let i = 0; i < listOfObjects.length; i++) {
+		let content = callMake3D(listOfObjects[i].value)
+		contentList.push(content)
+	}
+
+	for(let i = 0; i < contentList.length; i++){
+		addToCollection(await contentList[i])
+	}
 })

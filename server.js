@@ -7,7 +7,15 @@ import request from 'request'
 import axios from 'axios'
 import cors from "cors"
 import bodyParser from "body-parser"
+import OpenAI from "openai"
+import { textToGameRubric } from "./Chat/TextToVideogameRubric.js"
+import Replicate from "replicate";
 
+
+const openai = new OpenAI({
+    organization: "org-vGii8WWXPJPEZTCiVzSzsu1X",
+    apiKey: "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",
+});
 
 const app = express()
 const server = createServer(app)
@@ -27,7 +35,7 @@ app.get('/create', (req, res) => {
 })
 
 //* is used to represent all routes
-app.get('/*', (req, res) => {
+app.get('/*', async (req, res) => {
     res.render('index')
 })
 
@@ -37,7 +45,19 @@ app.post("/3D", async (req, res) => {
 })
 
 app.post("/ChatAssist", async (req, res) => {
-    
+    const { message } = req.body
+
+    const completion = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+            { role: "user", content: "" + textToGameRubric() },
+            { role: "user", content: `${message}` },
+        ]
+    })
+
+    res.json({
+        completion: completion.choices[0].message
+    })
 })
 
 app.post("/SkyBox", async (req, res) => {
@@ -63,12 +83,16 @@ io.on("connection", (socket) => {
         io.to(roomVal).emit("spawnObject", shape, uuidv4())
     })
 
+    socket.on("spawnJSON", (modelSrc, roomVal) => {
+        io.to(roomVal).emit("spawnJSON", modelSrc, uuidv4())
+    })
+
     socket.on("spawnSkyBox", (shape, roomVal) => {
         io.to(roomVal).emit("spawnSkyBox", shape)
     })
 
-    socket.on("sendWorldUpdate", (scene, skycolor, roomVal) => {
-        io.to(roomVal).emit("sendWorldUpdate", scene, skycolor)
+    socket.on("sendWorldUpdate", (sceneJson, sceneModelSrcs, skycolor, roomVal) => {
+        io.to(roomVal).emit("sendWorldUpdate", sceneJson, sceneModelSrcs, skycolor)
     })
 
     socket.on("deleteObject", (uuid, roomVal) => {
@@ -92,7 +116,7 @@ io.on("connection", (socket) => {
     })
 })
 
-async function make3D(prompt) {
+async function makeGalactus3D(prompt) {
     let data = JSON.stringify({
         "prompt": "a red car"
     });
@@ -162,4 +186,24 @@ async function makeSkyBox(prompt) {
         console.log(error);
         return undefined;
       });
+}
+
+export async function make3D(prompt) {
+    const REPLICATE_API_TOKEN = "r8_Q6NzIt6xFFE7QuNkBY5jUrRyNQh6u921dYzS9"
+
+    const replicate = new Replicate({
+        auth: REPLICATE_API_TOKEN,
+    });
+
+    console.log("setting up replicate")
+    const output = await replicate.run(
+        "cjwbw/shap-e:5957069d5c509126a73c7cb68abcddbb985aeefa4d318e7c63ec1352ce6da68c",
+        {
+            input: {
+                prompt: prompt,
+                save_mesh: true,
+            }
+        }
+    )
+    return output
 }

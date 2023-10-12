@@ -141,7 +141,7 @@
         </button>
         <div class="vertical-divider"></div>
         <div class="textInputBackground" style="flex-grow: 1;">
-          <input type="text" class="textInput" style="width: 50vh;"></input>
+          <input type="text" id="message" class="textInput" style="width: 50vh;"></input>
         </div>
         <button class="playerButtons" id="AIChatSubmitBtn">
           <span class="material-icons">auto_awesome</span>
@@ -150,25 +150,29 @@
       <div id="ObjectCreationList" class="toolsMenuBox" style="display:none">
         <div class="yellowBorderBox">
           <span class="material-icons" style="color: #FFE816; font-size: 20px;">auto_awesome</span>
-          <p style="margin: 0 8px;">Generate 3D Objects</p>
+          <p style="margin: 0 8px;" id="generateText">Generate 3D Objects</p>
         </div>
-        <div class="objectCreationItem">
-          <span class="material-icons">delete</span>
-          <div class="objectCreationItemBackground">
-            <p class="objectCreationItemTitle">Object Name</p>
+        <div id="generativeTextList">
+        <!--
+          <div class="objectCreationItem" style="display: none">
+            <button class="playerButtons">
+              <span class="material-icons">delete</span>
+            </button>
+            <div class="objectCreationItemBackground">
+              <input type="text" id="InspectorSkyBoxColor" name="fname" value="Object Name"
+                class="textInput objectCreationItemTitle">
+            </div>
           </div>
+        -->
         </div>
-        <div class="objectCreationItem">
-          <span class="material-icons">delete</span>
-          <div class="objectCreationItemBackground">
-            <p class="objectCreationItemTitle">Object Name</p>
-          </div>
-        </div>
-        <div class="objectCreationAddition">
-          <span class="material-icons">add_circle_outline</span>
+        <div class="objectCreationAddition" id="objectCreationAddition">
+          <button class="playerButtons">
+            <span class="material-icons">add_circle_outline</span>
+          </button>
           <div class="thin-horizontal-divider"></div>
         </div>
-        <button class="primaryPlayerButton textButton" style="align-self: end">Generate</button>
+        <button class="primaryPlayerButton textButton" id="generateAIModelsBtn"
+          style="align-self: end">Generate</button>
       </div>
       <div id="ToolsMenu" style="display:none;">
         <div id="leftSVG" style="display: flex; width: 23vw;">
@@ -202,7 +206,7 @@
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
             </svg> </button>
           <button type="button" class="playerButtons" title="Delete Shape"
-            style="padding-left: 0.75rem; padding-right: 0.75rem; height: auto;" id="TrashBtn"> <svg
+            style="padding-left: 0.75rem; padding-right: 0.75rem; height: auto;" id=""> <svg
               xmlns="http://www.w3.org/2000/svg" width="3vh" height="auto" fill="currentColor" class="bi bi-trash3"
               viewBox="0 0 16 16">
               <path
@@ -257,10 +261,10 @@
     </div>
     <div id="TopBarPlaying" class="toolsMenuBox" style="display: none;">
       <button class="primaryPlayerButton textButton">Export</button>
-        <div class="vertical-divider"></div>
-        <button class="playerButtons" id="pauseArrow">
-          <span class="material-symbols-rounded font-36">pause</span>
-        </button>
+      <div class="vertical-divider"></div>
+      <button class="playerButtons" id="pauseArrow">
+        <span class="material-symbols-rounded font-36">pause</span>
+      </button>
     </div>
 
     <div id="SceneViewer">
@@ -391,8 +395,13 @@
           <!-- Selected Object Inspector -->
           <div id="SelectedObjectInspectorNEW" style="display: none">
             <div class="inspectorSection">
-              <div class="textInputBackground">
-                <input type="text" class="textInput" id="ObjectInspectorName" value="Initial Object Name">
+              <div style="display: flex;">
+                <div class="textInputBackground">
+                  <input type="text" class="textInput" id="ObjectInspectorName" value="Initial Object Name">
+                </div>
+                <button class="playerButtons" id="TrashBtn">
+                  <span class="material-icons">delete</span>
+                </button>
               </div>
               <div class="inspectorRow">
                 <p class="secondaryInspectorText">Position</p>
@@ -469,10 +478,10 @@
       <div id="Scene"></div>
     </div>
 
-    <div id = "RightSideDiv">
-        <!-- This is the Object Selection Window -->
-    <div id="ObjectSelectorWindow" class="leftWindow">
-      <!--
+    <div id="RightSideDiv">
+      <!-- This is the Object Selection Window -->
+      <div id="ObjectSelectorWindow" class="leftWindow">
+        <!--
       <div id="shapesSelector" class="border-gradient">
         <button type="button" id="ShapeSelectorBtn">
           <h4 style="margin-top: 5%;">Basic Shapes &nbsp<svg xmlns="http://www.w3.org/2000/svg" width="32" height="auto"
@@ -490,19 +499,19 @@
           </svg></button>
       </div>
     -->
-      <p id="CollectionSelection" class="leftWindowTitle">
-        Your Collection
-      </p>
+        <p id="CollectionSelection" class="leftWindowTitle">
+          Your Collection
+        </p>
 
-      <div id="ObjectSearch" class="textInputBackground leftWindowSearchBar">
-        <span class="material-icons">search</span>
-        <input type="text" id="ObjectSearchInput" placeholder="Search" class="textInput">
-      </div>
+        <div id="ObjectSearch" class="textInputBackground leftWindowSearchBar">
+          <span class="material-icons">search</span>
+          <input type="text" id="ObjectSearchInput" placeholder="Search" class="textInput">
+        </div>
 
-      <div class="thin-horizontal-divider"></div>
+        <div class="thin-horizontal-divider"></div>
 
-      <div id="objectSelection" class="overflow-auto">
-        <!----
+        <div id="objectSelection" class="overflow-auto">
+          <!----
         <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
         <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
         <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
@@ -511,69 +520,69 @@
         <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
         <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
       -->
+        </div>
+      </div>
+
+      <!-- This is the Scene List View Window -->
+      <div id="SceneListViewWindow" class="leftWindow" style="display: none;">
+        <p class="leftWindowTitle">
+          Scene List View
+        </p>
+
+        <div id="SceneSearch" class="textInputBackground leftWindowSearchBar">
+          <span class="material-icons">search</span>
+          <input type="text" id="SceneSearchInput" placeholder="Search" class="textInput">
+        </div>
+
+        <div class="thin-horizontal-divider"></div>
+
+        <div id="SceneList">
+          <button class="objectListButton" style="display: none">
+            <span class="material-symbols-outlined">deployed_code</span>
+            <p>Cube</p>
+          </button>
+        </div>
+      </div>
+      <div id="AddObjectsMenu" class="" style="display: none;">
+        <div id="SceneList">
+          <button class="objectListButton" id="SpawnBox" style="display: flex">
+            <span class="material-symbols-outlined">deployed_code</span>
+            <p>Cube</p>
+          </button>
+          <div class="thin-horizontal-divider"></div>
+          <button class="objectListButton" id="SpawnSphere" style="display: flex">
+            <span class="material-symbols-outlined">radio_button_unchecked</span>
+            <p>Sphere</p>
+          </button>
+          <div class="thin-horizontal-divider"></div>
+          <button class="objectListButton" id="SpawnCylinder" style="display: flex">
+            <span class="material-symbols-outlined">radio_button_checked</span>
+            <p>Cylinder</p>
+          </button>
+          <div class="thin-horizontal-divider"></div>
+          <button class="objectListButton" id="SpawnCone" style="display: flex">
+            <span class="material-symbols-outlined">change_history</span>
+            <p>Cone</p>
+          </button>
+          <div class="thin-horizontal-divider"></div>
+          <button class="objectListButton" id="Spawn3DHeart" style="display: flex">
+            <span class="material-symbols-outlined">favorite</span>
+            <p>3D Heart</p>
+          </button>
+          <div class="thin-horizontal-divider"></div>
+          <button class="objectListButton" id="SpawnPlane" style="display: flex">
+            <span class="material-symbols-outlined">rectangle</span>
+            <p>Plane</p>
+          </button>
+          <div class="thin-horizontal-divider"></div>
+          <button class="objectListButton" id="SpawnTorus" style="display: flex">
+            <span class="material-symbols-outlined">fiber_manual_record</span>
+            <p>Torus</p>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- This is the Scene List View Window -->
-    <div id="SceneListViewWindow" class="leftWindow" style="display: none;">
-      <p class="leftWindowTitle">
-        Scene List View
-      </p>
-
-      <div id="SceneSearch" class="textInputBackground leftWindowSearchBar">
-        <span class="material-icons">search</span>
-        <input type="text" id="SceneSearchInput" placeholder="Search" class="textInput">
-      </div>
-
-      <div class="thin-horizontal-divider"></div>
-
-      <div id="SceneList">
-        <button class="objectListButton" style="display: none">
-          <span class="material-symbols-outlined">deployed_code</span>
-          <p>Cube</p>
-        </button>
-      </div>
-    </div>
-    <div id="AddObjectsMenu" class="" style="display: none;">
-      <div id="SceneList">
-        <button class="objectListButton" id="SpawnBox" style="display: flex">
-          <span class="material-symbols-outlined">deployed_code</span>
-          <p>Cube</p>
-        </button>
-        <div class="thin-horizontal-divider"></div>
-        <button class="objectListButton" id="SpawnSphere" style="display: flex">
-          <span class="material-symbols-outlined">radio_button_unchecked</span>
-          <p>Sphere</p>
-        </button>
-        <div class="thin-horizontal-divider"></div>
-        <button class="objectListButton" id="SpawnCylinder" style="display: flex">
-          <span class="material-symbols-outlined">radio_button_checked</span>
-          <p>Cylinder</p>
-        </button>
-        <div class="thin-horizontal-divider"></div>
-        <button class="objectListButton" id="SpawnCone" style="display: flex">
-          <span class="material-symbols-outlined">change_history</span>
-          <p>Cone</p>
-        </button>
-        <div class="thin-horizontal-divider"></div>
-        <button class="objectListButton" id="Spawn3DHeart" style="display: flex">
-          <span class="material-symbols-outlined">favorite</span>
-          <p>3D Heart</p>
-        </button>
-        <div class="thin-horizontal-divider"></div>
-        <button class="objectListButton" id="SpawnPlane" style="display: flex">
-          <span class="material-symbols-outlined">rectangle</span>
-          <p>Plane</p>
-        </button>
-        <div class="thin-horizontal-divider"></div>
-        <button class="objectListButton" id="SpawnTorus" style="display: flex">
-          <span class="material-symbols-outlined">fiber_manual_record</span>
-          <p>Torus</p>
-        </button>
-      </div>
-    </div>
-    </div>
-    
   </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

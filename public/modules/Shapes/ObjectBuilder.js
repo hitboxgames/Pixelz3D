@@ -2,6 +2,7 @@ import * as THREE from '../../three.module.js'
 import { OBJLoader } from '../Loaders/OBJLoader.js';
 import { GLTFLoader } from '../Loaders/GLTFLoader.js';
 import { MTLLoader } from '../Loaders/MTLLoader.js';
+import { loadJSON } from '../Loaders/LocalLoader.js';
 
 export default class ObjectBuilder {
     constructor() {
@@ -94,7 +95,8 @@ function createCylinder(objects, uuid) {
     objects.add(cylinder)
 }
 
-export function createObject(fileName, objects, uuid) {
+export function createObject(file, objects, uuid) {
+    /*
     const mtlLoader = new MTLLoader()
     mtlLoader.setPath('./modules/Shapes/Materials/')
     mtlLoader.load(fileName + '.mtl', (materials) => {
@@ -128,7 +130,11 @@ export function createObject(fileName, objects, uuid) {
             
             objects.add(furniture)
         })
-    })
+    })*/
+    let convert = loadJSON(file)
+    console.log(convert)
+    convert.name = uuid
+    objects.add(convert)
 }
 
 function create3DHeart(objects, uuid) {
