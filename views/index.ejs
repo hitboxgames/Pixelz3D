@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
@@ -30,7 +31,7 @@
   </div>
   <div id="computerSize">
     <div id="TopBar" class="">
-      <div id="ScenePlayerMenu" class="toolsMenuBox">
+      <div id="ScenePlayerMenu" class="toolsMenuBox"  style="display: none;">
         <button class="playerButtons primaryPlayerButton">
           <span class="material-icons">add</span>
         </button>
@@ -61,33 +62,33 @@
         <div class="vertical-divider"></div>
         <div class="playerSection">
           <button class="playerButtons">
-            <span class="material-icons md-36">list</span>
+            <span class="material-icons font-36">list</span>
           </button>
           <button class="playerButtons highlight">
-            <span class="material-icons md-36">grid_view</span>
+            <span class="material-icons font-36">grid_view</span>
           </button>
           <button class="playerButtons">
-            <span class="material-icons md-36">code</span>
+            <span class="material-icons font-36">code</span>
           </button>
         </div>
         <div class="vertical-divider"></div>
         <div class="playerSection">
           <button class="playerButtons">
-            <span class="material-icons-outlined md-30">near_me</span>
+            <span class="material-icons-outlined font-30">near_me</span>
           </button>
           <div style="position: relative;">
             <button class="playerButtons highlight">
-              <span class="material-icons md-36">view_in_ar</span>
+              <span class="material-icons font-36">view_in_ar</span>
             </button>
             <div id="ObjectToolsBox" class="toolsMenuBox" style="display: none;">
               <button class="playerButtons">
-                <span class="material-icons md-30">open_with</span>
+                <span class="material-icons font-30">open_with</span>
               </button>
               <button class="playerButtons">
-                <span class="material-icons md-30">view_in_ar</span>
+                <span class="material-icons font-30">view_in_ar</span>
               </button>
               <button class="playerButtons">
-                <span class="material-icons md-30">autorenew</span>
+                <span class="material-icons font-30">autorenew</span>
               </button>
             </div>
           </div>
@@ -96,9 +97,10 @@
         <button class="primaryPlayerButton textButton">Export</button>
         <div class="vertical-divider"></div>
         <button class="playerButtons">
-          <span class="material-icons-outlined md-30">play_arrow</span>
+          <span class="material-icons-outlined font-36">play_arrow</span>
         </button>
 
+        <!-- Old Player Buttons -->
         <div class="scenePlayerItem" style="justify-content: center; display: none;">
           <button type="button" class="playerButtons" id="StopBtn" title="Stop Engine"> <svg
               xmlns="http://www.w3.org/2000/svg" width="auto" height="6vh" fill="currentColor" class="bi bi-stop-btn"
@@ -126,6 +128,48 @@
             <div id="SignUpBtn">Sign Up</div>
           </div>
           -->
+        </div>
+      </div>
+      <div id="ObjectCreationMenu" class="toolsMenuBox">
+        <button class="playerButtons">
+          <span class="material-symbols-rounded font-30">west</span>
+        </button>
+        <div class="vertical-divider"></div>
+        <div class="textInputBackground" style="flex-grow: 1;">
+          <input type="text" class="textInput"></input>
+        </div>
+        <button class="playerButtons">
+          <span class="material-icons">auto_awesome</span>
+        </button>
+        <div class="vertical-divider"></div>
+        <button class="primaryPlayerButton textButton">Export</button>
+        <div class="vertical-divider"></div>
+        <button class="playerButtons">
+          <span class="material-symbols-rounded font-36">play_arrow</span>
+        </button>
+
+        <div id="ObjectCreationList" class="toolsMenuBox">
+          <div class="yellowBorderBox">
+            <span class="material-icons" style="color: #FFE816; font-size: 20px;">auto_awesome</span>
+            <p style="margin: 0 8px;">Generate 3D Objects</p>
+          </div>
+          <div class="objectCreationItem">
+            <span class="material-icons">delete</span>
+            <div class="objectCreationItemBackground">
+              <p class="objectCreationItemTitle">Object Name</p>
+            </div>
+          </div>
+          <div class="objectCreationItem">
+            <span class="material-icons">delete</span>
+            <div class="objectCreationItemBackground">
+              <p class="objectCreationItemTitle">Object Name</p>
+            </div>
+          </div>
+          <div class="objectCreationAddition">
+            <span class="material-icons">add_circle_outline</span>
+            <div class="thin-horizontal-divider"></div>
+          </div>
+          <button class="primaryPlayerButton textButton" style="align-self: end">Generate</button>
         </div>
       </div>
       <div id="ToolsMenu" style="display:none;">
@@ -314,11 +358,12 @@
           <button class="primaryPlayerButton textButton">Share</button>
         </div>
         <div class="thin-horizontal-divider"></div>
-        <div id="UnselectedInspectorBottom">
+        <!-- Unselected Scene Inspector -->
+        <div id="UnselectedInspectorBottom" class="inspectorSection" style="display: none;">
           <p>Scene</p>
           <div class="inspectorRow">
-            <p class="secondaryInspectorText">Background (hex): </p>
-            <div style="display: flex; align-items: center;">
+            <p class="secondaryInspectorText">Background (Hex)</p>
+            <div class="inspectorRowContent">
               <div id="InspectorSceneColorBox" class="inspectorBox" style="background-color: red"></div>
               <div class="textInputBackground">
                 <span class="material-icons" style="color: #0F5994;">tag</span>
@@ -327,7 +372,7 @@
             </div>
           </div>
           <div class="inspectorRow">
-            <p class="secondaryInspectorText">SkyBox (Text Prompt): </p>
+            <p class="secondaryInspectorText">SkyBox (Text Prompt)</p>
             <div style="display: flex; align-items: center;">
               <div class="textInputBackground">
                 <input type="text" id="InspectorSkyBoxColor" name="fname" value="Clear blue skies" class="textInput">            
@@ -335,6 +380,77 @@
             </div>
           </div>
           <button id="SkyBoxBtn">Generate</button>
+        </div>
+        <!-- Selected Object Inspector -->
+        <div class="inspectorSection">
+          <div class="textInputBackground">
+            <input type="text" class="textInput" value="Initial Object Name">                
+          </div>
+          <div class="inspectorRow">
+            <p class="secondaryInspectorText">Position</p>
+            <div class="inspectorRowContent threeItem">
+              <div class="textInputBackground">
+                <strong class="axisPrefix">X</strong>
+                <input type="number" class="textInput">                
+              </div>
+              <div class="textInputBackground">
+                <strong class="axisPrefix">Y</strong>
+                <input type="number" class="textInput">                
+              </div>
+              <div class="textInputBackground">
+                <strong class="axisPrefix">Z</strong>
+                <input type="number" class="textInput">                
+              </div>
+            </div>
+          </div>
+          <div class="inspectorRow">
+            <p class="secondaryInspectorText">Scale</p>
+            <div class="inspectorRowContent threeItem">
+              <div class="textInputBackground">
+                <strong class="axisPrefix">X</strong>
+                <input type="number" class="textInput">                
+              </div>
+              <div class="textInputBackground">
+                <strong class="axisPrefix">Y</strong>
+                <input type="number" class="textInput">                
+              </div>
+              <div class="textInputBackground">
+                <strong class="axisPrefix">Z</strong>
+                <input type="number" class="textInput">                
+              </div>
+            </div>
+          </div>
+          <div class="inspectorRow">
+            <p class="secondaryInspectorText">Rotation</p>
+            <div class="inspectorRowContent threeItem">
+              <div class="textInputBackground">
+                <strong class="axisPrefix">X</strong>
+                <input type="number" class="textInput">                
+              </div>
+              <div class="textInputBackground">
+                <strong class="axisPrefix">Y</strong>
+                <input type="number" class="textInput">                
+              </div>
+              <div class="textInputBackground">
+                <strong class="axisPrefix">Z</strong>
+                <input type="number" class="textInput">                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="thin-horizontal-divider"></div>
+        <div class="inspectorSection">
+          <p>Material</p>
+          <div class="inspectorRow">
+            <p class="secondaryInspectorText">Color </p>
+            <div class="inspectorRowContent">
+              <div id="InspectorSceneColorBox" class="inspectorBox" style="background-color: red"></div>
+              <div class="textInputBackground">
+                <span class="material-icons" style="color: #0F5994;">tag</span>
+                <input type="text" id="InspectorSceneColor" name="fname" value="2D2E33" class="textInput">                
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

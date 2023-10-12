@@ -6,11 +6,24 @@ svg {
     color: #fafafa;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
-.material-icons.md-30 { font-size: 30px; }
-.material-icons-outlined.md-30 { font-size: 30px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons-outlined.md-36 { font-size: 36px; }
+input[type=number]{
+    -moz-appearance: textfield;
+}
+
+.material-icons.font-30 { font-size: 30px; } 
+.material-icons-outlined.font-30 { font-size: 30px; } 
+.material-symbols-rounded.font-30 { font-size: 30px; } 
+.material-symbols-outlined.font-30 { font-size: 30px; }
+.material-icons.font-36 { font-size: 36px; }
+.material-icons-outlined.font-36 { font-size: 36px; }
+.material-symbols-rounded.font-36 { font-size: 36px; }
+.material-symbols-outlined.font-36 { font-size: 36px; }
 
 @media only screen and (max-width: 800px),
 screen and (max-height: 550px) {
@@ -195,6 +208,7 @@ screen and (max-height: 550px) {
         left: 50%;
         top: 2%;
         transform: translate(-50%, 0%);
+        min-width: 30vw;
     }
 
     #ToolsMenu {
@@ -232,6 +246,10 @@ screen and (max-height: 550px) {
         box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.25);
     }
 
+    .inspectorSection {
+        padding: 12px;
+    }
+
     #UnselectedInspectorTop {
         padding: 12px;
     }
@@ -249,7 +267,6 @@ screen and (max-height: 550px) {
         border-radius: 8px;
         width: 36px;
         height: 36px;
-        margin: 0 8px;
     }
 
     .inspectorRow {
@@ -257,6 +274,15 @@ screen and (max-height: 550px) {
         align-items: center;
         justify-content: space-between;
         margin: 8px 0;
+    }
+
+    .inspectorRowContent {
+        display: flex; align-items: center;
+        gap: 8px;
+    }
+
+    .threeItem {
+        width: 60%;
     }
 
     #SelectedObjectInspector {
@@ -454,5 +480,65 @@ screen and (max-height: 550px) {
 
     .objectListButton > p {
         margin: 0;
+    }
+
+    #ObjectCreationList {
+        position: absolute;
+        top: 72px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        height: auto;
+        min-width: 20vw;
+        max-width: 30vw;
+        padding: 12px;
+    }
+
+    .objectCreationItem {
+        display: flex;
+        align-items: center;
+        margin: 8px 0;
+        flex-grow: 1;
+        width: 100%;
+    }
+
+    .objectCreationItemBackground {
+        display: flex;
+        background-color: #1F2023;
+        border-radius: 8px;
+        padding: 6px;
+        color: #838485;
+        flex-grow: 1;
+        margin-left: 8px;
+        overflow: hidden;
+    }
+
+    .objectCreationItemTitle {
+        width: 100%;
+        margin: 0;
+    }
+
+    .yellowBorderBox {
+        border: #FFE816 1px solid;
+        border-radius: 6px;
+        display: flex;
+        color: #9C9D9E;
+        padding: 4px;
+        margin-bottom: 8px;
+    }
+    
+    .objectCreationAddition {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        margin: 8px 0;
+    }
+
+    .axisPrefix {
+        color: #0F5994;
+        margin-right: 4px;
     }
 }
