@@ -22,8 +22,8 @@ app.use(cors())
 app.set('view engine', 'ejs')
 
 
-app.get('/welcome', (req, res) => {
-    res.render('welcome')
+app.get('/create', (req, res) => {
+    res.redirect("../?" + uuidv4());
 })
 
 //* is used to represent all routes
@@ -34,6 +34,10 @@ app.get('/*', (req, res) => {
 app.post("/3D", async (req, res) => {
     const { prompt } = req.body
     res.json(await make3D(prompt))
+})
+
+app.post("/ChatAssist", async (req, res) => {
+    
 })
 
 app.post("/SkyBox", async (req, res) => {

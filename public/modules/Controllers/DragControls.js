@@ -6,6 +6,7 @@ import {
 	Vector2,
 	Vector3
 } from '../../three.module.js';
+import { getSceneObjects } from '../../client.js';
 
 const _plane = new Plane();
 const _raycaster = new Raycaster();
@@ -23,6 +24,21 @@ export function isInspectorActive() {
 	return inspectorActive
 }
 
+let SelectedObjectInspector = document.getElementById('SelectedObjectInspectorNEW');
+let UnselectedInspector = document.getElementById('UnselectedInspectorBottom');
+export function activateInspector() {
+	if (SelectedObjectInspector != null) SelectedObjectInspector.style.display = 'block';
+	if (UnselectedInspector != null) UnselectedInspector.style.display = 'none';
+	inspectorActive = true
+}
+
+export function disableInspector() {
+	if (SelectedObjectInspector != null) SelectedObjectInspector.style.display = 'none';
+	if (UnselectedInspector != null) UnselectedInspector.style.display = 'block';
+	getSceneObjects()
+	inspectorActive = false
+}
+
 class DragControls extends EventDispatcher {
 
 	constructor(_objects, _camera, _domElement) {
@@ -30,8 +46,6 @@ class DragControls extends EventDispatcher {
 		super();
 
 		_domElement.style.touchAction = 'none'; // disable touch scroll
-		let SelectedObjectInspector = document.getElementById('SelectedObjectInspector');
-		let UnselectedInspector = document.getElementById('UnselectedInspector');
 
 		let _selected = null, _hovered = null;
 
@@ -77,18 +91,6 @@ class DragControls extends EventDispatcher {
 
 			return _raycaster;
 
-		}
-
-		function activateInspector() {
-			if (SelectedObjectInspector != null) SelectedObjectInspector.style.display = 'block';
-			if (UnselectedInspector != null) UnselectedInspector.style.display = 'none';
-			inspectorActive = true
-		}
-
-		function disableInspector() {
-			if (SelectedObjectInspector != null) SelectedObjectInspector.style.display = 'none';
-			if (UnselectedInspector != null) UnselectedInspector.style.display = 'block';
-			inspectorActive = false
 		}
 
 

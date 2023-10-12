@@ -12,9 +12,6 @@ class Disabled {
     }
 
     enableListeners() {
-        //Share Button
-        let ShareBtn = document.getElementById("ShareBtn");
-        if (ShareBtn != null) ShareBtn.addEventListener("click", (e) => this.shareButton());
 
         //Shape Selector
         let ShapeSelectorBtn = document.getElementById("ShapeSelectorBtn");

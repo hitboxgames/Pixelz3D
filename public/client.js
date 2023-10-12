@@ -1,9 +1,8 @@
 import { OrbitControls } from './modules/Controllers/OrbitControls.js'
 import { FirstPersonControls } from './modules/Controllers/FirstPersonControls.js'
-import { DragControls, isInspectorActive } from './modules/Controllers/DragControls.js'
+import { DragControls, activateInspector, isInspectorActive } from './modules/Controllers/DragControls.js'
 import { ObjectSelector } from './modules/Shapes/ObjectSelector.js'
 import { Disabled } from './modules/Features/Disabled.js'
-import { ColorPicker } from './modules/Features/Inspector/ColorPicker.js';
 import * as THREE from './three.module.js'
 import { GridHelper, Object3D } from './three.module.js';
 import { createObject, createShape } from "./modules/Shapes/ObjectBuilder.js"
@@ -51,7 +50,10 @@ socket.on("sendWorldUpdate", (sceneObjects, skycolor) => {
 		scene.remove(lights)
 		objects.add(loadJSON(sceneObjects))
 		//console.log("cum")
-		//let skybox = objects.children[0].getObjectByName("Skybox")
+		let skybox = objects.children[0].getObjectByName("Skybox")
+		console.log(skybox)
+		scene.add(skybox)
+		objects.remove(skybox)
 		//objects.remove(skybox)
 		//console.log("shit initial")
 		//console.log(objects.children[0].getObjectByName("Skybox"))
@@ -67,10 +69,11 @@ export function spawnObject(shape, skybox) {
 socket.on("spawnObject", (shape, uuid) => {
 	console.log(shape)
 	createShape(shape, objects, uuid)
+	document.getElementById("AddObjectsMenu").style.display = "none"
+	getSceneObjects()
 })
 
 socket.on("spawnSkyBox", (shape) => {
-	console.log("peepee")
 	let convert = loadJSON(shape)
 	var selectedObject = scene.getObjectByName("Skybox");
 	console.log(selectedObject)
@@ -91,7 +94,9 @@ socket.on("modifiedObject", (mods, uuid) => {
 })
 
 socket.on("modifiedSkyColor", (color) => {
-	scene.background = new THREE.Color(parseInt("0x" + color));
+	let trailing = "0".repeat(6 - color.length)
+	sceneDisplayColor.style.backgroundColor = "#" + color + trailing;
+	scene.background = new THREE.Color(parseInt("0x" + color + trailing));
 	updateSceneColorVal("" + color)
 })
 
@@ -99,7 +104,7 @@ socket.on("disableObject", (uuid) => {
 	let temp = objects.getObjectByName(uuid)
 	temp.userData.draggable = false
 	scene.removeFromParent(temp)
-	let outlineMaterial = new THREE.MeshBasicMaterial({ color: 0x87CEEB, side: THREE.BackSide })
+	let outlineMaterial = new THREE.MeshBasicMaterial({ color: 0xFF007D, side: THREE.BackSide })
 	let outlineMesh = temp.clone()
 	outlineMesh.name = "outline"
 	outlineMesh.material = outlineMaterial
@@ -166,9 +171,7 @@ let FPControls = new FirstPersonControls(camera, renderer.domElement);
 FPControls.enabled = false;
 //Tranform Controls
 const tControls = new TransformControls(camera, renderer.domElement)
-tControls.enabled = false
-//tControls.attach(cube)
-//scene.add(tControls)
+tControls.name = "TransformControls"
 
 tControls.addEventListener('dragging-changed', function (event) {
 	OrbitalControls.enableRotate = !event.value;
@@ -191,18 +194,24 @@ dControls.addEventListener("hoveroff", event => {
 
 })
 
-let colorPicker = new ColorPicker(null);
 dControls.addEventListener("dragstart", event => {
-	tControls.attach(event.object)
-	updateInspectorVals();
-	disableDragForOthers(event.object.name)
-	lastSelectedObject = event.object;
-	colorPicker.disableObject();
-	colorPicker = new ColorPicker(event.object)
-	event.object.material.transparent = true;
-	event.object.material.opacity = 0.7;
-	OrbitalControls.enabled = false;
+	draggingEvent(event.object)
 })
+
+function draggingEvent(object) {
+	tControls.attach(object)
+	disableDragForOthers(object.name)
+	let SelectedObjectInSceneList = document.getElementById(lastSelectedObject.name);
+	if (SelectedObjectInSceneList != undefined) SelectedObjectInSceneList.classList.remove("highlight")
+	lastSelectedObject = object;
+	updateInspectorVals();
+	//object.material.transparent = true;
+	//object.material.opacity = 0.7;
+	OrbitalControls.enabled = false;
+
+	SelectedObjectInSceneList = document.getElementById(object.name);
+	SelectedObjectInSceneList.classList.add("highlight")
+}
 
 dControls.addEventListener("drag", event => {
 
@@ -249,29 +258,33 @@ function updateRoomsSceneColor(color) {
 
 //Update all objects based on modifications on inspector
 function updateInspectorVals() {
-	const insObjName = document.getElementById("InspectorObjectName");
+	const insObjName = document.getElementById("ObjectInspectorName");
 	insObjName.value = lastSelectedObject.userData.name
 
-	const xPos = (document.getElementById("InpectorPositionX"));
+	const xPos = (document.getElementById("posX"));
 	xPos.value = "" + lastSelectedObject.position.x;
-	const yPos = (document.getElementById("InpectorPositionY"));
+	const yPos = (document.getElementById("posY"));
 	yPos.value = "" + lastSelectedObject.position.y;
-	const zPos = (document.getElementById("InpectorPositionZ"));
+	const zPos = (document.getElementById("posZ"));
 	zPos.value = "" + lastSelectedObject.position.z;
 
-	const xRot = (document.getElementById("InspectorRotationX"));
+	const xRot = (document.getElementById("rotX"));
 	xRot.value = "" + (lastSelectedObject.rotation.x / (Math.PI / 180));
-	const yRot = (document.getElementById("InspectorRotationY"));
+	const yRot = (document.getElementById("rotY"));
 	yRot.value = "" + (lastSelectedObject.rotation.y / (Math.PI / 180));
-	const zRot = (document.getElementById("InspectorRotationZ"));
+	const zRot = (document.getElementById("rotZ"));
 	zRot.value = "" + (lastSelectedObject.rotation.z / (Math.PI / 180));
 
-	const xScale = (document.getElementById("InspectorScaleX"));
+	const xScale = (document.getElementById("sclX"));
 	xScale.value = "" + lastSelectedObject.scale.x;
-	const yScale = (document.getElementById("InspectorScaleY"));
+	const yScale = (document.getElementById("sclY"));
 	yScale.value = "" + lastSelectedObject.scale.y;
-	const zScale = (document.getElementById("InspectorScaleZ"));
+	const zScale = (document.getElementById("sclZ"));
 	zScale.value = "" + lastSelectedObject.scale.z;
+
+	const materialColorInput = document.getElementById("InspectorObjectColor");
+	materialColorInput.value = lastSelectedObject.material.color.getHexString().toUpperCase()
+	document.getElementById("InspectorObjectColorBox").style.backgroundColor = "#" + lastSelectedObject.material.color.getHexString().toUpperCase()
 }
 
 function updateSceneColorVal(color) {
@@ -285,13 +298,17 @@ function updateSceneColorVal(color) {
 
 //Scene Sky Color
 const insSceneColor = document.getElementById("InspectorSceneColor");
+const sceneDisplayColor = document.getElementById("InspectorSceneColorBox");
 insSceneColor?.addEventListener("input", (event) => {
 	const sceneColor = (document.getElementById("InspectorSceneColor")).value;
-	scene.background = new THREE.Color(parseInt("0x" + sceneColor));
+	let CSSHex = sceneColor
+	let trailing = "0".repeat(6 - CSSHex.length)
+	sceneDisplayColor.style.backgroundColor = "#" + sceneColor + trailing;
+	scene.background = new THREE.Color(parseInt("0x" + sceneColor + trailing));
 	updateRoomsSceneColor(sceneColor)
 });
 
-const insObjName = document.getElementById("InspectorObjectName");
+const insObjName = document.getElementById("ObjectInspectorName");
 insObjName?.addEventListener("input", (event) => {
 	lastSelectedObject.userData.name = insObjName.value
 	updateRoomsObjectVals(lastSelectedObject)
@@ -299,65 +316,65 @@ insObjName?.addEventListener("input", (event) => {
 
 
 //Position
-const insPosX = document.getElementById("InpectorPositionX");
-const insPosY = document.getElementById("InpectorPositionY");
-const insPosZ = document.getElementById("InpectorPositionZ");
+const insPosX = document.getElementById("posX");
+const insPosY = document.getElementById("posY");
+const insPosZ = document.getElementById("posZ");
 
 //Position
 insPosX?.addEventListener("input", (event) => {
-	const xPos = (document.getElementById("InpectorPositionX")).value;
+	const xPos = (document.getElementById("posX")).value;
 	lastSelectedObject.position.x = Number(xPos);
 	updateRoomsObjectVals(lastSelectedObject)
 });
 insPosY?.addEventListener("input", (event) => {
-	const yPos = (document.getElementById("InpectorPositionY")).value;
+	const yPos = (document.getElementById("posY")).value;
 	lastSelectedObject.position.y = Number(yPos);
 	updateRoomsObjectVals(lastSelectedObject)
 });
 insPosZ?.addEventListener("input", (event) => {
-	const zPos = (document.getElementById("InpectorPositionZ")).value;
+	const zPos = (document.getElementById("posZ")).value;
 	lastSelectedObject.position.z = Number(zPos);
 	updateRoomsObjectVals(lastSelectedObject)
 });
 
 //Rotation
-const insRotX = document.getElementById("InspectorRotationX");
-const insRotY = document.getElementById("InspectorRotationY");
-const insRotZ = document.getElementById("InspectorRotationZ");
+const insRotX = document.getElementById("rotX");
+const insRotY = document.getElementById("rotY");
+const insRotZ = document.getElementById("rotZ");
 
 insRotX?.addEventListener("input", (event) => {
-	const xRot = (document.getElementById("InspectorRotationX")).value;
+	const xRot = (document.getElementById("rotX")).value;
 	lastSelectedObject.rotation.x = Number(xRot) * (Math.PI / 180);
 	updateRoomsObjectVals(lastSelectedObject)
 });
 insRotY?.addEventListener("input", (event) => {
-	const yRot = (document.getElementById("InspectorRotationY")).value;
+	const yRot = (document.getElementById("rotY")).value;
 	lastSelectedObject.rotation.y = Number(yRot) * (Math.PI / 180);
 	updateRoomsObjectVals(lastSelectedObject)
 });
 insRotZ?.addEventListener("input", (event) => {
-	const zRot = (document.getElementById("InspectorRotationZ")).value;
+	const zRot = (document.getElementById("rotZ")).value;
 	lastSelectedObject.rotation.z = Number(zRot) * (Math.PI / 180);
 	updateRoomsObjectVals(lastSelectedObject)
 });
 
 //Scale
-const insScaleX = document.getElementById("InspectorScaleX");
-const insScaleY = document.getElementById("InspectorScaleY");
-const insScaleZ = document.getElementById("InspectorScaleZ");
+const insScaleX = document.getElementById("sclX");
+const insScaleY = document.getElementById("sclY");
+const insScaleZ = document.getElementById("sclZ");
 
 insScaleX?.addEventListener("input", (event) => {
-	const xScale = (document.getElementById("InspectorScaleX")).value;
+	const xScale = (document.getElementById("sclX")).value;
 	lastSelectedObject.scale.x = Number(xScale);
 	updateRoomsObjectVals(lastSelectedObject)
 });
 insScaleY?.addEventListener("input", (event) => {
-	const yScale = (document.getElementById("InspectorScaleY")).value;
+	const yScale = (document.getElementById("sclY")).value;
 	lastSelectedObject.scale.y = Number(yScale);
 	updateRoomsObjectVals(lastSelectedObject)
 });
 insScaleZ?.addEventListener("input", (event) => {
-	const zScale = (document.getElementById("InspectorScaleZ")).value;
+	const zScale = (document.getElementById("sclZ")).value;
 	lastSelectedObject.scale.z = Number(zScale);
 	updateRoomsObjectVals(lastSelectedObject)
 });
@@ -442,7 +459,7 @@ animate()
 let disabled = new Disabled()
 
 //Play
-let PlayBtn = document.getElementById("PlayBtn");
+let PlayBtn = document.getElementById("playArrow");
 if (PlayBtn != null) PlayBtn.addEventListener("click", (e) => playScene());
 
 //Pause
@@ -450,7 +467,7 @@ if (PlayBtn != null) PlayBtn.addEventListener("click", (e) => playScene());
 //if (PauseBtn != null) PauseBtn.addEventListener("click", (e: Event) => featureDisabled());
 
 //Stop
-let StopBtn = document.getElementById("StopBtn");
+let StopBtn = document.getElementById("pauseArrow");
 if (StopBtn != null) StopBtn.addEventListener("click", (e) => stopScene());
 
 /* First Person POV */
@@ -461,10 +478,15 @@ function playScene() {
 	camera.position.set(0, 1, 3);
 	FPControls.lookSpeed = 0.001;
 
-	let Inspector = document.getElementById('Inspector')
-	if (Inspector != null) Inspector.style.display = "none";
-	let Controls = document.getElementById('Controls')
-	if (Controls != null) Controls.style.display = "none";
+	let InspectorDiv = document.getElementById('InspectorDiv')
+	if (InspectorDiv != null) InspectorDiv.style.display = "none";
+	let RightSideDiv = document.getElementById('RightSideDiv')
+	if (RightSideDiv != null) RightSideDiv.style.display = "none";
+	let TopBar = document.getElementById('TopBar')
+	if (TopBar != null) TopBar.style.display = "none";
+
+	let TopBarPlaying = document.getElementById('TopBarPlaying')
+	if (TopBarPlaying != null) TopBarPlaying.style.display = "flex";
 }
 
 function stopScene() {
@@ -474,8 +496,15 @@ function stopScene() {
 	camera.position.set(-35, 70, 100);
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-	let Controls = document.getElementById('Controls')
-	if (Controls != null) Controls.style.display = "block";
+	let InspectorDiv = document.getElementById('InspectorDiv')
+	if (InspectorDiv != null) InspectorDiv.style.display = "block";
+	let RightSideDiv = document.getElementById('RightSideDiv')
+	if (RightSideDiv != null) RightSideDiv.style.display = "block";
+	let TopBar = document.getElementById('TopBar')
+	if (TopBar != null) TopBar.style.display = "flex";
+
+	let TopBarPlaying = document.getElementById('TopBarPlaying')
+	if (TopBarPlaying != null) TopBarPlaying.style.display = "none";
 }
 
 
@@ -490,15 +519,42 @@ for (let i = 0; i < originalCards.length; i++) {
 	objectCards.push(originalCards[i])
 }
 
-const searchInput = document.getElementById("ObjectSearchInput")
+const objectSearchInput = document.getElementById("ObjectSearchInput")
 
-searchInput.addEventListener("input", (e) => {
+objectSearchInput.addEventListener("input", (e) => {
 	const value = e.target.value
 })
 
-searchInput.addEventListener("input", e => {
+objectSearchInput.addEventListener("input", e => {
 	const value = e.target.value.toLowerCase()
 	objectCards.forEach(temp => {
+		const isVisible = temp.innerText.toLowerCase().includes(value)
+		temp.classList.toggle("hide", !isVisible)
+	})
+})
+
+let sceneObjects = []
+let allSceneObjects = document.getElementsByClassName("objectListButton")
+
+export function updateAllSceneObjects() {
+	allSceneObjects = document.getElementsByClassName("objectListButton")
+	sceneObjects = []
+	for (let i = 0; i < allSceneObjects.length; i++) {
+		sceneObjects.push(allSceneObjects[i])
+	}
+}
+
+updateAllSceneObjects()
+
+const sceneSearchInput = document.getElementById("SceneSearchInput")
+
+sceneSearchInput.addEventListener("input", (e) => {
+	const value = e.target.value
+})
+
+sceneSearchInput.addEventListener("input", e => {
+	const value = e.target.value.toLowerCase()
+	sceneObjects.forEach(temp => {
 		const isVisible = temp.innerText.toLowerCase().includes(value)
 		temp.classList.toggle("hide", !isVisible)
 	})
@@ -615,12 +671,180 @@ async function horizonGenerateIMG(prompt) {
 	)
 }
 
-function getSceneObjects() {
+export function getSceneObjects() {
+	const SceneViewList = document.getElementById("SceneList")
+	SceneViewList.innerHTML = ""
 	scene.traverse(function (object) {
-		if (object.isMesh) console.log(object.userData.name);
+		if(object.userData.name == undefined) return;
+		if (object.isMesh) {
+			var shapeBtn = document.createElement("button")
+			shapeBtn.classList.add("objectListButton")
+			shapeBtn.id = object.name
+			shapeBtn.innerHTML = "<span class='material-symbols-outlined'>deployed_code</span><p>" + object.userData.name + "</p>"
+			shapeBtn.onclick = function () {
+				activateInspector()
+				draggingEvent(object)
+			}
+			SceneViewList.appendChild(shapeBtn)
+		}
 	});
+	updateAllSceneObjects()
 }
 
 function getLastSelectedObject() {
 	return lastSelectedObject.userData.name
 }
+
+//Top Bar Event Listeners and page changers
+const CollectionsBtn = document.getElementById("CollectionsBtn");
+const ScenesListBtn = document.getElementById("SceneListBtn")
+
+const CollectionsElement = document.getElementById("ObjectSelectorWindow")
+const ScenesListElement = document.getElementById("SceneListViewWindow")
+
+CollectionsBtn?.addEventListener("click", (event) => {
+	CollectionsElement.style.display = "block"
+	CollectionsBtn.classList.add("highlight")
+	ScenesListElement.style.display = "none"
+	ScenesListBtn.classList.remove("highlight")
+});
+
+ScenesListBtn?.addEventListener("click", (event) => {
+	CollectionsElement.style.display = "none"
+	CollectionsBtn.classList.remove("highlight")
+	ScenesListElement.style.display = "block"
+	ScenesListBtn.classList.add("highlight")
+});
+
+const DragControlsBtn = document.getElementById("DragControlsBtn")
+const TransformControlsBtn = document.getElementById("TransformControlsBtn");
+
+const ObjectToolsBox = document.getElementById("ObjectToolsBox")
+
+
+//Drag / Transform Controls
+DragControlsBtn?.addEventListener("click", (event) => {
+	ObjectToolsBox.style.display = "none"
+	TransformControlsBtn.classList.remove("highlight")
+	DragControlsBtn.classList.add("highlight")
+
+	dControls.enabled = true;
+	tControls.detach()
+	scene.remove(tControls)
+});
+
+TransformControlsBtn?.addEventListener("click", (event) => {
+	ObjectToolsBox.style.display = "flex"
+	DragControlsBtn.classList.remove("highlight")
+	TransformControlsBtn.classList.add("highlight")
+
+	dControls.enabled = false
+	scene.add(tControls)
+});
+
+// Transform Control Modes
+const TControlPos = document.getElementById("TControlPos")
+const TControlScale = document.getElementById("TControlScale")
+const TControlRot = document.getElementById("TControlRot")
+
+TControlPos?.addEventListener("click", (event) => {
+	TControlPos.classList.add("highlight")
+	TControlScale.classList.remove("highlight")
+	TControlRot.classList.remove("highlight")
+
+	tControls.setMode("translate")
+})
+
+TControlScale?.addEventListener("click", (event) => {
+	TControlPos.classList.remove("highlight")
+	TControlScale.classList.add("highlight")
+	TControlRot.classList.remove("highlight")
+
+	tControls.setMode("scale")
+})
+
+TControlRot?.addEventListener("click", (event) => {
+	TControlPos.classList.remove("highlight")
+	TControlScale.classList.remove("highlight")
+	TControlRot.classList.add("highlight")
+
+	tControls.setMode("rotate")
+})
+
+const shareBtn = document.getElementById("ShareBtn")
+shareBtn?.addEventListener("click", (e) => {
+	var dummy = document.createElement('input'),
+		text = window.location.href;
+
+	document.body.appendChild(dummy);
+	dummy.value = text;
+	dummy.select();
+	document.execCommand('copy');
+	document.body.removeChild(dummy);
+
+	alert("Share link copied to your clipboard :) \nShare Link: " + text);
+})
+
+const FeedbackBtn = document.getElementById("Feedback")
+FeedbackBtn?.addEventListener("click", (e) => {
+	alert("We appreciate all feedback and would love to talk to our users! Please reach out to our email Contact@Pixelz.gg");
+})
+
+const ExportBtn = document.getElementById("ExportBtn")
+ExportBtn?.addEventListener("click", (e) => {
+	alert("Exporting 3D Models will be coming soon!");
+})
+
+const CodeBtn = document.getElementById("CodeBtn")
+CodeBtn?.addEventListener("click", (e) => {
+	alert("Coding will be coming soon!");
+})
+
+const TerrainBtn = document.getElementById("TerrainBtn")
+TerrainBtn?.addEventListener("click", (e) => {
+	alert("Terrain building will be coming soon!");
+})
+
+
+const InspectorObjectColor = document.getElementById("InspectorObjectColor")
+InspectorObjectColor?.addEventListener("input", (e) => {
+	let trailing = "0".repeat(6 - InspectorObjectColor.value.length)
+	lastSelectedObject.material.color.set(new THREE.Color(parseInt("0x" + InspectorObjectColor.value + trailing)));
+	document.getElementById("InspectorObjectColorBox").style.backgroundColor = "#" + InspectorObjectColor.value + trailing;
+	updateRoomsObjectVals(lastSelectedObject)
+})
+
+const addObjectBtn = document.getElementById("addObjectBtn")
+const addMenu = document.getElementById("AddObjectsMenu")
+addObjectBtn?.addEventListener("click", (e) => {
+	if(addMenu.style.display == "none") addMenu.style.display = "block"
+	else if(addMenu.style.display == "block") addMenu.style.display = "none"
+})
+
+const initAIChat = document.getElementById("ObjectCreationMenu")
+const AIChatBtn = document.getElementById("AIChatBtn")
+AIChatBtn?.addEventListener("click", (e) => {
+	initAIChat.style.display = "flex";
+	let TopBar = document.getElementById('ScenePlayerMenu')
+	if (TopBar != null) TopBar.style.display = "none";
+})
+
+const AIChatBackBtn = document.getElementById("AIChatBackBtn")
+const ObjectCreationList = document.getElementById("ObjectCreationList")
+
+AIChatBackBtn?.addEventListener("click", (e) => {
+	initAIChat.style.display = "none";
+	ObjectCreationList.style.display = "none"
+	let TopBar = document.getElementById('ScenePlayerMenu')
+	if (TopBar != null) TopBar.style.display = "flex";
+})
+
+const AIChatSubmitBtn = document.getElementById("AIChatSubmitBtn")
+AIChatSubmitBtn?.addEventListener("click", (e) => {
+	ObjectCreationList.style.display = "block"
+	initAIChat.style.display = "none";
+	let TopBar = document.getElementById('ScenePlayerMenu')
+	if (TopBar != null) TopBar.style.display = "flex";
+
+	
+})

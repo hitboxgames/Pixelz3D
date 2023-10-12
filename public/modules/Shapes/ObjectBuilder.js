@@ -31,7 +31,7 @@ function createBox(objects, uuid) {
     box.receiveShadow = true;
 
     box.userData.draggable = true
-    box.userData.name = 'BOX'
+    box.userData.name = 'Cube'
     box.name = uuid
     
     objects.add(box)
@@ -53,7 +53,7 @@ function createCone(objects, uuid) {
     Cone.receiveShadow = true
 
     Cone.userData.draggable = true
-    Cone.userData.name = 'CONE'
+    Cone.userData.name = 'Cone'
     Cone.name = uuid
     
     objects.add(Cone)
@@ -70,7 +70,7 @@ function createSphere(objects, uuid) {
     sphere.receiveShadow = true
 
     sphere.userData.draggable = true
-    sphere.userData.name = 'SPHERE'
+    sphere.userData.name = 'Sphere'
     sphere.name = uuid
     
     objects.add(sphere)
@@ -88,7 +88,7 @@ function createCylinder(objects, uuid) {
     cylinder.receiveShadow = true
 
     cylinder.userData.draggable = true
-    cylinder.userData.name = 'CYLINDER'
+    cylinder.userData.name = 'Cylinder'
     cylinder.name = uuid
     
     objects.add(cylinder)
@@ -165,7 +165,7 @@ function create3DHeart(objects, uuid) {
     ThreeDHeart.receiveShadow = true
 
     ThreeDHeart.userData.draggable = true
-    ThreeDHeart.userData.name = '3DHeart'
+    ThreeDHeart.userData.name = '3D Heart'
     ThreeDHeart.name = uuid
     
     objects.add(ThreeDHeart)

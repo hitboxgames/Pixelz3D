@@ -31,72 +31,77 @@
   </div>
   <div id="computerSize">
     <div id="TopBar" class="">
-      <div id="ScenePlayerMenu" class="toolsMenuBox"  style="display: none;">
-        <button class="playerButtons primaryPlayerButton">
+      <div id="ScenePlayerMenu" class="toolsMenuBox" style="display: flex;">
+        <button class="playerButtons primaryPlayerButton" id="addObjectBtn">
           <span class="material-icons">add</span>
         </button>
         <div class="vertical-divider"></div>
         <div class="playerSection">
-          <button class="playerButtons">
+          <button class="playerButtons" id="AIChatBtn">
             <span class="material-icons">auto_awesome</span>
           </button>
-          <button class="playerButtons">
+          <button class="playerButtons" id="TerrainBtn">
             <svg width="32" height="34" viewBox="0 0 32 34" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_290_809)">
-              <path d="M20.3396 12.5936L15.9669 18.424L19.2902 22.8551L17.4245 24.2544C15.4538 21.6307 12.1771 17.2579 12.1771 17.2579L5.18066 26.5865H30.8343L20.3396 12.5936Z" fill="#8D8D8D"/>
+                <path
+                  d="M20.3396 12.5936L15.9669 18.424L19.2902 22.8551L17.4245 24.2544C15.4538 21.6307 12.1771 17.2579 12.1771 17.2579L5.18066 26.5865H30.8343L20.3396 12.5936Z"
+                  fill="#8D8D8D" />
               </g>
               <g clip-path="url(#clip1_290_809)">
-              <path d="M0.181618 3.70944C0.125299 3.78983 0.0964983 3.88628 0.0995193 3.98438C0.102539 4.08249 0.137219 4.17699 0.198378 4.25375C2.32676 6.92567 6.23547 10.3679 8.86906 12.0072C9.60692 12.4656 10.4426 12.7432 11.308 12.8176C11.3755 13.0134 11.4833 13.2777 11.6465 13.5455C11.9736 14.0801 12.5707 14.696 13.5468 14.6888C14.4892 14.6706 15.4195 14.4721 16.2873 14.104C16.4482 14.0341 16.6034 13.9516 16.7514 13.8572C16.8891 13.773 17.0093 13.6632 17.1055 13.5336C17.168 13.4447 17.2072 13.3415 17.2195 13.2335C17.2337 13.0953 17.1965 12.9568 17.1151 12.8443C16.9757 12.6502 16.7503 12.5817 16.6062 12.5513C16.2144 12.4675 15.9527 12.2947 15.6547 12.0214C15.5382 11.9162 15.425 11.8017 15.2945 11.6711L15.1464 11.5234C14.9553 11.3332 14.7363 11.1221 14.4725 10.901C13.8392 10.3705 13.2042 10.36 12.7309 10.5096C12.6216 10.5445 12.5227 10.587 12.4354 10.6312C12.3417 10.4938 12.2239 10.3289 12.0874 10.15C11.7166 9.66434 11.1848 9.0503 10.571 8.5984C8.04684 6.74282 3.71579 4.54097 0.697327 3.53849C0.604417 3.50769 0.504049 3.50769 0.411139 3.53849C0.318228 3.56929 0.237734 3.62924 0.181618 3.70944ZM12.6589 11.5607C12.7626 11.4797 12.8798 11.4176 13.0051 11.3773C13.2188 11.3098 13.5211 11.2908 13.8882 11.5989C14.1243 11.7962 14.322 11.9865 14.5054 12.1692L14.6382 12.3012C14.7728 12.4364 14.9082 12.5714 15.0402 12.6932C15.2933 12.9361 15.5859 13.1339 15.9055 13.2783C15.3235 13.5341 14.4022 13.7714 13.5385 13.7777C13.0147 13.7826 12.6667 13.4687 12.4227 13.0705C12.3034 12.8722 12.2088 12.66 12.141 12.4387L12.6589 11.5607ZM11.3968 11.9116C11.2821 11.9037 11.1301 11.8866 10.9519 11.8547C10.3837 11.7506 9.84024 11.5406 9.34968 11.2357C7.22205 9.91073 4.19616 7.33564 2.05495 5.0137C4.77445 6.12074 8.01741 7.8496 10.0316 9.33163C10.5445 9.70913 11.0147 10.2451 11.365 10.7023C11.5371 10.9283 11.6764 11.129 11.7711 11.2736L11.3968 11.9116ZM16.4682 13.456L16.4609 13.4532C16.4632 13.4541 16.4658 13.4557 16.4682 13.456Z" fill="#8D8D8D"/>
+                <path
+                  d="M0.181618 3.70944C0.125299 3.78983 0.0964983 3.88628 0.0995193 3.98438C0.102539 4.08249 0.137219 4.17699 0.198378 4.25375C2.32676 6.92567 6.23547 10.3679 8.86906 12.0072C9.60692 12.4656 10.4426 12.7432 11.308 12.8176C11.3755 13.0134 11.4833 13.2777 11.6465 13.5455C11.9736 14.0801 12.5707 14.696 13.5468 14.6888C14.4892 14.6706 15.4195 14.4721 16.2873 14.104C16.4482 14.0341 16.6034 13.9516 16.7514 13.8572C16.8891 13.773 17.0093 13.6632 17.1055 13.5336C17.168 13.4447 17.2072 13.3415 17.2195 13.2335C17.2337 13.0953 17.1965 12.9568 17.1151 12.8443C16.9757 12.6502 16.7503 12.5817 16.6062 12.5513C16.2144 12.4675 15.9527 12.2947 15.6547 12.0214C15.5382 11.9162 15.425 11.8017 15.2945 11.6711L15.1464 11.5234C14.9553 11.3332 14.7363 11.1221 14.4725 10.901C13.8392 10.3705 13.2042 10.36 12.7309 10.5096C12.6216 10.5445 12.5227 10.587 12.4354 10.6312C12.3417 10.4938 12.2239 10.3289 12.0874 10.15C11.7166 9.66434 11.1848 9.0503 10.571 8.5984C8.04684 6.74282 3.71579 4.54097 0.697327 3.53849C0.604417 3.50769 0.504049 3.50769 0.411139 3.53849C0.318228 3.56929 0.237734 3.62924 0.181618 3.70944ZM12.6589 11.5607C12.7626 11.4797 12.8798 11.4176 13.0051 11.3773C13.2188 11.3098 13.5211 11.2908 13.8882 11.5989C14.1243 11.7962 14.322 11.9865 14.5054 12.1692L14.6382 12.3012C14.7728 12.4364 14.9082 12.5714 15.0402 12.6932C15.2933 12.9361 15.5859 13.1339 15.9055 13.2783C15.3235 13.5341 14.4022 13.7714 13.5385 13.7777C13.0147 13.7826 12.6667 13.4687 12.4227 13.0705C12.3034 12.8722 12.2088 12.66 12.141 12.4387L12.6589 11.5607ZM11.3968 11.9116C11.2821 11.9037 11.1301 11.8866 10.9519 11.8547C10.3837 11.7506 9.84024 11.5406 9.34968 11.2357C7.22205 9.91073 4.19616 7.33564 2.05495 5.0137C4.77445 6.12074 8.01741 7.8496 10.0316 9.33163C10.5445 9.70913 11.0147 10.2451 11.365 10.7023C11.5371 10.9283 11.6764 11.129 11.7711 11.2736L11.3968 11.9116ZM16.4682 13.456L16.4609 13.4532C16.4632 13.4541 16.4658 13.4557 16.4682 13.456Z"
+                  fill="#8D8D8D" />
               </g>
               <defs>
-              <clipPath id="clip0_290_809">
-              <rect width="27.9858" height="27.9858" fill="white" transform="translate(4.01465 5.59717)"/>
-              </clipPath>
-              <clipPath id="clip1_290_809">
-              <rect width="14.5526" height="14.5526" fill="white" transform="matrix(-0.968148 0.25038 0.25038 0.968148 14.0889 0)"/>
-              </clipPath>
+                <clipPath id="clip0_290_809">
+                  <rect width="27.9858" height="27.9858" fill="white" transform="translate(4.01465 5.59717)" />
+                </clipPath>
+                <clipPath id="clip1_290_809">
+                  <rect width="14.5526" height="14.5526" fill="white"
+                    transform="matrix(-0.968148 0.25038 0.25038 0.968148 14.0889 0)" />
+                </clipPath>
               </defs>
-            </svg>            
-          </button>          
+            </svg>
+          </button>
         </div>
         <div class="vertical-divider"></div>
-        <div class="playerSection">
-          <button class="playerButtons">
+        <div class="playerSection" style="display: flex" ;>
+          <button class="playerButtons" id="SceneListBtn">
             <span class="material-icons font-36">list</span>
           </button>
-          <button class="playerButtons highlight">
+          <button class="playerButtons highlight" id="CollectionsBtn">
             <span class="material-icons font-36">grid_view</span>
           </button>
-          <button class="playerButtons">
+          <button class="playerButtons" id="CodeBtn">
             <span class="material-icons font-36">code</span>
           </button>
         </div>
         <div class="vertical-divider"></div>
         <div class="playerSection">
-          <button class="playerButtons">
+          <button class="playerButtons highlight" id="DragControlsBtn">
             <span class="material-icons-outlined font-30">near_me</span>
           </button>
           <div style="position: relative;">
-            <button class="playerButtons highlight">
+            <button class="playerButtons" id="TransformControlsBtn">
               <span class="material-icons font-36">view_in_ar</span>
             </button>
             <div id="ObjectToolsBox" class="toolsMenuBox" style="display: none;">
-              <button class="playerButtons">
+              <button class="playerButtons highlight" id="TControlPos">
                 <span class="material-icons font-30">open_with</span>
               </button>
-              <button class="playerButtons">
+              <button class="playerButtons" id="TControlScale">
                 <span class="material-icons font-30">view_in_ar</span>
               </button>
-              <button class="playerButtons">
+              <button class="playerButtons" id="TControlRot">
                 <span class="material-icons font-30">autorenew</span>
               </button>
             </div>
           </div>
         </div>
         <div class="vertical-divider"></div>
-        <button class="primaryPlayerButton textButton">Export</button>
+        <button class="primaryPlayerButton textButton" id="ExportBtn">Export</button>
         <div class="vertical-divider"></div>
-        <button class="playerButtons">
+        <button class="playerButtons" id="playArrow">
           <span class="material-icons-outlined font-36">play_arrow</span>
         </button>
 
@@ -130,47 +135,40 @@
           -->
         </div>
       </div>
-      <div id="ObjectCreationMenu" class="toolsMenuBox">
-        <button class="playerButtons">
+      <div id="ObjectCreationMenu" class="toolsMenuBox" style="display:none">
+        <button class="playerButtons" id="AIChatBackBtn">
           <span class="material-symbols-rounded font-30">west</span>
         </button>
         <div class="vertical-divider"></div>
         <div class="textInputBackground" style="flex-grow: 1;">
-          <input type="text" class="textInput"></input>
+          <input type="text" class="textInput" style="width: 50vh;"></input>
         </div>
-        <button class="playerButtons">
+        <button class="playerButtons" id="AIChatSubmitBtn">
           <span class="material-icons">auto_awesome</span>
         </button>
-        <div class="vertical-divider"></div>
-        <button class="primaryPlayerButton textButton">Export</button>
-        <div class="vertical-divider"></div>
-        <button class="playerButtons">
-          <span class="material-symbols-rounded font-36">play_arrow</span>
-        </button>
-
-        <div id="ObjectCreationList" class="toolsMenuBox">
-          <div class="yellowBorderBox">
-            <span class="material-icons" style="color: #FFE816; font-size: 20px;">auto_awesome</span>
-            <p style="margin: 0 8px;">Generate 3D Objects</p>
-          </div>
-          <div class="objectCreationItem">
-            <span class="material-icons">delete</span>
-            <div class="objectCreationItemBackground">
-              <p class="objectCreationItemTitle">Object Name</p>
-            </div>
-          </div>
-          <div class="objectCreationItem">
-            <span class="material-icons">delete</span>
-            <div class="objectCreationItemBackground">
-              <p class="objectCreationItemTitle">Object Name</p>
-            </div>
-          </div>
-          <div class="objectCreationAddition">
-            <span class="material-icons">add_circle_outline</span>
-            <div class="thin-horizontal-divider"></div>
-          </div>
-          <button class="primaryPlayerButton textButton" style="align-self: end">Generate</button>
+      </div>
+      <div id="ObjectCreationList" class="toolsMenuBox" style="display:none">
+        <div class="yellowBorderBox">
+          <span class="material-icons" style="color: #FFE816; font-size: 20px;">auto_awesome</span>
+          <p style="margin: 0 8px;">Generate 3D Objects</p>
         </div>
+        <div class="objectCreationItem">
+          <span class="material-icons">delete</span>
+          <div class="objectCreationItemBackground">
+            <p class="objectCreationItemTitle">Object Name</p>
+          </div>
+        </div>
+        <div class="objectCreationItem">
+          <span class="material-icons">delete</span>
+          <div class="objectCreationItemBackground">
+            <p class="objectCreationItemTitle">Object Name</p>
+          </div>
+        </div>
+        <div class="objectCreationAddition">
+          <span class="material-icons">add_circle_outline</span>
+          <div class="thin-horizontal-divider"></div>
+        </div>
+        <button class="primaryPlayerButton textButton" style="align-self: end">Generate</button>
       </div>
       <div id="ToolsMenu" style="display:none;">
         <div id="leftSVG" style="display: flex; width: 23vw;">
@@ -210,7 +208,7 @@
               <path
                 d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
             </svg> </button>
-            
+
           <div style="display: flex; border-left: solid 1px; border-right: solid 1px; display:none;">
             <button type="button" class="playerButtons" title="Undo Action"
               style="padding-left: 0.5rem; padding-right: 0.5rem;" id="UndoBtn">
@@ -257,209 +255,223 @@
         -->
       </div>
     </div>
+    <div id="TopBarPlaying" class="toolsMenuBox" style="display: none;">
+      <button class="primaryPlayerButton textButton">Export</button>
+        <div class="vertical-divider"></div>
+        <button class="playerButtons" id="pauseArrow">
+          <span class="material-symbols-rounded font-36">pause</span>
+        </button>
+    </div>
 
     <div id="SceneViewer">
-      <div id="SelectedObjectInspector">
-        <div style="display: flex; justify-content: space-between;">
-          <div style="">
-            <input type="text" id="InspectorObjectName" name="fname" value="Shape" style="width: 100%">
-          </div>
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="2vw" height="auto" fill="currentColor" class="bi bi-unlock hide"
-              viewBox="0 0 16 16">
-              <path
-                d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2zM3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H3z" />
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="2vw" height="auto" fill="currentColor" class="bi bi-x-square hide"
-              viewBox="0 0 16 16">
-              <path
-                d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-              <path
-                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-            </svg>
-          </div>
-        </div>
-        <div id="InspectorPosition" style="display: flex; justify-content: space-between;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor" class="bi bi-box-fill"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-              d="M15.528 2.973a.75.75 0 0 1 .472.696v8.662a.75.75 0 0 1-.472.696l-7.25 2.9a.75.75 0 0 1-.557 0l-7.25-2.9A.75.75 0 0 1 0 12.331V3.669a.75.75 0 0 1 .471-.696L7.443.184l.004-.001.274-.11a.75.75 0 0 1 .558 0l.274.11.004.001 6.971 2.789Zm-1.374.527L8 5.962 1.846 3.5 1 3.839v.4l6.5 2.6v7.922l.5.2.5-.2V6.84l6.5-2.6v-.4l-.846-.339Z" />
-          </svg>
-          <input type="number" id="InpectorPositionX" name="fname" value="0">
-          <input type="number" id="InpectorPositionY" name="fname" value="0">
-          <input type="number" id="InpectorPositionZ" name="fname" value="0">
-        </div>
-        <div id="InspectorRotation" style="display: flex; justify-content: space-between;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
-            class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-            <path
-              d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
-            <path fill-rule="evenodd"
-              d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-          </svg>
-          <input type="number" id="InspectorRotationX" name="fname" value="0">
-          <input type="number" id="InspectorRotationY" name="fname" value="0">
-          <input type="number" id="InspectorRotationZ" name="fname" value="0">
-        </div>
-        <div id="InspectorScaling" style="display: flex; justify-content: space-between;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
-            class="bi bi-bounding-box" viewBox="0 0 16 16">
-            <path
-              d="M5 2V0H0v5h2v6H0v5h5v-2h6v2h5v-5h-2V5h2V0h-5v2H5zm6 1v2h2v6h-2v2H5v-2H3V5h2V3h6zm1-2h3v3h-3V1zm3 11v3h-3v-3h3zM4 15H1v-3h3v3zM1 4V1h3v3H1z" />
-          </svg>
-          <input type="number" id="InspectorScaleX" name="fname" value="0">
-          <input type="number" id="InspectorScaleY" name="fname" value="0">
-          <input type="number" id="InspectorScaleZ" name="fname" value="0">
-        </div>
-        <div id="InspectorVisibility" style="text-align: center;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor" class="bi bi-eye" style="display: none;"
-            viewBox="0 0 16 16">
-            <path
-              d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
-            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
-          </svg>
-          <button type="button" style="display: none;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
-              class="bi bi-toggle-on" viewBox="0 0 16 16">
-              <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" />
-            </svg>
-          </button>
-          <div>
-            <div id="InspectorColors" class="list-group list-group-horizontal text-nowrap overflow-auto">
-              <button type="button" class="list-group-item" style="display: none;"></button>
-              <button type="button" class="list-group-item" style="background-color: white;" id="white"></button>
-              <button type="button" class="list-group-item" style="background-color: blue;" id="blue"></button>
-              <button type="button" class="list-group-item" style="background-color: red;" id="red"></button>
-              <button type="button" class="list-group-item" style="background-color: yellow;" id="yellow"></button>
-              <button type="button" class="list-group-item" style="background-color: green;" id="green"></button>
-              <button type="button" class="list-group-item" style="background-color: orange;" id="orange"></button>
-              <button type="button" class="list-group-item" style="background-color: pink;" id="pink"></button>
-              <button type="button" class="list-group-item" style="background-color: black;" id="black"></button>
-              <button type="button" class="list-group-item" style="background-color: gray;" id="gray"></button>
-              <button type="button" class="list-group-item" style="background-color: #FFE5B4;" id="peach"></button>
-              <button type="button" class="list-group-item" style="background-color: brown;" id="brown"></button>
-              <button type="button" class="list-group-item" style="background-color: purple;" id="purple"></button>
-              <button type="button" class="list-group-item" style="background-color: teal;" id="teal"></button>
-              <button type="button" class="list-group-item" style="display: none;"></button>
+      <div id="InspectorDiv">
+        <div id="SelectedObjectInspector">
+          <div style="display: flex; justify-content: space-between;">
+            <div style="">
+              <input type="text" id="InspectorObjectName" name="fname" value="Shape" style="width: 100%">
+            </div>
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="2vw" height="auto" fill="currentColor"
+                class="bi bi-unlock hide" viewBox="0 0 16 16">
+                <path
+                  d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2zM3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H3z" />
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="2vw" height="auto" fill="currentColor"
+                class="bi bi-x-square hide" viewBox="0 0 16 16">
+                <path
+                  d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                <path
+                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+              </svg>
             </div>
           </div>
-          <button type="button" style="display: none;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
-              class="bi bi-toggle-off" viewBox="0 0 16 16">
-              <path
-                d="M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z" />
+          <div id="InspectorPosition" style="display: flex; justify-content: space-between;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor" class="bi bi-box-fill"
+              viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M15.528 2.973a.75.75 0 0 1 .472.696v8.662a.75.75 0 0 1-.472.696l-7.25 2.9a.75.75 0 0 1-.557 0l-7.25-2.9A.75.75 0 0 1 0 12.331V3.669a.75.75 0 0 1 .471-.696L7.443.184l.004-.001.274-.11a.75.75 0 0 1 .558 0l.274.11.004.001 6.971 2.789Zm-1.374.527L8 5.962 1.846 3.5 1 3.839v.4l6.5 2.6v7.922l.5.2.5-.2V6.84l6.5-2.6v-.4l-.846-.339Z" />
             </svg>
-          </button>
+            <input type="number" id="InpectorPositionX" name="fname" value="0">
+            <input type="number" id="InpectorPositionY" name="fname" value="0">
+            <input type="number" id="InpectorPositionZ" name="fname" value="0">
+          </div>
+          <div id="InspectorRotation" style="display: flex; justify-content: space-between;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
+              class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+              <path
+                d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+              <path fill-rule="evenodd"
+                d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+            </svg>
+            <input type="number" id="InspectorRotationX" name="fname" value="0">
+            <input type="number" id="InspectorRotationY" name="fname" value="0">
+            <input type="number" id="InspectorRotationZ" name="fname" value="0">
+          </div>
+          <div id="InspectorScaling" style="display: flex; justify-content: space-between;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
+              class="bi bi-bounding-box" viewBox="0 0 16 16">
+              <path
+                d="M5 2V0H0v5h2v6H0v5h5v-2h6v2h5v-5h-2V5h2V0h-5v2H5zm6 1v2h2v6h-2v2H5v-2H3V5h2V3h6zm1-2h3v3h-3V1zm3 11v3h-3v-3h3zM4 15H1v-3h3v3zM1 4V1h3v3H1z" />
+            </svg>
+            <input type="number" id="InspectorScaleX" name="fname" value="0">
+            <input type="number" id="InspectorScaleY" name="fname" value="0">
+            <input type="number" id="InspectorScaleZ" name="fname" value="0">
+          </div>
+          <div id="InspectorVisibility" style="text-align: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor" class="bi bi-eye"
+              style="display: none;" viewBox="0 0 16 16">
+              <path
+                d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+              <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+            </svg>
+            <button type="button" style="display: none;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
+                class="bi bi-toggle-on" viewBox="0 0 16 16">
+                <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" />
+              </svg>
+            </button>
+            <div>
+              <div id="InspectorColors" class="list-group list-group-horizontal text-nowrap overflow-auto">
+                <button type="button" class="list-group-item" style="display: none;"></button>
+                <button type="button" class="list-group-item" style="background-color: white;" id="white"></button>
+                <button type="button" class="list-group-item" style="background-color: blue;" id="blue"></button>
+                <button type="button" class="list-group-item" style="background-color: red;" id="red"></button>
+                <button type="button" class="list-group-item" style="background-color: yellow;" id="yellow"></button>
+                <button type="button" class="list-group-item" style="background-color: green;" id="green"></button>
+                <button type="button" class="list-group-item" style="background-color: orange;" id="orange"></button>
+                <button type="button" class="list-group-item" style="background-color: pink;" id="pink"></button>
+                <button type="button" class="list-group-item" style="background-color: black;" id="black"></button>
+                <button type="button" class="list-group-item" style="background-color: gray;" id="gray"></button>
+                <button type="button" class="list-group-item" style="background-color: #FFE5B4;" id="peach"></button>
+                <button type="button" class="list-group-item" style="background-color: brown;" id="brown"></button>
+                <button type="button" class="list-group-item" style="background-color: purple;" id="purple"></button>
+                <button type="button" class="list-group-item" style="background-color: teal;" id="teal"></button>
+                <button type="button" class="list-group-item" style="display: none;"></button>
+              </div>
+            </div>
+            <button type="button" style="display: none;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="3vw" height="auto" fill="currentColor"
+                class="bi bi-toggle-off" viewBox="0 0 16 16">
+                <path
+                  d="M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="UnselectedInspector" style="display: block;">
+          <div id="UnselectedInspectorTop" style="justify-content: space-between; display:flex;">
+            <button class="primaryPlayerButton textButton" id="ShareBtn">Share</button>
+            <button class="primaryPlayerButton textButton" id="Feedback">Send Feedback</button>
+          </div>
+          <div class="thin-horizontal-divider"></div>
+          <!-- Unselected Scene Inspector -->
+          <div id="UnselectedInspectorBottom" class="inspectorSection" style="display: block;">
+            <p>Scene</p>
+            <div class="inspectorRow">
+              <p class="secondaryInspectorText">Background (Hex)</p>
+              <div class="inspectorRowContent">
+                <div id="InspectorSceneColorBox" class="inspectorBox" style="background-color: #2D2E33"></div>
+                <div class="textInputBackground">
+                  <span class="material-icons" style="color: #0F5994;">tag</span>
+                  <input type="text" id="InspectorSceneColor" name="fname" value="2D2E33" class="textInput">
+                </div>
+              </div>
+            </div>
+            <div class="inspectorRow">
+              <p class="secondaryInspectorText">SkyBox (Text Prompt)</p>
+              <div style="display: flex; align-items: center;">
+                <div class="textInputBackground">
+                  <input type="text" id="InspectorSkyBoxColor" name="fname" value="Clear blue skies" class="textInput">
+                </div>
+              </div>
+            </div>
+            <button id="SkyBoxBtn" class="primaryPlayerButton textButton" style="align-self: end">Generate</button>
+          </div>
+          <!-- Selected Object Inspector -->
+          <div id="SelectedObjectInspectorNEW" style="display: none">
+            <div class="inspectorSection">
+              <div class="textInputBackground">
+                <input type="text" class="textInput" id="ObjectInspectorName" value="Initial Object Name">
+              </div>
+              <div class="inspectorRow">
+                <p class="secondaryInspectorText">Position</p>
+                <div class="inspectorRowContent threeItem">
+                  <div class="textInputBackground">
+                    <strong class="axisPrefix">X</strong>
+                    <input type="number" class="textInput" id="posX" value="0">
+                  </div>
+                  <div class="textInputBackground">
+                    <strong class="axisPrefix">Y</strong>
+                    <input type="number" class="textInput" id="posY" value="0">
+                  </div>
+                  <div class="textInputBackground">
+                    <strong class="axisPrefix">Z</strong>
+                    <input type="number" class="textInput" id="posZ" value="0">
+                  </div>
+                </div>
+              </div>
+              <div class="inspectorRow">
+                <p class="secondaryInspectorText">Scale</p>
+                <div class="inspectorRowContent threeItem">
+                  <div class="textInputBackground">
+                    <strong class="axisPrefix">X</strong>
+                    <input type="number" class="textInput" id="sclX" value="0">
+                  </div>
+                  <div class="textInputBackground">
+                    <strong class="axisPrefix">Y</strong>
+                    <input type="number" class="textInput" id="sclY" value="0">
+                  </div>
+                  <div class="textInputBackground">
+                    <strong class="axisPrefix">Z</strong>
+                    <input type="number" class="textInput" id="sclZ" value="0">
+                  </div>
+                </div>
+              </div>
+              <div class="inspectorRow">
+                <p class="secondaryInspectorText">Rotation</p>
+                <div class="inspectorRowContent threeItem">
+                  <div class="textInputBackground">
+                    <strong class="axisPrefix">X</strong>
+                    <input type="number" class="textInput" id="rotX" value="0">
+                  </div>
+                  <div class="textInputBackground">
+                    <strong class="axisPrefix">Y</strong>
+                    <input type="number" class="textInput" id="rotY" value="0">
+                  </div>
+                  <div class="textInputBackground">
+                    <strong class="axisPrefix">Z</strong>
+                    <input type="number" class="textInput" id="rotZ" value="0">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="thin-horizontal-divider"></div>
+            <div class="inspectorSection">
+              <p>Material</p>
+              <div class="inspectorRow">
+                <p class="secondaryInspectorText">Color </p>
+                <div class="inspectorRowContent">
+                  <div id="InspectorObjectColorBox" class="inspectorBox" style="background-color: red"></div>
+                  <div class="textInputBackground">
+                    <span class="material-icons" style="color: #0F5994;">tag</span>
+                    <input type="text" id="InspectorObjectColor" name="fname" value="2D2E33" class="textInput">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div id="UnselectedInspector">
-        <div id="UnselectedInspectorTop">
-          <button class="primaryPlayerButton textButton">Share</button>
-        </div>
-        <div class="thin-horizontal-divider"></div>
-        <!-- Unselected Scene Inspector -->
-        <div id="UnselectedInspectorBottom" class="inspectorSection" style="display: none;">
-          <p>Scene</p>
-          <div class="inspectorRow">
-            <p class="secondaryInspectorText">Background (Hex)</p>
-            <div class="inspectorRowContent">
-              <div id="InspectorSceneColorBox" class="inspectorBox" style="background-color: red"></div>
-              <div class="textInputBackground">
-                <span class="material-icons" style="color: #0F5994;">tag</span>
-                <input type="text" id="InspectorSceneColor" name="fname" value="2D2E33" class="textInput">                
-              </div>
-            </div>
-          </div>
-          <div class="inspectorRow">
-            <p class="secondaryInspectorText">SkyBox (Text Prompt)</p>
-            <div style="display: flex; align-items: center;">
-              <div class="textInputBackground">
-                <input type="text" id="InspectorSkyBoxColor" name="fname" value="Clear blue skies" class="textInput">            
-              </div>
-            </div>
-          </div>
-          <button id="SkyBoxBtn">Generate</button>
-        </div>
-        <!-- Selected Object Inspector -->
-        <div class="inspectorSection">
-          <div class="textInputBackground">
-            <input type="text" class="textInput" value="Initial Object Name">                
-          </div>
-          <div class="inspectorRow">
-            <p class="secondaryInspectorText">Position</p>
-            <div class="inspectorRowContent threeItem">
-              <div class="textInputBackground">
-                <strong class="axisPrefix">X</strong>
-                <input type="number" class="textInput">                
-              </div>
-              <div class="textInputBackground">
-                <strong class="axisPrefix">Y</strong>
-                <input type="number" class="textInput">                
-              </div>
-              <div class="textInputBackground">
-                <strong class="axisPrefix">Z</strong>
-                <input type="number" class="textInput">                
-              </div>
-            </div>
-          </div>
-          <div class="inspectorRow">
-            <p class="secondaryInspectorText">Scale</p>
-            <div class="inspectorRowContent threeItem">
-              <div class="textInputBackground">
-                <strong class="axisPrefix">X</strong>
-                <input type="number" class="textInput">                
-              </div>
-              <div class="textInputBackground">
-                <strong class="axisPrefix">Y</strong>
-                <input type="number" class="textInput">                
-              </div>
-              <div class="textInputBackground">
-                <strong class="axisPrefix">Z</strong>
-                <input type="number" class="textInput">                
-              </div>
-            </div>
-          </div>
-          <div class="inspectorRow">
-            <p class="secondaryInspectorText">Rotation</p>
-            <div class="inspectorRowContent threeItem">
-              <div class="textInputBackground">
-                <strong class="axisPrefix">X</strong>
-                <input type="number" class="textInput">                
-              </div>
-              <div class="textInputBackground">
-                <strong class="axisPrefix">Y</strong>
-                <input type="number" class="textInput">                
-              </div>
-              <div class="textInputBackground">
-                <strong class="axisPrefix">Z</strong>
-                <input type="number" class="textInput">                
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="thin-horizontal-divider"></div>
-        <div class="inspectorSection">
-          <p>Material</p>
-          <div class="inspectorRow">
-            <p class="secondaryInspectorText">Color </p>
-            <div class="inspectorRowContent">
-              <div id="InspectorSceneColorBox" class="inspectorBox" style="background-color: red"></div>
-              <div class="textInputBackground">
-                <span class="material-icons" style="color: #0F5994;">tag</span>
-                <input type="text" id="InspectorSceneColor" name="fname" value="2D2E33" class="textInput">                
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
 
       <div id="Scene"></div>
     </div>
 
-    <!-- This is the Object Selection Window -->
-    <div id="ObjectSelectorWindow" class="leftWindow" style="display: none;">
+    <div id = "RightSideDiv">
+        <!-- This is the Object Selection Window -->
+    <div id="ObjectSelectorWindow" class="leftWindow">
       <!--
       <div id="shapesSelector" class="border-gradient">
         <button type="button" id="ShapeSelectorBtn">
@@ -489,20 +501,21 @@
 
       <div class="thin-horizontal-divider"></div>
 
-        <div id="objectSelection" class="overflow-auto">
-          <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
-          <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
-          <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
-          <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
-          <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
-          <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
-          <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
-        
-        </div>
+      <div id="objectSelection" class="overflow-auto">
+        <!----
+        <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
+        <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
+        <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
+        <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
+        <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
+        <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
+        <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
+      -->
+      </div>
     </div>
 
     <!-- This is the Scene List View Window -->
-    <div id="SceneListViewWindow" class="leftWindow">
+    <div id="SceneListViewWindow" class="leftWindow" style="display: none;">
       <p class="leftWindowTitle">
         Scene List View
       </p>
@@ -515,16 +528,52 @@
       <div class="thin-horizontal-divider"></div>
 
       <div id="SceneList">
-        <button class="objectListButton highlight">
-          <span class="material-symbols-outlined">deployed_code</span>          
+        <button class="objectListButton" style="display: none">
+          <span class="material-symbols-outlined">deployed_code</span>
           <p>Cube</p>
         </button>
-        <button class="objectListButton">
-          <span class="material-symbols-outlined">deployed_code</span>          
-          <p>Cube</p>
-        </button>        
       </div>
     </div>
+    <div id="AddObjectsMenu" class="" style="display: none;">
+      <div id="SceneList">
+        <button class="objectListButton" id="SpawnBox" style="display: flex">
+          <span class="material-symbols-outlined">deployed_code</span>
+          <p>Cube</p>
+        </button>
+        <div class="thin-horizontal-divider"></div>
+        <button class="objectListButton" id="SpawnSphere" style="display: flex">
+          <span class="material-symbols-outlined">radio_button_unchecked</span>
+          <p>Sphere</p>
+        </button>
+        <div class="thin-horizontal-divider"></div>
+        <button class="objectListButton" id="SpawnCylinder" style="display: flex">
+          <span class="material-symbols-outlined">radio_button_checked</span>
+          <p>Cylinder</p>
+        </button>
+        <div class="thin-horizontal-divider"></div>
+        <button class="objectListButton" id="SpawnCone" style="display: flex">
+          <span class="material-symbols-outlined">change_history</span>
+          <p>Cone</p>
+        </button>
+        <div class="thin-horizontal-divider"></div>
+        <button class="objectListButton" id="Spawn3DHeart" style="display: flex">
+          <span class="material-symbols-outlined">favorite</span>
+          <p>3D Heart</p>
+        </button>
+        <div class="thin-horizontal-divider"></div>
+        <button class="objectListButton" id="SpawnPlane" style="display: flex">
+          <span class="material-symbols-outlined">rectangle</span>
+          <p>Plane</p>
+        </button>
+        <div class="thin-horizontal-divider"></div>
+        <button class="objectListButton" id="SpawnTorus" style="display: flex">
+          <span class="material-symbols-outlined">fiber_manual_record</span>
+          <p>Torus</p>
+        </button>
+      </div>
+    </div>
+    </div>
+    
   </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -533,6 +582,7 @@
   integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
   integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-  <script src="socket.js"></script>
-  <script type="module" defer src="client.js"></script>
+<script src="socket.js"></script>
+<script type="module" defer src="client.js"></script>
+
 </html>

@@ -1,7 +1,3 @@
-.hide{
-    display: none;
-}
-
 svg {
     color: #fafafa;
 }
@@ -201,14 +197,14 @@ screen and (max-height: 550px) {
 
     /* Top Bar CSS */
 
-    #TopBar {
+    #TopBar, #TopBarPlaying {
         height: 10%;
         position: absolute;
         z-index: 2;
         left: 50%;
         top: 2%;
         transform: translate(-50%, 0%);
-        min-width: 30vw;
+        min-width: 10vw;
     }
 
     #ToolsMenu {
@@ -357,6 +353,20 @@ screen and (max-height: 550px) {
         padding-bottom: 1vh;
         height: 15%;
         width: 100%;
+    }
+
+    #AddObjectsMenu {
+        width: 12%;
+        height: fit-content;
+        top: 12%;
+        left: 25%;
+        float: left;
+        position: absolute;
+        text-align: center;
+        background-color: #131418;
+        margin: 0;
+        z-index: 2;
+        border-radius: 16px;
     }
 
     /* Left Window CSS */
@@ -541,4 +551,8 @@ screen and (max-height: 550px) {
         color: #0F5994;
         margin-right: 4px;
     }
+}
+
+.hide{
+    display: none;
 }
