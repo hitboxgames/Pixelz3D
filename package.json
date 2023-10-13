@@ -21,6 +21,7 @@
     "openai": "^4.12.1",
     "replicate": "^0.20.1",
     "request": "^2.88.2",
+    "serve-favicon": "^2.5.0",
     "socket.io": "^4.6.0",
     "socket.io-stream": "^0.9.1",
     "uuid": "^9.0.0"

@@ -8,7 +8,7 @@ import bodyParser from "body-parser"
 import OpenAI from "openai"
 import { textToGameRubric } from "./Chat/TextToVideogameRubric.js"
 import Replicate from "replicate";
-
+import serveFavicon from 'serve-favicon'
 
 const openai = new OpenAI({
     organization: "org-vGii8WWXPJPEZTCiVzSzsu1X",
@@ -27,6 +27,7 @@ app.use(cors())
 
 app.set('view engine', 'ejs')
 
+//app.use(serveFavicon(__dirname + '/favicon.ico'))
 
 app.get('/create', (req, res) => {
     res.redirect("../?" + uuidv4());

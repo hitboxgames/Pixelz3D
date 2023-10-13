@@ -9,8 +9,6 @@ import { createObject, createShape } from "./modules/Shapes/ObjectBuilder.js"
 import { loadJSON } from './modules/Loaders/LocalLoader.js'
 import { TransformControls } from './modules/Controllers/TransformControls.js'
 import { OBJLoader } from './modules/Loaders/OBJLoader.js'
-import socketIoStream from 'socket.io-stream'
-import fs from fs
 
 
 
@@ -20,8 +18,6 @@ console.log("client loaded...")
 
 //Socket IO Code
 const socket = io()
-const ss = socketIoStream()
-//var stream = ss.createStream();
 
 let initialized = false
 socket.on("connect", () => {
@@ -47,12 +43,6 @@ socket.on("newRoomConnection", () => {
 	initialized = true
 	const insSceneColor = document.getElementById("InspectorSceneColor");
 	let sceneJson = scene.toJSON()
-
-	/*fs.writeFile("scene.json", sceneJson);
-	ss(socket).on('scene.json', function (stream) {
-		fs.createReadStream('/path/to/file').pipe(stream);
-	});*/
-
 	socket.emit("sendWorldUpdate", sceneJson, insSceneColor.value, myRoomValues)
 })
 

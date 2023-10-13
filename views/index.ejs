@@ -20,6 +20,8 @@
   </style>
 
   <title>Pixelz3D</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+
 </head>
 
 <body>
@@ -106,10 +108,10 @@
         </div>
         <div class="vertical-divider"></div>
         <div class="playerSection" style="display: flex" ;>
-          <button class="playerButtons" id="SceneListBtn">
+          <button class="playerButtons highlight" id="SceneListBtn">
             <span class="material-icons font-36">list</span>
           </button>
-          <button class="playerButtons highlight" id="CollectionsBtn">
+          <button class="playerButtons" id="CollectionsBtn">
             <span class="material-icons font-36">grid_view</span>
           </button>
           <button class="playerButtons" id="CodeBtn">
@@ -520,7 +522,7 @@
 
     <div id="RightSideDiv">
       <!-- This is the Object Selection Window -->
-      <div id="ObjectSelectorWindow" class="leftWindow">
+      <div id="ObjectSelectorWindow" class="leftWindow" style="display: none">
         <!--
       <div id="shapesSelector" class="border-gradient">
         <button type="button" id="ShapeSelectorBtn">
@@ -565,7 +567,7 @@
       </div>
 
       <!-- This is the Scene List View Window -->
-      <div id="SceneListViewWindow" class="leftWindow" style="display: none;">
+      <div id="SceneListViewWindow" class="leftWindow" style="display: flex;">
         <p class="leftWindowTitle">
           Scene List View
         </p>
