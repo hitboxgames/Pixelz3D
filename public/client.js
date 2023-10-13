@@ -733,7 +733,7 @@ const CollectionsElement = document.getElementById("ObjectSelectorWindow")
 const ScenesListElement = document.getElementById("SceneListViewWindow")
 
 CollectionsBtn?.addEventListener("click", (event) => {
-	CollectionsElement.style.display = "block"
+	CollectionsElement.style.display = "flex"
 	CollectionsBtn.classList.add("highlight")
 	ScenesListElement.style.display = "none"
 	ScenesListBtn.classList.remove("highlight")
@@ -742,7 +742,7 @@ CollectionsBtn?.addEventListener("click", (event) => {
 ScenesListBtn?.addEventListener("click", (event) => {
 	CollectionsElement.style.display = "none"
 	CollectionsBtn.classList.remove("highlight")
-	ScenesListElement.style.display = "block"
+	ScenesListElement.style.display = "flex"
 	ScenesListBtn.classList.add("highlight")
 });
 

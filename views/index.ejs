@@ -32,9 +32,49 @@
   <div id="computerSize">
     <div id="TopBar" class="">
       <div id="ScenePlayerMenu" class="toolsMenuBox" style="display: flex;">
-        <button class="playerButtons primaryPlayerButton" id="addObjectBtn">
-          <span class="material-icons">add</span>
-        </button>
+        <div style="position: relative;">
+          <button class="playerButtons primaryPlayerButton" id="addObjectBtn">
+            <span class="material-icons">add</span>
+          </button>
+          <div id="AddObjectsMenu" class="" style="display: none;">
+            <div id="SceneList">
+              <button class="objectListButton" id="SpawnBox" style="display: flex">
+                <span class="material-symbols-outlined">deployed_code</span>
+                <p>Cube</p>
+              </button>
+              <div class="thin-horizontal-divider"></div>
+              <button class="objectListButton" id="SpawnSphere" style="display: flex">
+                <span class="material-symbols-outlined">radio_button_unchecked</span>
+                <p>Sphere</p>
+              </button>
+              <div class="thin-horizontal-divider"></div>
+              <button class="objectListButton" id="SpawnCylinder" style="display: flex">
+                <span class="material-symbols-outlined">radio_button_checked</span>
+                <p>Cylinder</p>
+              </button>
+              <div class="thin-horizontal-divider"></div>
+              <button class="objectListButton" id="SpawnCone" style="display: flex">
+                <span class="material-symbols-outlined">change_history</span>
+                <p>Cone</p>
+              </button>
+              <div class="thin-horizontal-divider"></div>
+              <button class="objectListButton" id="Spawn3DHeart" style="display: flex">
+                <span class="material-symbols-outlined">favorite</span>
+                <p>3D Heart</p>
+              </button>
+              <div class="thin-horizontal-divider"></div>
+              <button class="objectListButton" id="SpawnPlane" style="display: flex">
+                <span class="material-symbols-outlined">rectangle</span>
+                <p>Plane</p>
+              </button>
+              <div class="thin-horizontal-divider"></div>
+              <button class="objectListButton" id="SpawnTorus" style="display: flex">
+                <span class="material-symbols-outlined">fiber_manual_record</span>
+                <p>Torus</p>
+              </button>
+            </div>
+          </div>          
+        </div>
         <div class="vertical-divider"></div>
         <div class="playerSection">
           <button class="playerButtons" id="AIChatBtn">
@@ -509,17 +549,37 @@
         </div>
 
         <div class="thin-horizontal-divider"></div>
-
-        <div id="objectSelection" class="overflow-auto">
-          <!----
-        <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
-        <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
-        <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
-        <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
-        <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
-        <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
-        <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
-      -->
+        <div style="overflow: hidden; padding: 4px;">
+          <div id="objectSelection" class="overflow-auto">
+            <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
+            <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
+            <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
+            <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
+            <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
+            <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
+            <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
+            <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
+            <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
+            <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
+            <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
+            <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
+            <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
+            <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
+            <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
+            <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
+            <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
+            <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
+            <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
+            <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
+            <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>
+            <button type="button" class="objectButton" id="SpawnBox" title="Add Cube">Cube</button>
+            <button type="button" class="objectButton" id="SpawnSphere" title="Add Sphere">Sphere</button>
+            <button type="button" class="objectButton" id="SpawnCylinder" title="Add Cylinder">Cylinder</button>
+            <button type="button" class="objectButton" id="SpawnCone" title="Add Cone">Cone</button>
+            <button type="button" class="objectButton" id="Spawn3DHeart" title="Add 3D Heart">3D Heart</button>
+            <button type="button" class="objectButton" id="SpawnPlane" title="Add Plane">Plane</button>
+            <button type="button" class="objectButton" id="SpawnTorus" title="Add Torus">Torus</button>      
+          </div>  
         </div>
       </div>
 
@@ -540,44 +600,6 @@
           <button class="objectListButton" style="display: none">
             <span class="material-symbols-outlined">deployed_code</span>
             <p>Cube</p>
-          </button>
-        </div>
-      </div>
-      <div id="AddObjectsMenu" class="" style="display: none;">
-        <div id="SceneList">
-          <button class="objectListButton" id="SpawnBox" style="display: flex">
-            <span class="material-symbols-outlined">deployed_code</span>
-            <p>Cube</p>
-          </button>
-          <div class="thin-horizontal-divider"></div>
-          <button class="objectListButton" id="SpawnSphere" style="display: flex">
-            <span class="material-symbols-outlined">radio_button_unchecked</span>
-            <p>Sphere</p>
-          </button>
-          <div class="thin-horizontal-divider"></div>
-          <button class="objectListButton" id="SpawnCylinder" style="display: flex">
-            <span class="material-symbols-outlined">radio_button_checked</span>
-            <p>Cylinder</p>
-          </button>
-          <div class="thin-horizontal-divider"></div>
-          <button class="objectListButton" id="SpawnCone" style="display: flex">
-            <span class="material-symbols-outlined">change_history</span>
-            <p>Cone</p>
-          </button>
-          <div class="thin-horizontal-divider"></div>
-          <button class="objectListButton" id="Spawn3DHeart" style="display: flex">
-            <span class="material-symbols-outlined">favorite</span>
-            <p>3D Heart</p>
-          </button>
-          <div class="thin-horizontal-divider"></div>
-          <button class="objectListButton" id="SpawnPlane" style="display: flex">
-            <span class="material-symbols-outlined">rectangle</span>
-            <p>Plane</p>
-          </button>
-          <div class="thin-horizontal-divider"></div>
-          <button class="objectListButton" id="SpawnTorus" style="display: flex">
-            <span class="material-symbols-outlined">fiber_manual_record</span>
-            <p>Torus</p>
           </button>
         </div>
       </div>

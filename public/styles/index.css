@@ -119,7 +119,7 @@ screen and (max-height: 550px) {
     #ObjectToolsBox {
         position: absolute;
         z-index: 5;
-        top: 64px;
+        top: calc(50% + 40px);
         left: 50%;
         transform: translateX(-50%);
     }
@@ -356,10 +356,9 @@ screen and (max-height: 550px) {
     }
 
     #AddObjectsMenu {
-        width: 12%;
         height: fit-content;
-        top: 12%;
-        left: 25%;
+        top: calc(50% + 40px);
+        left: -200%;
         float: left;
         position: absolute;
         text-align: center;
@@ -383,6 +382,9 @@ screen and (max-height: 550px) {
         margin: 0;
         z-index: 2;
         border-radius: 16px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
 
     .textInputBackground {
@@ -416,6 +418,18 @@ screen and (max-height: 550px) {
         height: 100%;
         /* change back to 88% when "basic shapes" is added back*/
         font-size: smaller;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    #objectSelection {
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox */
+    }
+    #objectSelection::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
     }
 
     #shapesSelector {
