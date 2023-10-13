@@ -30,7 +30,11 @@ app.set('view engine', 'ejs')
 //app.use(serveFavicon(__dirname + '/favicon.ico'))
 
 app.get('/create', (req, res) => {
-    res.redirect("../?" + uuidv4());
+    res.redirect("room?" + uuidv4());
+})
+
+app.get('/', async (req, res) => {
+    res.render('landing')
 })
 
 //* is used to represent all routes
