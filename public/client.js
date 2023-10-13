@@ -21,7 +21,7 @@ console.log("client loaded...")
 //Socket IO Code
 const socket = io()
 const ss = socketIoStream()
-var stream = ss.createStream();
+//var stream = ss.createStream();
 
 let initialized = false
 socket.on("connect", () => {
@@ -48,10 +48,10 @@ socket.on("newRoomConnection", () => {
 	const insSceneColor = document.getElementById("InspectorSceneColor");
 	let sceneJson = scene.toJSON()
 
-	fs.writeFile("scene.json", sceneJson);
+	/*fs.writeFile("scene.json", sceneJson);
 	ss(socket).on('scene.json', function (stream) {
 		fs.createReadStream('/path/to/file').pipe(stream);
-	});
+	});*/
 
 	socket.emit("sendWorldUpdate", sceneJson, insSceneColor.value, myRoomValues)
 })
