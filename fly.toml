@@ -1,13 +1,18 @@
-# fly.toml file generated for exude on 2023-04-16T02:13:46-04:00
+# fly.toml app configuration file generated for pixelz3d on 2023-10-12T15:11:06-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "exude"
+app = "pixelz3d"
 primary_region = "mia"
+
+[build]
 
 [env]
   PORT = "8080"
 
 [http_service]
-  internal_port = 8080
+  internal_port = 3000
   force_https = true
 
 [checks]

@@ -9,6 +9,8 @@ import { createObject, createShape } from "./modules/Shapes/ObjectBuilder.js"
 import { loadJSON } from './modules/Loaders/LocalLoader.js'
 import { TransformControls } from './modules/Controllers/TransformControls.js'
 import { OBJLoader } from './modules/Loaders/OBJLoader.js'
+import socketIoStream from 'socket.io-stream'
+import fs from fs
 
 
 
@@ -18,6 +20,9 @@ console.log("client loaded...")
 
 //Socket IO Code
 const socket = io()
+const ss = socketIoStream()
+var stream = ss.createStream();
+
 let initialized = false
 socket.on("connect", () => {
 	console.log("Welcome to the session!")
@@ -31,6 +36,7 @@ socket.on("deleteObject", (uuid) => {
 	let item = scene.getObjectByName(uuid)
 	let parent = item.parent;
 	if (parent != null) parent.remove(item);
+	getSceneObjects()
 })
 
 const myRoomValues = window.location.search
@@ -40,42 +46,27 @@ socket.on("newRoomConnection", () => {
 	console.log("A new user has connected to your session!")
 	initialized = true
 	const insSceneColor = document.getElementById("InspectorSceneColor");
-	let sceneCopy = scene
-	let sceneModelSrcs = []
-	console.log(scene)
-	sceneCopy.traverse(async function (object) {
-		if (object.userData.tag == "3DAI") {
-			sceneModelSrcs.push([object.userData.src, object.name])
-			console.log(object.userData.src)
-			let parentObj = object.parent
-			await parentObj.remove(object)
-		}
+	let sceneJson = scene.toJSON()
+
+	fs.writeFile("scene.json", sceneJson);
+	ss(socket).on('scene.json', function (stream) {
+		fs.createReadStream('/path/to/file').pipe(stream);
 	});
-	let sceneJson = sceneCopy.toJSON()
-	console.log(sceneCopy)
-	socket.emit("sendWorldUpdate", sceneJson, sceneModelSrcs, insSceneColor.value, myRoomValues)
+
+	socket.emit("sendWorldUpdate", sceneJson, insSceneColor.value, myRoomValues)
 })
 
-socket.on("sendWorldUpdate", (sceneObjects, sceneModelSrcs, skycolor) => {
+socket.on("sendWorldUpdate", (sceneObjects, skycolor) => {
 	if (!initialized) {
 		initialized = true
 		var lights = scene.getObjectByName("lights")
 		scene.remove(lights)
+		console.log(loadJSON(sceneObjects))
 		objects.add(loadJSON(sceneObjects))
 		//console.log("cum")
 		let skybox = objects.children[0].getObjectByName("Skybox")
-		scene.add(skybox)
+		//scene.add(skybox)
 		objects.remove(skybox)
-		let gif = sceneModelSrcs[0][0][0]
-		let model = sceneModelSrcs[0][0][1]
-		let uuid = sceneModelSrcs[0][1]
-
-		socket.emit("spawnJSON", [gif, model], myRoomValues)
-		addToCollection([gif, model])
-
-		console.log(gif)
-		console.log(model)
-		console.log(uuid)
 		//objects.remove(skybox)
 		//console.log("shit initial")
 		//console.log(objects.children[0].getObjectByName("Skybox"))
@@ -209,7 +200,7 @@ tControls.addEventListener('dragging-changed', function (event) {
 //Dragging Controls
 let objects = new THREE.Group();
 scene.add(objects);
-const dControls = new DragControls(objects.children, camera, renderer.domElement);
+const dControls = new DragControls(objects.children, camera, renderer.domElement, 500);
 dControls.enabled = true;
 
 dControls.addEventListener("hoveron", event => {
@@ -847,8 +838,8 @@ InspectorObjectColor?.addEventListener("input", (e) => {
 const addObjectBtn = document.getElementById("addObjectBtn")
 const addMenu = document.getElementById("AddObjectsMenu")
 addObjectBtn?.addEventListener("click", (e) => {
-	if (addMenu.style.display == "none") addMenu.style.display = "block"
-	else if (addMenu.style.display == "block") addMenu.style.display = "none"
+	if (addMenu.style.display == "none") addMenu.style.display = "flex"
+	else if (addMenu.style.display == "flex") addMenu.style.display = "none"
 })
 
 const initAIChat = document.getElementById("ObjectCreationMenu")
@@ -911,6 +902,7 @@ function setupObjects(prompt) {
 		objectNumberIndex = prompt.indexOf("#", objectNumberIndex + 1)
 		console.log("loop completed")
 	}
+	listOfObjects.pop()
 
 	console.log(listOfObjects)
 	setupUIforGPT(listOfObjects)
@@ -958,11 +950,11 @@ async function callMake3D(prompt) {
 	)
 }
 addToCollection(["https://pbxt.replicate.delivery/allH5x4uUt4GBxF0KoMzlBeB3qOOf3Z6KqQvxHVClZwDtatRA/out_0.gif",
-"https://pbxt.replicate.delivery/afxcImfNsxqEG0OTeTV3m4EDYhfOHAgh6nli8074INOT0q1GB/mesh_0.obj"])
+	"https://pbxt.replicate.delivery/afxcImfNsxqEG0OTeTV3m4EDYhfOHAgh6nli8074INOT0q1GB/mesh_0.obj"])
 function addToCollection(content) {
 	let objectCard = document.createElement("button")
 	objectCard.classList.add("objectButton")
-	objectCard.onclick = async function() {
+	objectCard.onclick = async function () {
 		socket.emit("spawnJSON", content, myRoomValues)
 		//spawnObject(shit, false);
 	}
@@ -973,18 +965,18 @@ function addToCollection(content) {
 
 async function generateObj(modelSrc, uuid) {
 	const objLoader = new OBJLoader()
-    const obj = await objLoader.loadAsync(
-        //await callMake3D(prompt),
-        modelSrc[1],
-    )
+	const obj = await objLoader.loadAsync(
+		//await callMake3D(prompt),
+		modelSrc[1],
+	)
 
 	const objMesh = obj.children[0]
-    //console.log(obj)
-    objMesh.name = uuid
+	//console.log(obj)
+	objMesh.name = uuid
 	objMesh.userData.name = "3D Object"
-    objMesh.position.set(0, 2, 0);
-    //obj.rotation.x = -90 * (Math.PI / 180)
-    objMesh.scale.set(objMesh.scale.x * 10, objMesh.scale.y * 10, objMesh.scale.z * 10)
+	objMesh.position.set(0, 2, 0);
+	//obj.rotation.x = -90 * (Math.PI / 180)
+	objMesh.scale.set(objMesh.scale.x * 10, objMesh.scale.y * 10, objMesh.scale.z * 10)
 	objMesh.uuid = uuid
 	objMesh.userData.draggable = true
 	objMesh.userData.tag = "3DAI"
@@ -1001,15 +993,15 @@ generateAIModelsBtn?.addEventListener("click", async (e) => {
 	let listOfObjects = document.getElementsByClassName("objectCreationItemTitle")
 	ObjectCreationList.style.display = "none"
 	//console.log(listOfObjects)
-	
+
 	let contentList = []
 
-	for(let i = 0; i < listOfObjects.length; i++) {
+	for (let i = 0; i < listOfObjects.length; i++) {
 		let content = callMake3D(listOfObjects[i].value)
 		contentList.push(content)
 	}
 
-	for(let i = 0; i < contentList.length; i++){
+	for (let i = 0; i < contentList.length; i++) {
 		addToCollection(await contentList[i])
 	}
 })

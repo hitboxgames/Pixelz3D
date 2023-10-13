@@ -1,9 +1,7 @@
-import { createShape } from "./public/modules/Shapes/ObjectBuilder.js"
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import { v4 as uuidv4 } from 'uuid'
-import request from 'request'
 import axios from 'axios'
 import cors from "cors"
 import bodyParser from "body-parser"
@@ -19,8 +17,8 @@ const openai = new OpenAI({
 
 const app = express()
 const server = createServer(app)
-const io = new Server(server, { cors: { origin: "*" } })
-const port = process.env.PORT || 3000
+const io = new Server(server, { cors: { origin: "*"}, maxHttpBufferSize: 5e8 })
+const port = 3000 || process.env.PORT
 
 app.use(express.static('public'))
 app.use(express.json());
@@ -91,8 +89,8 @@ io.on("connection", (socket) => {
         io.to(roomVal).emit("spawnSkyBox", shape)
     })
 
-    socket.on("sendWorldUpdate", (sceneJson, sceneModelSrcs, skycolor, roomVal) => {
-        io.to(roomVal).emit("sendWorldUpdate", sceneJson, sceneModelSrcs, skycolor)
+    socket.on("sendWorldUpdate", (sceneJson, skycolor, roomVal) => {
+        io.to(roomVal).emit("sendWorldUpdate", sceneJson, skycolor)
     })
 
     socket.on("deleteObject", (uuid, roomVal) => {
@@ -195,7 +193,7 @@ export async function make3D(prompt) {
         auth: REPLICATE_API_TOKEN,
     });
 
-    console.log("setting up replicate")
+    console.log("Sending request to replicate.")
     const output = await replicate.run(
         "cjwbw/shap-e:5957069d5c509126a73c7cb68abcddbb985aeefa4d318e7c63ec1352ce6da68c",
         {

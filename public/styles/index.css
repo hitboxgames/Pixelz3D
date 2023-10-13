@@ -68,7 +68,8 @@ screen and (max-height: 550px) {
         padding: 0;
         background-color: #fafafa;
         height: 100%;
-        color:white;
+        color:white; 
+        overflow: hidden
     }
 
     .paddaway {
@@ -366,6 +367,7 @@ screen and (max-height: 550px) {
         margin: 0;
         z-index: 2;
         border-radius: 16px;
+        padding: 16px;
     }
 
     /* Left Window CSS */

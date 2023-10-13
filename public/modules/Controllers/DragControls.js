@@ -41,7 +41,7 @@ export function disableInspector() {
 
 class DragControls extends EventDispatcher {
 
-	constructor(_objects, _camera, _domElement) {
+	constructor(_objects, _camera, _domElement, _floorWidth) {
 
 		super();
 
@@ -110,7 +110,7 @@ class DragControls extends EventDispatcher {
 					_selected.position.divideScalar(_floorScale).floor().multiplyScalar(_floorScale).addScalar(_floorScale);
 					_selected.position.y = oldYPos; //Keeps it stuck on the current Y pos
 
-					let floorWidth = 47.5;
+					let floorWidth = _floorWidth / 2;
 					if (_selected.position.x < -floorWidth) _selected.position.x = -floorWidth;
 					if (_selected.position.x > floorWidth) _selected.position.x = floorWidth;
 					if (_selected.position.z < -floorWidth) _selected.position.z = -floorWidth;
